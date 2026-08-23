@@ -231,7 +231,7 @@ footer p{margin:0 0 8px}
   <h1>勝田マラソンへの現在地</h1>
   <div class="countdown">
     <div class="cd-main"><span id="cd-days">—</span><span class="u">日</span><span class="cd-clock" id="cd-clock">--:--:--</span></div>
-    <div class="cd-sub">2027年1月31日（日）勝田全国マラソン<br><span id="cd-weeks"></span></div>
+    <div class="cd-sub">第74回 勝田全国マラソン ／ 2027年1月31日（日）10:30 スタート<br><span id="cd-weeks"></span></div>
   </div>
 
   <div class="verdict">
@@ -569,7 +569,27 @@ footer p{margin:0 0 8px}
       <div class="lines">—</div>
     </div>
 
-    <p style="margin-top:20px; font-size:15px; color:var(--ink-3)">※ 目標タイムはサブ5想定。勝田全国マラソンの制限時間・関門・エントリー期間は公式サイトで確認すること。</p>
+    <p style="margin-top:20px; font-size:15px; color:var(--ink-3)">※ 目標タイムはサブ5想定。</p>
+  </div>
+
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>第73回（2026.1.25）の実績値</th><th>時間</th><th>必要ペース</th></tr></thead>
+      <tbody>
+        <tr><td>第1関門 17.6km</td><td>2時間30分</td><td>8'31"/km</td></tr>
+        <tr><td>第2関門 30.0km</td><td>4時間30分</td><td>9'00"/km</td></tr>
+        <tr><td>第3関門 34.9km</td><td>5時間10分</td><td>8'53"/km</td></tr>
+        <tr class="mark"><td><strong>フィニッシュ</strong></td><td><strong>6時間</strong>（16:30）</td><td><strong>8'32"/km</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <ul class="pts">
+      <li>第74回は開催日（2027年1月31日）のみ発表済み。種目・要項は未発表</li>
+      <li>上は第73回の実績値。スタート10:30／参加費8,000円／満18歳以上</li>
+      <li>前回のエントリーは<strong>先行9/12〜24・一般9/26〜10/31</strong>。同時期なら申込は近い</li>
+    </ul>
   </div>
 </section>
 
@@ -595,7 +615,7 @@ footer p{margin:0 0 8px}
 (function(){
   // 本番までのカウントダウン（1秒ごとに更新）
   (function(){
-    var race=new Date(2027,0,31,0,0,0);          // 大会当日 00:00（日本時間）
+    var race=new Date(2027,0,31,10,30,0);        // 第74回スタート予定 10:30（前回実績）
     var elD=document.getElementById("cd-days");
     var elC=document.getElementById("cd-clock");
     var elW=document.getElementById("cd-weeks");
