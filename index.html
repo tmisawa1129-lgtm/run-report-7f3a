@@ -148,6 +148,8 @@ footer p{margin:0 0 8px}
 .countdown{display:flex; align-items:baseline; gap:18px; flex-wrap:wrap; margin:0}
 .cd-main{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:clamp(36px,5.4vw,52px); line-height:1; letter-spacing:-.025em; color:var(--accent); font-variant-numeric:tabular-nums; white-space:nowrap}
 .cd-main .u{font-size:.44em; margin-left:6px; color:var(--ink-2); letter-spacing:0}
+.cd-clock{font-family:"IBM Plex Mono",monospace; font-size:.46em; font-weight:500; letter-spacing:.01em; color:var(--ink-2); margin-left:12px; font-variant-numeric:tabular-nums}
+.cd-clock .s{color:var(--accent)}
 .cd-sub{font-family:"IBM Plex Mono",monospace; font-size:12.5px; letter-spacing:.06em; color:var(--ink-3); line-height:1.7}
 
 /* 本文の箇条書き */
@@ -213,6 +215,7 @@ footer p{margin:0 0 8px}
   .chartbox{overflow:visible}
   footer{margin-top:30px}
   a{color:var(--accent-ink); text-decoration:none}
+  .cd-clock{display:none}
 }
 </style>
 </head>
@@ -227,7 +230,7 @@ footer p{margin:0 0 8px}
   </div>
   <h1>勝田マラソンへの現在地</h1>
   <div class="countdown">
-    <div class="cd-main"><span id="cd-days">—</span><span class="u">日</span></div>
+    <div class="cd-main"><span id="cd-days">—</span><span class="u">日</span><span class="cd-clock" id="cd-clock">--:--:--</span></div>
     <div class="cd-sub">2027年1月31日（日）勝田全国マラソン<br><span id="cd-weeks"></span></div>
   </div>
 
@@ -590,15 +593,26 @@ footer p{margin:0 0 8px}
 
 <script>
 (function(){
-  // 本番までの残り日数（表示するたびに自動計算）
+  // 本番までのカウントダウン（1秒ごとに更新）
   (function(){
-    var race=new Date(2027,0,31);
-    var now=new Date(); now.setHours(0,0,0,0);
-    var days=Math.round((race-now)/86400000);
-    var el=document.getElementById("cd-days");
-    if(el) el.textContent=days;
-    var w=document.getElementById("cd-weeks");
-    if(w) w.textContent="まで残り "+Math.floor(days/7)+"週"+(days%7?(days%7)+"日":"");
+    var race=new Date(2027,0,31,0,0,0);          // 大会当日 00:00（日本時間）
+    var elD=document.getElementById("cd-days");
+    var elC=document.getElementById("cd-clock");
+    var elW=document.getElementById("cd-weeks");
+    function p(v){ return v<10 ? "0"+v : ""+v; }
+    function tick(){
+      var ms=race-new Date();
+      if(ms<0) ms=0;
+      var d=Math.floor(ms/86400000);
+      var h=Math.floor(ms%86400000/3600000);
+      var m=Math.floor(ms%3600000/60000);
+      var s=Math.floor(ms%60000/1000);
+      if(elD) elD.textContent=d;
+      if(elC) elC.innerHTML=p(h)+":"+p(m)+':<span class="s">'+p(s)+"</span>";
+      if(elW) elW.textContent="まで残り "+Math.floor(d/7)+"週"+(d%7?(d%7)+"日":"");
+    }
+    tick();
+    setInterval(tick,1000);
   })();
 
   // 色はハードコードせずCSS変数のまま埋め込む。
