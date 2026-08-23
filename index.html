@@ -7,7 +7,7 @@
 <meta name="description" content="Amazfitのログ解析と、勝田全国マラソンに向けた練習計画。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="勝田マラソンへの現在地">
-<meta property="og:description" content="ランログ41本を1秒単位で解析。プログラムの資料と突き合わせた現状と、自分向けに引き直した計画。">
+<meta property="og:description" content="ランログ41本を1秒単位で集計。数値と、先生に確認したい項目をまとめたもの。">
 <meta property="og:url" content="https://tmisawa1129-lgtm.github.io/run-report-7f3a/">
 <meta property="og:image" content="https://tmisawa1129-lgtm.github.io/run-report-7f3a/ogp.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -144,6 +144,19 @@ footer p{margin:0 0 8px}
 .legend{display:flex; flex-wrap:wrap; gap:8px 20px; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); margin-top:14px; letter-spacing:.04em}
 .legend span{display:flex; align-items:center; gap:7px}
 .dot{width:9px; height:9px; border-radius:50%; display:inline-block}
+/* 先生のフィードバック記入欄 */
+.qbox{border:1px solid var(--line); border-radius:3px; background:var(--surface); padding:20px 22px; margin:0 0 14px; box-shadow:var(--shadow)}
+.qbox .q{font-size:16px; margin:0 0 12px}
+.qbox .q strong{display:block; margin-bottom:3px}
+.fb{border-top:1px dashed var(--line-2); padding-top:12px; display:flex; gap:12px; align-items:flex-start}
+.fb .tag{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.12em; color:var(--ink-3); border:1px solid var(--line-2); border-radius:2px; padding:3px 7px; white-space:nowrap; margin-top:2px}
+.fb .slot{flex:1; min-height:26px; color:var(--ink-3); font-size:15px}
+.fb.filled .tag{color:var(--accent); border-color:var(--accent)}
+.fb.filled .slot{color:var(--ink)}
+.notes{border:1px solid var(--line); border-left:3px solid var(--line-2); border-radius:3px; background:var(--surface-2); padding:20px 22px; margin-top:24px}
+.notes .lbl{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3); display:block; margin-bottom:10px}
+.notes .lines{min-height:96px; color:var(--ink-3); font-size:15px}
+
 /* 心拍ゾーンの積み上げバー */
 .zrow{margin:20px 0 4px}
 .zrow .zlab{display:flex; justify-content:space-between; align-items:baseline; font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-3); margin-bottom:7px}
@@ -201,28 +214,28 @@ footer p{margin:0 0 8px}
     <span>2026.03.21 — 08.22</span><span>ラン41本</span><span>Amazfit Active Max</span><span>THE FULL CREW ／ 勝田全国マラソン 2027.01.31</span>
   </div>
   <h1>勝田マラソンへの現在地</h1>
-  <p class="standfirst">5ヶ月分のログを1秒単位まで解析し、プログラムの資料と突き合わせた。走行量は足りている。足りないのは「1本の長さ」と、ピッチという1つの癖だった。</p>
+  <p class="standfirst">ラン41本のログを1秒単位で集計し、プログラムの資料の基準と並べたもの。判断は入れず、数値と、そこから読める仮説までを載せている。</p>
 
   <div class="verdict">
     <div class="vcard good">
       <div class="k">本番まで</div>
       <div class="v"><span id="cd-days">—</span> 日</div>
-      <div class="n">2027年1月31日（日）勝田全国マラソン<span id="cd-weeks"></span>。土台を作るには充分な期間。</div>
+      <div class="n">2027年1月31日（日）勝田全国マラソン<span id="cd-weeks"></span>。</div>
     </div>
     <div class="vcard crit">
       <div class="k">8月の最長距離</div>
       <div class="v">5.82 km</div>
-      <div class="n">9月の目安は「10km安定」。6km以上のランは1本もない。最優先の課題。</div>
+      <div class="n">8月は13本すべてが6km未満。プログラムの9月の目安は「10km安定」。</div>
     </div>
     <div class="vcard warn">
       <div class="k">ピッチ（走行中のみ）</div>
       <div class="v">163–169</div>
-      <div class="n">ペースに関係なくほぼ一定。速く走る時も上がらない。</div>
+      <div class="n">7〜8月の走行中平均。ペース帯を問わずほぼ一定。</div>
     </div>
     <div class="vcard good">
       <div class="k">3km 自己ベストからの理論値</div>
       <div class="v">4:41:00</div>
-      <div class="n">走り込みが伴えばこのくらい。素質は足りている。</div>
+      <div class="n">3km 17分02秒（8/19）からの単純換算値。走り込み量は考慮していない。</div>
     </div>
   </div>
 </header>
@@ -239,7 +252,7 @@ footer p{margin:0 0 8px}
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">01</span><h2>走行量は、まだフルの土台になっていない</h2></div>
+    <div class="shead"><span class="snum">01</span><h2>月間距離と、1本の長さ</h2></div>
     <p class="sub">月別の走行距離と、その月の最長ラン</p>
   </div>
 
@@ -264,7 +277,7 @@ footer p{margin:0 0 8px}
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">02</span><h2>ペースを上げるとき、ピッチではなく歩幅で上げている</h2></div>
+    <div class="shead"><span class="snum">02</span><h2>ペースが上がると、ピッチ・歩幅・接地時間はどう動くか</h2></div>
     <p class="sub">Amazfit装着後の17本／1秒ログから走行区間のみを抽出して平均</p>
   </div>
 
@@ -280,9 +293,8 @@ footer p{margin:0 0 8px}
   </figure>
 
   <div class="col">
-    <p>3枚のグラフが示すことは1つだ。ペース7'58"でも5'27"でも<strong>ピッチは163〜164でほとんど変わらない</strong>。一方で歩幅は78cmから108cmへ、<strong>約1.4倍</strong>に伸びている。ペースアップの手段が歩幅一本になっている。</p>
-    <p>その結果が3枚目に出る。接地時間は本来、速く走るほど短くなる。ところが実際は逆で、最も速く走った8月19日が<strong>345ms</strong>と5ヶ月で最長だった。歩幅を伸ばすと脚が体より前に着き、ブレーキがかかって地面から離れられない。先生の「着地は体の真下」「かかとから行かない」はここを指している。</p>
-    <p>ただし、例外が1本ある。</p>
+    <p>ペース7'58"から5'27"まで、<strong>ピッチは163〜164でほぼ変わらない</strong>。同じ範囲で歩幅は78cm → 108cm と<strong>約1.4倍</strong>に伸びている。接地時間は最も速い8月19日が<strong>345ms</strong>で、7〜8月の最長値だった。</p>
+    <p>1本だけ、この傾向から外れた回がある。</p>
   </div>
 
   <div class="compare">
@@ -311,14 +323,13 @@ footer p{margin:0 0 8px}
   </div>
 
   <div class="col">
-    <p><strong>歩幅はほぼ同じ（107cm / 105cm）なのに、結果が違う。</strong>練習会の日はピッチが12回転高く、接地時間が86ms短く、そして42秒/km速い。差はピッチだけだ。</p>
-    <p>つまり課題は筋力でも心肺でもなく、<em>ピッチを上げる意識が続くかどうか</em>。見てもらっている時はできている。この1本が、目標が現実的であることの証拠になっている。</p>
+    <p>歩幅はほぼ同じ（107cm / 105cm）だが、練習会の日は<strong>ピッチが12回転高く、接地時間が86ms短く、42秒/km速い</strong>。距離が0.75kmと短い点は差し引く必要がある。</p>
   </div>
 </section>
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">03</span><h2>有酸素能力は横ばい。ただし猛暑を差し引く必要がある</h2></div>
+    <div class="shead"><span class="snum">03</span><h2>同じ心拍で、どのくらいのペースが出ているか</h2></div>
     <p class="sub">同じ心拍で、どれだけ速く走れているかの比較</p>
   </div>
 
@@ -339,8 +350,7 @@ footer p{margin:0 0 8px}
   </div>
 
   <div class="col">
-    <p>心拍124前後で7'32"〜8'03"。7月と8月でほぼ変わっていない。ただし8月は気温25〜33℃・湿度60〜86%で、暑熱下では心拍が10前後上がる。<strong>同じ心拍・同じペースを維持できていること自体は小さな前進</strong>と読める。</p>
-    <p>とはいえ「維持」であって「向上」ではない。有酸素能力は走った距離に比例する部分が大きく、いまは走行量が足りていない。</p>
+    <p>心拍124前後で7'32"〜8'03"。7月と8月でほぼ同じ値である。ただし8月の走行時の気温は25〜33℃・湿度60〜86%で、暑熱下では同じペースでも心拍が上がる条件だった。</p>
   </div>
 </section>
 
@@ -367,14 +377,14 @@ footer p{margin:0 0 8px}
   <div class="col">
     <p>3kmの自己ベスト17分02秒（8月19日）から換算すると、フルの理論値は<strong>4時間41分</strong>になる。スピードの素質という点では、サブ5どころかサブ4.5が射程に入る数字だ。</p>
     <p>ただしこの換算式は「その距離に必要な走り込みができている」ことが前提になっている。最長5.8kmの状態で42kmに出れば、30km過ぎで脚が止まり、理論値より30分から1時間は遅くなる。<strong>足りないのは能力ではなく、その能力を42km持たせるための土台</strong>である。</p>
-    <p>幸い、本番の2027年1月31日まで<strong>23週間ある</strong>。しかも走行量そのものは、すでにプログラムのロードマップを上回っている。積み増すべきは総量ではなく「1本の長さ」だけで、<em>期間は充分に足りている</em>。</p>
+    <p>本番の2027年1月31日まで<strong>23週間</strong>。走行量はすでにプログラムのロードマップの目安を上回っており、目安に届いていないのは「1本の長さ」の項目である。</p>
     <p>そしてもう1つ。歩幅で押す走りは1歩あたりの負担が大きく、距離が伸びるほど不利に働く。ピッチの改善は、フォームの美しさの話ではなく<em>後半に脚を残すための対策</em>として効いてくる。</p>
   </div>
 </section>
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">05</span><h2>プログラムの方針と、実際の走り方のズレ</h2></div>
+    <div class="shead"><span class="snum">05</span><h2>心拍ゾーンの内訳と、資料の目安</h2></div>
     <p class="sub">THE FULL CREW の資料に書かれている基準に、7〜8月の実データを当てはめる</p>
 
     <p>プログラムの資料には「<strong>初心者の練習の80〜90%はZone 2が正解</strong>」と明記されている。Zone 2は「楽に話せるペース」で、最大心拍の60〜70%にあたる。時計の設定上、最大心拍は184とされているので、Zone 2は<strong>おおよそ110〜127拍</strong>になる。</p>
@@ -428,8 +438,7 @@ footer p{margin:0 0 8px}
   </figure>
 
   <div class="col">
-    <p>ただし<em>方向としては good</em>である。7月の Zone 1＋2 は 66%、8月は 70%。わずかだが増えている。8月に限れば Zone 2 単独で 60.6% を占めており、<strong>ジョグそのものは正しい強度で走れている</strong>。</p>
-    <p>問題は Zone 3 の使い方だ。8月のZone 3・19%の大半は、8月19日と20日のペース走で発生している。この2本は心拍143〜150、資料の分類でいえば Zone 3〜4 にあたる。<strong>プログラムが「慣れてから」としているテンポ走を、土台ができる前に始めてしまっている</strong>状態である。</p>
+    <p>Zone 1＋2 は7月66% → 8月70%。8月はZone 2単独で60.6%を占めている。Zone 3 の19%は大半が8月19日・20日の2本で発生しており、この2本の平均心拍は143〜150だった。</p>
     <div class="callout">
       <span class="lbl">資料と照合して分かること</span>
       <p>先生の指摘「ピッチ170台」は、配布資料には載っていない。資料のフォーム3ポイントは<strong>前傾・腕振り・オーバーストライド回避</strong>の3つで、ピッチは含まれていない。</p>
@@ -585,16 +594,39 @@ footer p{margin:0 0 8px}
 <section>
   <div class="col">
     <div class="shead"><span class="snum">09</span><h2>先生に確認したいこと</h2></div>
-    <p class="sub">前ページの計画は、あくまでデータから引いた「たたき台」です</p>
-    <ul style="font-size:16.5px">
-      <li><strong>走行量をこのペースで上げて問題ないか。</strong>9月80km → 12月130kmという想定にした。7月に82kmを走れているので無理はないと考えたが、故障リスクの見立てが甘くないか見てほしい。</li>
-      <li><strong>12月をピークにする組み替えは妥当か。</strong>標準ロードマップは12月テーパリングだが、資料の「テーパリングは2〜3週間前」に合わせて1月中旬からに変更した。この判断が合っているか確認したい。</li>
-      <li><strong>9月はペース走を休んで、Zone 2に振り切ってよいか。</strong>Zone 1＋2 が67%と目安の80〜90%を下回っているためこう判断した。スピードが落ちる懸念もあるので方針を見てほしい。</li>
-      <li><strong>筋トレ（週2回）は継続してよいか。</strong>HYROXで作った筋力を維持したいが、走行量を増やす時期に併走させて問題ないか。</li>
-      <li><strong>ピッチ170を、ジョグを含む全部のランで意識してよいか。</strong>ペースが落ちてもピッチ優先で問題ないか。</li>
-      <li><strong>ロング走を入れる曜日。</strong>最終的に3時間以上まとまって取れる曜日を固定したい。合同練習会との間隔をどう取るのがよいか。</li>
-    </ul>
-    <p style="margin-top:18px; font-size:15px; color:var(--ink-3)">※ 目標タイムはサブ5想定。勝田全国マラソンの制限時間・関門・エントリー期間は公式サイトで確認すること。</p>
+    <p class="sub">以下はデータから引いた仮説です。判断は先生にお願いします</p>
+
+    <div class="qbox">
+      <p class="q"><strong>1. 走行量をこのペースで上げて問題ないか</strong>9月80km → 12月130kmで想定した。7月に82kmを走れているため無理はないと判断したが、故障リスクの見立てが甘くないか。</p>
+      <div class="fb"><span class="tag">先生FB</span><span class="slot">—</span></div>
+    </div>
+    <div class="qbox">
+      <p class="q"><strong>2. 12月をピークにする組み替えは妥当か</strong>標準ロードマップは12月テーパリングだが、資料の「テーパリングは2〜3週間前」に合わせて1月中旬からに変更した。</p>
+      <div class="fb"><span class="tag">先生FB</span><span class="slot">—</span></div>
+    </div>
+    <div class="qbox">
+      <p class="q"><strong>3. 9月はペース走を休んで、Zone 2に振り切ってよいか</strong>Zone 1＋2 が67.2%で、資料の目安80〜90%を下回っているためこう考えた。スピードが落ちる懸念もある。</p>
+      <div class="fb"><span class="tag">先生FB</span><span class="slot">—</span></div>
+    </div>
+    <div class="qbox">
+      <p class="q"><strong>4. 筋トレ（週2回）は継続してよいか</strong>HYROXで作った筋力を維持したいが、走行量を増やす時期に併走させて問題ないか。</p>
+      <div class="fb"><span class="tag">先生FB</span><span class="slot">—</span></div>
+    </div>
+    <div class="qbox">
+      <p class="q"><strong>5. ピッチ170は、ジョグを含む全部のランで意識してよいか</strong>ペースが落ちてもピッチ優先で問題ないか。</p>
+      <div class="fb"><span class="tag">先生FB</span><span class="slot">—</span></div>
+    </div>
+    <div class="qbox">
+      <p class="q"><strong>6. ロング走を入れる曜日をどう固定するか</strong>最終的に3時間以上まとまって取れる曜日を1つ決めたい。合同練習会との間隔の取り方も知りたい。</p>
+      <div class="fb"><span class="tag">先生FB</span><span class="slot">—</span></div>
+    </div>
+
+    <div class="notes">
+      <span class="lbl">そのほか気づいた点・指摘</span>
+      <div class="lines">—</div>
+    </div>
+
+    <p style="margin-top:24px; font-size:15px; color:var(--ink-3)">※ 目標タイムはサブ5想定。勝田全国マラソンの制限時間・関門・エントリー期間は公式サイトで確認すること。<br>※ このページはフィードバックをもらったあと追記して更新します。URLは変わりません。</p>
   </div>
 </section>
 
