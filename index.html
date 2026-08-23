@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-<meta name="description" content="Strava・Amazfitの5ヶ月分のログ解析と、THE FULL CREWのロードマップを自分向けに引き直した練習計画。">
+<meta name="description" content="Strava・Amazfitの5ヶ月分のログ解析と、勝田全国マラソンに向けた練習計画。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="フルマラソンへの現在地">
-<meta property="og:description" content="5ヶ月分のランログを1秒単位で解析。プログラムの資料と突き合わせた現状と、自分向けに引き直した計画。">
+<meta property="og:title" content="勝田マラソンへの現在地">
+<meta property="og:description" content="ランログ41本を1秒単位で解析。プログラムの資料と突き合わせた現状と、自分向けに引き直した計画。">
 <meta property="og:url" content="https://tmisawa1129-lgtm.github.io/run-report-7f3a/">
 <meta property="og:image" content="https://tmisawa1129-lgtm.github.io/run-report-7f3a/ogp.png">
 <meta name="twitter:card" content="summary_large_image">
-<title>フルマラソンへの現在地</title>
+<title>勝田マラソンへの現在地</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
@@ -193,14 +193,14 @@ footer p{margin:0 0 8px}
   <div class="eyebrow">
     <span>2026.03.21 — 08.22</span><span>ラン41本</span><span>Strava + Amazfit</span><span>THE FULL CREW ／ 勝田全国マラソン 2027.01.31</span>
   </div>
-  <h1>フルマラソンへの現在地</h1>
+  <h1>勝田マラソンへの現在地</h1>
   <p class="standfirst">5ヶ月分のログを1秒単位まで解析し、プログラムの資料と突き合わせた。走行量は足りている。足りないのは「1本の長さ」と、ピッチという1つの癖だった。</p>
 
   <div class="verdict">
     <div class="vcard good">
       <div class="k">本番まで</div>
-      <div class="v">23週</div>
-      <div class="n">2027年1月31日（日）勝田全国マラソン。土台を作るには充分な期間。</div>
+      <div class="v"><span id="cd-days">—</span> 日</div>
+      <div class="n">2027年1月31日（日）勝田全国マラソン<span id="cd-weeks"></span>。土台を作るには充分な期間。</div>
     </div>
     <div class="vcard crit">
       <div class="k">8月の最長距離</div>
@@ -332,9 +332,8 @@ footer p{margin:0 0 8px}
   </div>
 
   <div class="col">
-    <p>心拍124前後で7'32"〜8'03"。7月と8月でほぼ変わっていない。<strong>4週間で有酸素能力の明確な向上は見えない。</strong></p>
-    <p>ただし8月は気温25〜33℃、湿度60〜86%で走っている。暑熱下では体温を下げるために心拍が10前後上がるので、<strong>同じ心拍・同じペースを維持できていること自体が、実質的には小さな前進</strong>と読める。悲観する数字ではない。</p>
-    <p>とはいえ「維持」であって「向上」ではない。理由ははっきりしていて、走行量が足りない。有酸素能力は走った距離に比例して伸びる部分が大きい。</p>
+    <p>心拍124前後で7'32"〜8'03"。7月と8月でほぼ変わっていない。ただし8月は気温25〜33℃・湿度60〜86%で、暑熱下では心拍が10前後上がる。<strong>同じ心拍・同じペースを維持できていること自体は小さな前進</strong>と読める。</p>
+    <p>とはいえ「維持」であって「向上」ではない。有酸素能力は走った距離に比例する部分が大きく、いまは走行量が足りていない。</p>
   </div>
 </section>
 
@@ -537,7 +536,47 @@ footer p{margin:0 0 8px}
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">08</span><h2>先生に確認したいこと</h2></div>
+    <div class="shead"><span class="snum">08</span><h2>元データ</h2></div>
+    <p class="sub">Amazfit Active Max 装着後の全ラン20本／時計の表示値そのまま</p>
+    <p>以下は加工していない実測値である。歩行・信号待ちを含む区間平均のため、本文中の「走行中のみ」の数値とは差がある。<strong>緑の行はピッチ170以上を記録した回。</strong></p>
+  </div>
+
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>日付</th><th>距離<br>km</th><th>時間</th><th>ペース<br>/km</th><th>心拍<br>bpm</th><th>ピッチ<br>spm</th><th>歩幅<br>cm</th><th>接地<br>ms</th><th>上下動<br>cm</th></tr></thead>
+      <tbody>
+        <tr><td>07/18</td><td>4.13</td><td>32:35</td><td>7&#39;53&quot;</td><td>—</td><td>162</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>07/19</td><td>44.23</td><td>576:01</td><td>13&#39;01&quot;</td><td>117</td><td>100</td><td>76</td><td>326</td><td>7.0</td></tr>
+        <tr><td>07/20</td><td>1.08</td><td>8:59</td><td>8&#39;19&quot;</td><td>123</td><td>147</td><td>81</td><td>285</td><td>8.7</td></tr>
+        <tr><td>07/24</td><td>4.42</td><td>31:31</td><td>7&#39;07&quot;</td><td>129</td><td>165</td><td>84</td><td>284</td><td>8.8</td></tr>
+        <tr><td>07/25</td><td>2.35</td><td>27:44</td><td>11&#39;48&quot;</td><td>138</td><td>117</td><td>72</td><td>280</td><td>8.2</td></tr>
+        <tr><td>07/26</td><td>8.50</td><td>67:57</td><td>7&#39;59&quot;</td><td>131</td><td>1</td><td>89</td><td>—</td><td>—</td></tr>
+        <tr><td>07/29</td><td>3.67</td><td>30:05</td><td>8&#39;11&quot;</td><td>126</td><td>164</td><td>74</td><td>300</td><td>8.3</td></tr>
+        <tr><td>08/02</td><td>4.71</td><td>47:45</td><td>10&#39;08&quot;</td><td>124</td><td>154</td><td>64</td><td>309</td><td>7.4</td></tr>
+        <tr><td>08/05</td><td>5.22</td><td>40:46</td><td>7&#39;48&quot;</td><td>126</td><td>161</td><td>79</td><td>314</td><td>8.2</td></tr>
+        <tr><td>08/08</td><td>4.29</td><td>39:05</td><td>9&#39;06&quot;</td><td>123</td><td>163</td><td>67</td><td>302</td><td>8.0</td></tr>
+        <tr><td>08/09</td><td>1.89</td><td>14:26</td><td>7&#39;38&quot;</td><td>138</td><td>165</td><td>79</td><td>278</td><td>9.0</td></tr>
+        <tr class="mark"><td>08/09</td><td>0.75</td><td>3:56</td><td>5&#39;15&quot;</td><td>153</td><td>174</td><td>109</td><td>259</td><td>9.1</td></tr>
+        <tr><td>08/10</td><td>5.20</td><td>41:07</td><td>7&#39;54&quot;</td><td>124</td><td>166</td><td>76</td><td>282</td><td>8.5</td></tr>
+        <tr><td>08/11</td><td>5.33</td><td>40:01</td><td>7&#39;30&quot;</td><td>124</td><td>164</td><td>81</td><td>296</td><td>8.7</td></tr>
+        <tr><td>08/12</td><td>4.87</td><td>40:22</td><td>8&#39;17&quot;</td><td>120</td><td>162</td><td>74</td><td>309</td><td>8.7</td></tr>
+        <tr><td>08/15</td><td>3.71</td><td>30:14</td><td>8&#39;09&quot;</td><td>117</td><td>163</td><td>75</td><td>288</td><td>9.1</td></tr>
+        <tr><td>08/19</td><td>5.63</td><td>32:24</td><td>5&#39;45&quot;</td><td>144</td><td>162</td><td>107</td><td>344</td><td>8.9</td></tr>
+        <tr><td>08/20</td><td>1.21</td><td>11:08</td><td>9&#39;12&quot;</td><td>113</td><td>122</td><td>89</td><td>319</td><td>7.4</td></tr>
+        <tr><td>08/20</td><td>5.82</td><td>34:25</td><td>5&#39;54&quot;</td><td>150</td><td>152</td><td>111</td><td>302</td><td>8.8</td></tr>
+        <tr><td>08/22</td><td>2.08</td><td>45:02</td><td>21&#39;39&quot;</td><td>117</td><td>66</td><td>70</td><td>283</td><td>8.2</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p style="font-size:15px; color:var(--ink-3)">7/19の44.23kmは記録時間9時間36分・走行判定2時間18分のため、実質はロングウォーク。8/22はフォーム練習で歩行が大半を占める。3〜6月のランはスマホGPSでの記録のため、心拍とピッチのデータが存在しない。</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">09</span><h2>先生に確認したいこと</h2></div>
     <p class="sub">前ページの計画は、あくまでデータから引いた「たたき台」です</p>
     <ul style="font-size:16.5px">
       <li><strong>走行量をこのペースで上げて問題ないか。</strong>9月80km → 12月130kmという想定にした。7月に82kmを走れているので無理はないと考えたが、故障リスクの見立てが甘くないか見てほしい。</li>
@@ -562,6 +601,17 @@ footer p{margin:0 0 8px}
 
 <script>
 (function(){
+  // 本番までの残り日数（表示するたびに自動計算）
+  (function(){
+    var race=new Date(2027,0,31);
+    var now=new Date(); now.setHours(0,0,0,0);
+    var days=Math.round((race-now)/86400000);
+    var el=document.getElementById("cd-days");
+    if(el) el.textContent=days;
+    var w=document.getElementById("cd-weeks");
+    if(w) w.textContent="まで残り"+Math.floor(days/7)+"週"+(days%7)+"日";
+  })();
+
   // 色はハードコードせずCSS変数のまま埋め込む。
   // これで印刷用パレットやテーマ切替がSVGにもそのまま効く。
   function C(n){ return "var(" + n + ")"; }
