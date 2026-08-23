@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="description" content="Strava・Amazfitの5ヶ月分のログ解析と、2027年1月31日の勝田全国マラソンから逆算した23週間のトレーニング計画。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="フルマラソンへの現在地">
+<meta property="og:description" content="5ヶ月分のランログを1秒単位で解析。ピッチ・接地時間の課題と、勝田全国マラソンまで23週間の計画。">
+<meta property="og:url" content="https://tmisawa1129-lgtm.github.io/run-report-7f3a/">
+<meta property="og:image" content="https://tmisawa1129-lgtm.github.io/run-report-7f3a/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<title>フルマラソンへの現在地</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&display=swap">
+
+<style>
+:root{
+  --paper:#F1F2ED; --surface:#FBFBF8; --surface-2:#E9EBE3;
+  --ink:#1E241C; --ink-2:#4A5147; --ink-3:#767C72;
+  --line:#DCDED6; --line-2:#C8CBC0;
+  --accent:#3F6B34; --accent-ink:#2C4B24; --accent-soft:#E2EADB;
+  --warn:#8E6420; --warn-soft:#F0E7D3;
+  --crit:#9C3D2E; --steel:#4E677A;
+  --shadow:0 1px 2px rgba(30,36,28,.06), 0 8px 24px -16px rgba(30,36,28,.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#14180F; --surface:#1C211A; --surface-2:#252B22;
+    --ink:#E9EBE3; --ink-2:#B2B8AB; --ink-3:#7E867A;
+    --line:#2C3328; --line-2:#3C4437;
+    --accent:#9BC57C; --accent-ink:#B9DA9F; --accent-soft:#232E1C;
+    --warn:#D6A954; --warn-soft:#2E2716;
+    --crit:#D9836F; --steel:#8CA7B8;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14180F; --surface:#1C211A; --surface-2:#252B22;
+  --ink:#E9EBE3; --ink-2:#B2B8AB; --ink-3:#7E867A;
+  --line:#2C3328; --line-2:#3C4437;
+  --accent:#9BC57C; --accent-ink:#B9DA9F; --accent-soft:#232E1C;
+  --warn:#D6A954; --warn-soft:#2E2716;
+  --crit:#D9836F; --steel:#8CA7B8;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Newsreader",ui-serif,Georgia,"Hiragino Mincho ProN",serif;
+  font-size:17px; line-height:1.75; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px; margin:0 auto; padding:0 24px 96px}
+.col{max-width:68ch; margin:0 auto}
+
+/* ---------- masthead ---------- */
+.masthead{padding:72px 0 40px; border-bottom:1px solid var(--line)}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);
+  display:flex; flex-wrap:wrap; gap:6px 18px; margin-bottom:22px;
+}
+h1{
+  font-family:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  font-weight:700; font-size:clamp(38px,6.2vw,62px); line-height:1.04;
+  letter-spacing:-.022em; margin:0 0 18px; text-wrap:balance;
+}
+.standfirst{font-size:19px; color:var(--ink-2); max-width:56ch; margin:0}
+
+/* ---------- verdict ---------- */
+.verdict{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); margin:36px 0 0}
+.vcard{background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:20px 20px 22px; box-shadow:var(--shadow)}
+.vcard .k{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3)}
+.vcard .v{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:31px; line-height:1.15; letter-spacing:-.02em; margin:8px 0 6px; font-variant-numeric:tabular-nums}
+.vcard .n{font-size:14.5px; line-height:1.6; color:var(--ink-2)}
+.vcard.good .v{color:var(--accent)}
+.vcard.warn .v{color:var(--warn)}
+.vcard.crit .v{color:var(--crit)}
+
+/* ---------- sections ---------- */
+section{padding:64px 0 0}
+.shead{display:flex; align-items:baseline; gap:16px; margin:0 0 8px}
+.snum{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--accent); letter-spacing:.1em; padding-top:6px}
+h2{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:clamp(25px,3.4vw,33px); line-height:1.2; letter-spacing:-.018em; margin:0; text-wrap:balance}
+.sub{color:var(--ink-3); font-size:15px; margin:0 0 28px; padding-left:34px}
+p{margin:0 0 18px}
+.col p+p{margin-top:-2px}
+strong{font-weight:600; color:var(--ink)}
+em{font-style:normal; background:var(--accent-soft); padding:1px 5px; border-radius:2px; color:var(--accent-ink); font-weight:500}
+
+/* ---------- callout ---------- */
+.callout{background:var(--warn-soft); border:1px solid var(--line); border-left:3px solid var(--warn); border-radius:3px; padding:22px 24px; margin:0 0 26px}
+.callout .lbl{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--warn); display:block; margin-bottom:10px}
+.callout p:last-child{margin-bottom:0}
+
+/* ---------- figure ---------- */
+figure{margin:34px 0 30px; background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:26px 24px 20px; box-shadow:var(--shadow)}
+figure.wide{max-width:none}
+figcaption{font-size:13.5px; color:var(--ink-3); margin-top:16px; padding-top:14px; border-top:1px solid var(--line); line-height:1.6}
+.figtitle{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:16px; letter-spacing:-.01em; margin:0 0 4px}
+.figsub{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.08em; color:var(--ink-3); text-transform:uppercase; margin:0 0 20px}
+.chartbox{overflow-x:auto}
+svg{display:block; max-width:100%; height:auto}
+.panels{display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+
+/* ---------- compare ---------- */
+.compare{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); margin:30px 0}
+.ccard{border:1px solid var(--line); border-radius:3px; padding:22px; background:var(--surface); box-shadow:var(--shadow)}
+.ccard.hero{border-color:var(--accent); background:var(--accent-soft)}
+.ccard h4{font-family:"Bricolage Grotesque",sans-serif; font-size:15px; font-weight:700; margin:0 0 3px; letter-spacing:-.01em}
+.ccard .when{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); letter-spacing:.08em; margin-bottom:16px}
+.ccard dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:7px 14px; align-items:baseline}
+.ccard dt{font-size:13.5px; color:var(--ink-2)}
+.ccard dd{margin:0; text-align:right; font-family:"IBM Plex Mono",monospace; font-weight:500; font-size:15px; font-variant-numeric:tabular-nums}
+.ccard dd.hi{color:var(--accent)}
+.ccard dd.lo{color:var(--crit)}
+
+/* ---------- table ---------- */
+.tablebox{overflow-x:auto; margin:28px 0; border:1px solid var(--line); border-radius:3px; background:var(--surface); box-shadow:var(--shadow)}
+table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:520px}
+th,td{padding:11px 16px; text-align:right; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums}
+th{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); font-weight:500; white-space:nowrap}
+th:first-child,td:first-child{text-align:left; font-family:"IBM Plex Mono",monospace; font-size:13px; white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+tbody tr.mark td{background:var(--accent-soft)}
+td.warn{color:var(--warn); font-weight:600}
+td.crit{color:var(--crit); font-weight:600}
+td.good{color:var(--accent); font-weight:600}
+
+/* ---------- plan ---------- */
+.phase{border-left:2px solid var(--line-2); padding:0 0 4px 26px; margin:0 0 30px; position:relative}
+.phase::before{content:""; position:absolute; left:-5px; top:9px; width:8px; height:8px; border-radius:50%; background:var(--accent)}
+.phase .p-when{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:5px}
+.phase h4{font-family:"Bricolage Grotesque",sans-serif; font-size:18px; font-weight:700; margin:0 0 8px; letter-spacing:-.01em}
+.phase p{margin:0 0 10px; font-size:16px}
+.phase ul{margin:0; padding-left:20px; font-size:16px}
+.phase li{margin-bottom:5px}
+
+footer{margin-top:80px; padding-top:26px; border-top:1px solid var(--line); font-size:13.5px; color:var(--ink-3)}
+footer p{margin:0 0 8px}
+.legend{display:flex; flex-wrap:wrap; gap:8px 20px; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); margin-top:14px; letter-spacing:.04em}
+.legend span{display:flex; align-items:center; gap:7px}
+.dot{width:9px; height:9px; border-radius:50%; display:inline-block}
+@media (max-width:620px){ body{font-size:16px} .wrap{padding:0 18px 72px} .masthead{padding:48px 0 32px} }
+
+@media print{
+  /* ダークテーマ用の :root:not([data-theme="light"]) より詳細度を高くして必ず勝たせる */
+  :root:root:root{
+    --paper:#FFFFFF; --surface:#FFFFFF; --surface-2:#F1F2ED;
+    --ink:#1E241C; --ink-2:#4A5147; --ink-3:#6B7267;
+    --line:#D2D5CB; --line-2:#C8CBC0;
+    --accent:#33591F; --accent-ink:#2C4B24; --accent-soft:#E8EFE1;
+    --warn:#7A5518; --warn-soft:#F3EBD8; --crit:#8C3323; --steel:#3F5768;
+    --shadow:none;
+  }
+  body{font-size:11.5pt; background:#fff}
+  .wrap{max-width:none; padding:0}
+  .col{max-width:none}
+  @page{ margin:14mm 15mm }
+  .masthead{padding:0 0 18px}
+  h1{font-size:30pt}
+  .standfirst{font-size:12.5pt}
+  section{padding:22px 0 0; break-inside:auto}
+  h2{font-size:17pt}
+  figure,.tablebox,.ccard,.vcard,.phase,.callout{break-inside:avoid; page-break-inside:avoid; box-shadow:none}
+  .verdict{break-inside:avoid}
+  h2,.shead{break-after:avoid; page-break-after:avoid}
+  figure{padding:14px 14px 10px}
+  .chartbox{overflow:visible}
+  footer{margin-top:30px}
+  a{color:var(--accent-ink); text-decoration:none}
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+
+<header class="masthead">
+  <div class="eyebrow">
+    <span>2026.03.21 — 08.22</span><span>ラン41本</span><span>Strava + Amazfit</span><span>目標／勝田全国マラソン 2027.01.31</span>
+  </div>
+  <h1>フルマラソンへの現在地</h1>
+  <p class="standfirst">5ヶ月分のログを1秒単位まで解析した。走力の問題ではない。足りないのは距離と、ピッチという1つの癖だった。本番まで23週間ある。</p>
+
+  <div class="verdict">
+    <div class="vcard good">
+      <div class="k">本番まで</div>
+      <div class="v">23週</div>
+      <div class="n">2027年1月31日（日）勝田全国マラソン。土台を作るには充分な期間。</div>
+    </div>
+    <div class="vcard crit">
+      <div class="k">8月の最長距離</div>
+      <div class="v">5.82 km</div>
+      <div class="n">フルの 13.8%。6km以上のランは1本もない。最優先の課題。</div>
+    </div>
+    <div class="vcard warn">
+      <div class="k">ピッチ（走行中のみ）</div>
+      <div class="v">163–169</div>
+      <div class="n">ペースに関係なくほぼ一定。速く走る時も上がらない。</div>
+    </div>
+    <div class="vcard good">
+      <div class="k">3km 自己ベストからの理論値</div>
+      <div class="v">4:41:00</div>
+      <div class="n">走り込みが伴えばこのくらい。素質は足りている。</div>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="col">
+    <div class="callout">
+      <span class="lbl">前回分析からの訂正</span>
+      <p>スクリーンショットから読んだ際、8月20日のピッチを「152」と報告した。1秒データで見直すと、これは<strong>信号待ちや歩きを含む全体平均</strong>だった。走っている区間だけを抜き出すと <strong>164</strong> になる。</p>
+      <p>ただし結論は変わらない。むしろはっきりした。<strong>ピッチはペースに関わらず163〜169で固定されていて、速く走る時も上がっていない。</strong>先生の「回転数170台」という指摘は、より正確に的を射ていたことになる。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">01</span><h2>走行量は、まだフルの土台になっていない</h2></div>
+    <p class="sub">月別の走行距離と、その月の最長ラン</p>
+  </div>
+
+  <figure class="wide">
+    <p class="figtitle">月間距離と最長距離の推移</p>
+    <p class="figsub">2026年3月 — 8月／ランのみ・ウォークは除外</p>
+    <div class="chartbox"><svg id="chart-vol" viewBox="0 0 1040 380" role="img" aria-label="月間距離の棒グラフと最長距離の折れ線"></svg></div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--accent)"></i>月間合計距離</span>
+      <span><i class="dot" style="background:var(--steel)"></i>その月の最長ラン</span>
+      <span>7月の44.23kmは記録時間9.6時間・走行判定2.3時間のため、実質はロングウォーク</span>
+    </div>
+    <figcaption>8月は本数（13本）が最も多いのに、最長は5.82km。距離を刻む回数は増えたが、1本を伸ばす練習が抜け落ちている。</figcaption>
+  </figure>
+
+  <div class="col">
+    <p>5ヶ月で走行量は増えている。3月18.9km → 8月50.7kmで、本数は3本から13本になった。習慣としては完全に定着している。</p>
+    <p>問題は中身だ。<strong>8月の13本はすべて6km未満</strong>で、最長が5.82km。5月には14.79kmを走っているので、長い距離を走る力がないわけではない。HYROXに向けて「1km走を繰り返す」練習に最適化した結果、長い1本が消えた。</p>
+    <p>フルマラソンは42.195kmを止まらずに走る競技で、必要な能力がまったく違う。<em>いま最も足りないのは、1本の長さ</em>である。</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">02</span><h2>ペースを上げるとき、ピッチではなく歩幅で上げている</h2></div>
+    <p class="sub">Amazfit装着後の17本／走行中の1秒データのみを平均</p>
+  </div>
+
+  <figure class="wide">
+    <p class="figtitle">ペースが上がると、体の何が変わるか</p>
+    <p class="figsub">横軸＝ペース（右に行くほど速い）／1点＝ラン1本</p>
+    <div class="chartbox"><div class="panels">
+      <svg id="p-cad" viewBox="0 0 340 260" role="img" aria-label="ペースとピッチの散布図"></svg>
+      <svg id="p-step" viewBox="0 0 340 260" role="img" aria-label="ペースと歩幅の散布図"></svg>
+      <svg id="p-gct" viewBox="0 0 340 260" role="img" aria-label="ペースと接地時間の散布図"></svg>
+    </div></div>
+    <figcaption>ピッチは平坦、歩幅は右肩上がり、接地時間も右肩上がり。速く走るほど「歩幅を伸ばして、地面に長く足を置く」走りになっている。緑の点は8月9日の練習会。</figcaption>
+  </figure>
+
+  <div class="col">
+    <p>3枚のグラフが示すことは1つだ。ペース7'58"でも5'27"でも<strong>ピッチは163〜164でほとんど変わらない</strong>。一方で歩幅は78cmから108cmへ、<strong>約1.4倍</strong>に伸びている。ペースアップの手段が歩幅一本になっている。</p>
+    <p>その結果が3枚目に出る。接地時間は本来、速く走るほど短くなる。ところが実際は逆で、最も速く走った8月19日が<strong>345ms</strong>と5ヶ月で最長だった。歩幅を伸ばすと脚が体より前に着き、ブレーキがかかって地面から離れられない。先生の「着地は体の真下」「かかとから行かない」はここを指している。</p>
+    <p>ただし、例外が1本ある。</p>
+  </div>
+
+  <div class="compare">
+    <div class="ccard hero">
+      <h4>練習会でのラン</h4>
+      <div class="when">2026.08.09 — 0.75km</div>
+      <dl>
+        <dt>ペース</dt><dd class="hi">5'12"/km</dd>
+        <dt>ピッチ</dt><dd class="hi">175</dd>
+        <dt>歩幅</dt><dd>107 cm</dd>
+        <dt>接地時間</dt><dd class="hi">259 ms</dd>
+        <dt>上下動比</dt><dd class="hi">8.5 %</dd>
+      </dl>
+    </div>
+    <div class="ccard">
+      <h4>一人でのラン</h4>
+      <div class="when">2026.08.19 — 5.63km</div>
+      <dl>
+        <dt>ペース</dt><dd>5'54"/km</dd>
+        <dt>ピッチ</dt><dd class="lo">163</dd>
+        <dt>歩幅</dt><dd>105 cm</dd>
+        <dt>接地時間</dt><dd class="lo">345 ms</dd>
+        <dt>上下動比</dt><dd>8.4 %</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="col">
+    <p><strong>歩幅はほぼ同じ（107cm / 105cm）なのに、結果が違う。</strong>練習会の日はピッチが12回転高く、接地時間が86ms短く、そして42秒/km速い。差はピッチだけだ。</p>
+    <p>つまり課題は筋力でも心肺でもなく、<em>ピッチを上げる意識が続くかどうか</em>。見てもらっている時はできている。この1本が、目標が現実的であることの証拠になっている。</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">03</span><h2>有酸素能力は横ばい。ただし猛暑を差し引く必要がある</h2></div>
+    <p class="sub">同じ心拍で、どれだけ速く走れているかの比較</p>
+  </div>
+
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>日付</th><th>心拍</th><th>ペース</th><th>ピッチ</th><th>接地</th><th>気温</th></tr></thead>
+      <tbody>
+        <tr><td>07/20</td><td>124</td><td>7'56"</td><td>169</td><td>282 ms</td><td>—</td></tr>
+        <tr><td>07/24</td><td>130</td><td>7'32"</td><td>167</td><td>283 ms</td><td>—</td></tr>
+        <tr><td>07/29</td><td>124</td><td>7'56"</td><td>166</td><td>295 ms</td><td>—</td></tr>
+        <tr><td>08/05</td><td>126</td><td>7'36"</td><td>164</td><td class="crit">311 ms</td><td>28℃</td></tr>
+        <tr><td>08/10</td><td>124</td><td>8'03"</td><td>168</td><td>282 ms</td><td>29℃</td></tr>
+        <tr class="mark"><td>08/11</td><td>124</td><td class="good">7'40"</td><td>165</td><td>293 ms</td><td>26℃</td></tr>
+        <tr><td>08/12</td><td>118</td><td>7'58"</td><td>163</td><td class="crit">308 ms</td><td>25℃</td></tr>
+        <tr><td>08/15</td><td>118</td><td>8'03"</td><td>165</td><td>288 ms</td><td>室内</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>心拍124前後で7'32"〜8'03"。7月と8月でほぼ変わっていない。<strong>4週間で有酸素能力の明確な向上は見えない。</strong></p>
+    <p>ただし8月は気温25〜33℃、湿度60〜86%で走っている。暑熱下では体温を下げるために心拍が10前後上がるので、<strong>同じ心拍・同じペースを維持できていること自体が、実質的には小さな前進</strong>と読める。悲観する数字ではない。</p>
+    <p>とはいえ「維持」であって「向上」ではない。理由ははっきりしていて、走行量が足りない。有酸素能力は走った距離に比例して伸びる部分が大きい。</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">04</span><h2>フルマラソンに必要な数字と、いまの数字</h2></div>
+    <p class="sub">目安は「サブ5（5時間切り）で完走」を置いた場合</p>
+  </div>
+
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>項目</th><th>現在</th><th>目標</th><th>差</th></tr></thead>
+      <tbody>
+        <tr><td>月間走行距離</td><td>50.7 km</td><td>120–150 km</td><td class="crit">2.4–3.0倍</td></tr>
+        <tr><td>最長ラン</td><td>5.82 km</td><td>30 km</td><td class="crit">5.2倍</td></tr>
+        <tr><td>週あたり本数</td><td>3–4本</td><td>4–5本</td><td class="good">ほぼ足りている</td></tr>
+        <tr><td>ピッチ</td><td>163–169</td><td>175前後</td><td class="warn">+8</td></tr>
+        <tr><td>接地時間</td><td>274–345 ms</td><td>270 ms以下</td><td class="warn">速い日が課題</td></tr>
+        <tr><td>閾値ペース</td><td>6'16"/km</td><td>維持でよい</td><td class="good">充分</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>3kmの自己ベスト17分02秒（8月19日）から換算すると、フルの理論値は<strong>4時間41分</strong>になる。スピードの素質という点では、サブ5どころかサブ4.5が射程に入る数字だ。</p>
+    <p>ただしこの換算式は「その距離に必要な走り込みができている」ことが前提になっている。最長5.8kmの状態で42kmに出れば、30km過ぎで脚が止まり、理論値より30分から1時間は遅くなる。<strong>足りないのは能力ではなく、その能力を42km持たせるための土台</strong>である。</p>
+    <p>幸い、本番の2027年1月31日まで<strong>23週間ある</strong>。月間50kmから130kmへは2.6倍で、一気にやれば故障するが、23週かけて段階的に上げるなら十分に届く。<em>期間は足りている</em>。</p>
+    <p>そしてもう1つ。歩幅で押す走りは1歩あたりの負担が大きく、距離が伸びるほど不利に働く。ピッチの改善は、フォームの美しさの話ではなく<em>後半に脚を残すための対策</em>として効いてくる。</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">05</span><h2>目標タイムを決める</h2></div>
+    <p class="sub">勝田は平坦基調のコース。1月末で気温も低く、記録は出やすい条件</p>
+    <p>いまは暑熱下（25〜33℃）で走っている。1月末の勝田は気温一桁が普通で、同じ努力でも心拍が下がりペースは上がる。<strong>この気温差は、そのまま追い風になる。</strong></p>
+  </div>
+
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>目標</th><th>必要ペース</th><th>現状からの距離</th><th>位置づけ</th></tr></thead>
+      <tbody>
+        <tr><td>完走</td><td>8'20"/km</td><td class="good">いまのジョグペースそのもの</td><td>絶対条件</td></tr>
+        <tr class="mark"><td>サブ5</td><td>7'07"/km</td><td class="good">現在の心拍130前後で出せる</td><td>第一目標</td></tr>
+        <tr><td>4時間30分</td><td>6'24"/km</td><td class="warn">閾値6'16"に近く、後半が課題</td><td>うまく積めたら</td></tr>
+        <tr><td>4時間41分</td><td>6'40"/km</td><td class="warn">3km PRからの理論値</td><td>参考値</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>初フルなので<strong>サブ5（5時間切り）を第一目標</strong>に置くのが妥当だ。必要ペース7'07"/kmは、いまジョグで出している7'40"より速いが、心拍130前後で走れているレンジにある。<em>スピードではなく、それを42km続けられるかが全て</em>になる。</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">06</span><h2>本番までの23週間</h2></div>
+    <p class="sub">2026年8月24日 — 2027年1月31日／日曜をロング走の日と仮定して逆算</p>
+
+    <div class="phase">
+      <div class="p-when">第1期 ／ 9〜10月（9週）— 土台を作る</div>
+      <h4>1本を長くする。ペースは完全に捨てる</h4>
+      <p>週1回のロング走を作り、8km から 20km まで少しずつ伸ばす。ペースは7'30"〜8'00"、心拍130以下を厳守。速く走りたくなるが、この期間に見るのは距離だけ。</p>
+      <ul>
+        <li>ロング走：8 → 10 → 12 → 14 → 12 → 16 → 18 → 20 → 16 km</li>
+        <li>ジョグ：週2〜3本、5km前後（いまのままでよい）</li>
+        <li>月間目標：9月 80km ／ 10月 100km</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="p-when">第2期 ／ 11〜12月（9週）— フォームと距離を同時に</div>
+      <h4>全部のランでピッチ170を固定し、30kmに到達する</h4>
+      <p>距離を伸ばしながら、意識する対象をピッチ1つに絞る。メトロノームアプリを170bpmで鳴らして走ると習得が早い。ピッチが上がれば歩幅は自然に縮むので、歩幅は意識しない。</p>
+      <ul>
+        <li>ロング走：22 → 20 → 25 → 22 → 25 → <strong>30km（12/13）</strong> → 20 → 28 km</li>
+        <li>閾値走：6'15"/kmで20分を月2回（スピードの維持）</li>
+        <li>判定基準：ピッチ170以上／接地280ms以下／歩幅は縮んでよい</li>
+        <li>月間目標：11月 120km ／ 12月 130km</li>
+      </ul>
+    </div>
+
+    <div class="phase">
+      <div class="p-when">第3期 ／ 1月（5週）— 仕上げと調整</div>
+      <h4>2本目の30kmを終えたら、あとは減らすだけ</h4>
+      <p>1月10日に2本目の30km走を置き、そこから3週かけて距離を落とす。<strong>直前に走り込んでも間に合わないし、疲労を持ち込むだけ</strong>なので、我慢して減らす。</p>
+      <ul>
+        <li>1/3 → 20km ／ 1/10 → <strong>30km走②</strong> ／ 1/17 → 20km ／ 1/24 → 12km</li>
+        <li>月間目標：90km（意図的に落とす）</li>
+        <li>本番2週前から、レース当日と同じ時刻・同じ朝食で走って試す</li>
+      </ul>
+    </div>
+
+    <p style="margin-top:26px">距離を増やす時期は故障が最も起きやすい。<strong>週の増加は前週の10%以内</strong>に抑え、痛みが出たら距離ではなく頻度を落とす。膝や足底に違和感が出た場合、原因は多くの場合ピッチの低さと歩幅の大きさにある。</p>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">07</span><h2>この計画の分かれ目</h2></div>
+    <p class="sub">残り23週で決めておきたいこと</p>
+    <ul style="font-size:16.5px">
+      <li><strong>ロング走を入れる曜日。</strong>週1回、最終的に3時間以上まとまって取れる曜日を1つ固定できるかが、この計画の成否をほぼ決める。上の表は日曜を前提に組んでいる。</li>
+      <li><strong>補給の練習。</strong>30km走ではジェルと給水を本番と同じ形で試す。フルは補給の失敗で崩れることが多く、練習しておく価値が高い。</li>
+      <li><strong>7月19日の44kmは何だったか。</strong>記録時間9.6時間・走行判定2.3時間なので大部分は歩き。ただし「9時間動き続けられた」実績は、初フルの不安要素をかなり潰している。</li>
+      <li><strong>冬装備。</strong>1月末の茨城は氷点下になる朝もある。11月以降のロング走で、寒い時間帯のウェアを試しておく。</li>
+    </ul>
+    <p style="margin-top:18px; font-size:15px; color:var(--ink-3)">※ 勝田全国マラソンの制限時間・関門・エントリー期間は、公式サイトで必ず確認すること。この計画はサブ5想定で組んでいる。</p>
+  </div>
+</section>
+
+<footer>
+  <div class="col">
+    <p><strong>データについて</strong>／Stravaの全アクティビティ書き出し（2026年8月22日取得）101件のうち、ランニング41本を対象とした。うち20本はAmazfit Active Maxで記録されたFITファイルで、1秒ごとの心拍・ピッチ・歩幅・接地時間・上下動を含む。残る21本は3〜7月のスマホGPS記録で、フォーム指標は含まれない。</p>
+    <p>フォーム指標の平均値は、<strong>速度2.0m/s（8'20"/km）以上かつピッチ検出ありの区間のみ</strong>を対象に再計算している。信号待ちや歩きを含むアプリ表示の平均値とは意図的に異なる。フル予測タイムはリーゲルの公式（指数1.06）による理論値で、走り込み量は考慮していない。</p>
+  </div>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  // 色はハードコードせずCSS変数のまま埋め込む。
+  // これで印刷用パレットやテーマ切替がSVGにもそのまま効く。
+  function C(n){ return "var(" + n + ")"; }
+
+  // ---------- chart 1 : monthly volume ----------
+  var months = [
+    {m:"3月", km:18.9, longest:7.81, n:3},
+    {m:"4月", km:33.4, longest:9.23, n:5},
+    {m:"5月", km:43.3, longest:14.79, n:7},
+    {m:"6月", km:23.0, longest:10.79, n:3},
+    {m:"7月", km:82.0, longest:44.23, n:10},
+    {m:"8月", km:50.7, longest:5.82, n:13}
+  ];
+  (function(){
+    var svg=document.getElementById("chart-vol");
+    var W=1040,H=380,L=58,R=28,T=26,B=58;
+    var iw=W-L-R, ih=H-T-B, max=90;
+    var y=function(v){ return T+ih-(v/max)*ih; };
+    var bw=iw/months.length, out="";
+    [0,30,60,90].forEach(function(g){
+      out+='<line x1="'+L+'" y1="'+y(g)+'" x2="'+(W-R)+'" y2="'+y(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
+      out+='<text x="'+(L-12)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+g+'</text>';
+    });
+    months.forEach(function(d,i){
+      var cx=L+bw*i+bw/2, w=bw*0.42;
+      out+='<rect x="'+(cx-w/2)+'" y="'+y(d.km)+'" width="'+w+'" height="'+(y(0)-y(d.km))+'" fill="'+C('--accent')+'" rx="1"/>';
+      out+='<text x="'+cx+'" y="'+(y(d.km)-10)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="600" fill="'+C('--ink')+'">'+d.km.toFixed(1)+'</text>';
+      out+='<text x="'+cx+'" y="'+(H-B+24)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" fill="'+C('--ink-2')+'">'+d.m+'</text>';
+      out+='<text x="'+cx+'" y="'+(H-B+42)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="'+C('--ink-3')+'">'+d.n+'本</text>';
+    });
+    var pts=months.map(function(d,i){ return [L+bw*i+bw/2, y(Math.min(d.longest,90))]; });
+    out+='<polyline fill="none" stroke="'+C('--steel')+'" stroke-width="2" stroke-dasharray="5 4" points="'+pts.map(function(p){return p[0]+","+p[1];}).join(" ")+'"/>';
+    months.forEach(function(d,i){
+      var p=pts[i];
+      out+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="4.5" fill="'+C('--surface')+'" stroke="'+C('--steel')+'" stroke-width="2"/>';
+      // 棒に重なっても読めるよう、文字の周囲を背景色で縁取りする
+      out+='<text x="'+p[0]+'" y="'+(p[1]-13)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="600" paint-order="stroke" stroke="'+C('--surface')+'" stroke-width="3.5" stroke-linejoin="round" fill="'+C('--steel')+'">'+d.longest.toFixed(1)+'</text>';
+    });
+    out+='<text x="'+L+'" y="'+(T-8)+'" font-family="IBM Plex Mono,monospace" font-size="10.5" letter-spacing="1" fill="'+C('--ink-3')+'">KM</text>';
+    svg.innerHTML=out;
+  })();
+
+  // ---------- panels : pace vs form ----------
+  var runs=[
+    {d:"07/19", pace:436, cad:164, step:84, gct:284, hl:0},
+    {d:"07/20", pace:476, cad:169, step:83, gct:282, hl:0},
+    {d:"07/24", pace:452, cad:167, step:85, gct:283, hl:0},
+    {d:"07/25", pace:406, cad:168, step:84, gct:275, hl:0},
+    {d:"07/29", pace:476, cad:166, step:78, gct:295, hl:0},
+    {d:"08/05", pace:456, cad:164, step:80, gct:311, hl:0},
+    {d:"08/09", pace:458, cad:167, step:77, gct:278, hl:0},
+    {d:"08/09", pace:312, cad:175, step:107, gct:259, hl:1},
+    {d:"08/10", pace:483, cad:168, step:76, gct:282, hl:0},
+    {d:"08/11", pace:460, cad:165, step:83, gct:293, hl:0},
+    {d:"08/12", pace:478, cad:163, step:78, gct:308, hl:0},
+    {d:"08/15", pace:483, cad:165, step:76, gct:288, hl:0},
+    {d:"08/19", pace:354, cad:163, step:105, gct:345, hl:2},
+    {d:"08/20", pace:393, cad:163, step:94, gct:286, hl:0},
+    {d:"08/20", pace:327, cad:164, step:108, gct:300, hl:0},
+    {d:"08/22", pace:366, cad:167, step:88, gct:274, hl:0}
+  ];
+  function panel(id,key,lo,hi,label,unit,ticks,target){
+    var svg=document.getElementById(id);
+    var W=340,H=260,L=46,R=14,T=30,B=42;
+    var iw=W-L-R, ih=H-T-B;
+    var px=function(p){ return L+iw*(1-(p-300)/(500-300)); };
+    var py=function(v){ return T+ih-((v-lo)/(hi-lo))*ih; };
+    var out="";
+    ticks.forEach(function(g){
+      out+='<line x1="'+L+'" y1="'+py(g)+'" x2="'+(W-R)+'" y2="'+py(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
+      out+='<text x="'+(L-8)+'" y="'+(py(g)+4)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--ink-3')+'">'+g+'</text>';
+    });
+    if(target!==null){
+      out+='<line x1="'+L+'" y1="'+py(target)+'" x2="'+(W-R)+'" y2="'+py(target)+'" stroke="'+C('--warn')+'" stroke-width="1.5" stroke-dasharray="4 3"/>';
+      out+='<text x="'+(W-R)+'" y="'+(py(target)-7)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--warn')+'">目標 '+target+'</text>';
+    }
+    runs.forEach(function(r){
+      var v=r[key]; if(v===null) return;
+      var col = r.hl===1 ? C('--accent') : (r.hl===2 ? C('--crit') : C('--steel'));
+      var rad = r.hl ? 6 : 4.5;
+      out+='<circle cx="'+px(r.pace)+'" cy="'+py(v)+'" r="'+rad+'" fill="'+col+'" fill-opacity="'+(r.hl?1:0.55)+'" stroke="'+col+'" stroke-width="1.5"/>';
+    });
+    out+='<text x="'+L+'" y="'+(H-10)+'" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--ink-3')+'">8&#39;20&quot;</text>';
+    out+='<text x="'+(W-R)+'" y="'+(H-10)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--ink-3')+'">5&#39;00&quot; 速い →</text>';
+    out+='<text x="'+L+'" y="18" font-family="Bricolage Grotesque,sans-serif" font-size="13" font-weight="700" fill="'+C('--ink')+'">'+label+'</text>';
+    out+='<text x="'+(W-R)+'" y="18" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--ink-3')+'">'+unit+'</text>';
+    svg.innerHTML=out;
+  }
+  panel("p-cad","cad",155,180,"ピッチ","spm",[160,170,180],170);
+  panel("p-step","step",70,115,"歩幅","cm",[70,90,110],null);
+  panel("p-gct","gct",250,360,"接地時間","ms",[260,300,340],280);
+})();
+</script>
+
+</body>
+</html>
