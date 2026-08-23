@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-<meta name="description" content="Amazfitのログ集計と、勝田全国マラソンに向けた練習計画。">
+<meta name="description" content="Amazfitのログ集計。勝田全国マラソンに向けた現在地。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="勝田マラソンへの現在地">
 <meta property="og:description" content="ラン41本のログを1秒単位で集計。数値とグラフでまとめた現在地。">
@@ -144,6 +144,12 @@ footer p{margin:0 0 8px}
 .legend{display:flex; flex-wrap:wrap; gap:8px 20px; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); margin-top:14px; letter-spacing:.04em}
 .legend span{display:flex; align-items:center; gap:7px}
 .dot{width:9px; height:9px; border-radius:50%; display:inline-block}
+/* 本文の箇条書き */
+.pts{margin:0 0 18px; padding:0; list-style:none}
+.pts li{position:relative; padding-left:18px; margin-bottom:8px; font-size:16.5px}
+.pts li::before{content:""; position:absolute; left:0; top:12px; width:6px; height:1px; background:var(--ink-3)}
+.pts li:last-child{margin-bottom:0}
+
 /* 先生のフィードバック記入欄 */
 .qbox{border:1px solid var(--line); border-radius:3px; background:var(--surface); padding:20px 22px; margin:0 0 14px; box-shadow:var(--shadow)}
 .qbox .q{font-size:16px; margin:0 0 12px}
@@ -264,9 +270,12 @@ footer p{margin:0 0 8px}
   </figure>
 
   <div class="col">
-    <p>5ヶ月で走行量は増えている。3月18.9km → 8月50.7kmで、本数は3本から13本になった。習慣としては完全に定着している。</p>
-    <p>問題は中身だ。<strong>8月の13本はすべて6km未満</strong>で、最長が5.82km。5月には14.79kmを走っているので、長い距離を走る力がないわけではない。HYROXに向けて「1km走を繰り返す」練習に最適化した結果、長い1本が消えた。</p>
-    <p>フルマラソンは42.195kmを止まらずに走る競技で、必要な能力がまったく違う。<em>いま最も足りないのは、1本の長さ</em>である。</p>
+    <ul class="pts">
+      <li>走行量は増加。<strong>3月18.9km・3本 → 8月50.7km・13本</strong></li>
+      <li><strong>8月の13本はすべて6km未満</strong>（最長5.82km）</li>
+      <li>5月には14.79kmを走っており、長い距離を走れないわけではない</li>
+      <li>HYROX向けに「1km走を繰り返す」練習へ最適化した期間と重なる</li>
+    </ul>
   </div>
 </section>
 
@@ -288,7 +297,11 @@ footer p{margin:0 0 8px}
   </figure>
 
   <div class="col">
-    <p>ペース7'58"から5'27"まで、<strong>ピッチは163〜164でほぼ変わらない</strong>。同じ範囲で歩幅は78cm → 108cm と<strong>約1.4倍</strong>に伸びている。接地時間は最も速い8月19日が<strong>345ms</strong>で、7〜8月の最長値だった。</p>
+    <ul class="pts">
+      <li>ペース 7'58" → 5'27" で、<strong>ピッチは163〜164とほぼ一定</strong></li>
+      <li>同じ範囲で歩幅は <strong>78cm → 108cm（約1.4倍）</strong></li>
+      <li>接地時間は最も速い8/19が <strong>345ms</strong> で7〜8月の最長値</li>
+    </ul>
     <p>1本だけ、この傾向から外れた回がある。</p>
   </div>
 
@@ -318,7 +331,11 @@ footer p{margin:0 0 8px}
   </div>
 
   <div class="col">
-    <p>歩幅はほぼ同じ（107cm / 105cm）だが、練習会の日は<strong>ピッチが12回転高く、接地時間が86ms短く、42秒/km速い</strong>。距離が0.75kmと短い点は差し引く必要がある。</p>
+    <ul class="pts">
+      <li>歩幅はほぼ同じ（107cm / 105cm）</li>
+      <li>練習会の日は<strong>ピッチ +12／接地 −86ms／ペース −42秒/km</strong></li>
+      <li>ただし距離が0.75kmと短い点は差し引く必要がある</li>
+    </ul>
   </div>
 </section>
 
@@ -345,7 +362,10 @@ footer p{margin:0 0 8px}
   </div>
 
   <div class="col">
-    <p>心拍124前後で7'32"〜8'03"。7月と8月でほぼ同じ値である。ただし8月の走行時の気温は25〜33℃・湿度60〜86%で、暑熱下では同じペースでも心拍が上がる条件だった。</p>
+    <ul class="pts">
+      <li>心拍124前後で 7'32"〜8'03"。<strong>7月と8月でほぼ同じ</strong></li>
+      <li>8月の走行時は気温25〜33℃・湿度60〜86%。暑熱下は同じペースでも心拍が上がる条件</li>
+    </ul>
   </div>
 </section>
 
@@ -370,7 +390,10 @@ footer p{margin:0 0 8px}
   </div>
 
   <div class="col">
-    <p>3km 17分02秒からの換算値は4時間41分。ただしこの式は走り込み量を前提にしており、最長5.8kmの現状では30km以降で崩れる。</p>
+    <ul class="pts">
+      <li>3km 17分02秒からの換算値は <strong>4時間41分</strong></li>
+      <li>ただし換算式は走り込み量を前提としており、最長5.8kmの現状は考慮されていない</li>
+    </ul>
   </div>
 
   <div class="tablebox">
@@ -385,7 +408,9 @@ footer p{margin:0 0 8px}
   </div>
 
   <div class="col">
-    <p>1月末の勝田は気温一桁が普通で、25〜33℃で走っている現在より心拍は下がる条件になる。</p>
+    <ul class="pts">
+      <li>1月末の勝田は気温一桁が普通。25〜33℃の現在より心拍は下がる条件になる</li>
+    </ul>
   </div>
 </section>
 
@@ -394,7 +419,11 @@ footer p{margin:0 0 8px}
     <div class="shead"><span class="snum">05</span><h2>心拍ゾーンの内訳と、資料の目安</h2></div>
     <p class="sub">THE FULL CREW の資料に書かれている基準に、7〜8月の実データを当てはめる</p>
 
-    <p>資料には「初心者の練習の80〜90%はZone 2が正解」とある。最大心拍184の設定では Zone 2＝<strong>110〜127拍</strong>。7〜8月の全ラン19時間23分を1秒ずつ仕分けた。</p>
+    <ul class="pts">
+      <li>資料の目安：<strong>練習の80〜90%はZone 2</strong></li>
+      <li>最大心拍184の設定では Zone 2＝<strong>110〜127拍</strong></li>
+      <li>7〜8月の全ラン19時間23分を1秒ずつ仕分けた結果が下</li>
+    </ul>
   </div>
 
   <figure>
@@ -444,71 +473,44 @@ footer p{margin:0 0 8px}
   </figure>
 
   <div class="col">
-    <p>Zone 1＋2 は7月66% → 8月70%。8月はZone 2単独で60.6%を占めている。Zone 3 の19%は大半が8月19日・20日の2本で発生しており、この2本の平均心拍は143〜150だった。</p>
+    <ul class="pts">
+      <li>Zone 1＋2 は <strong>7月66% → 8月70%</strong></li>
+      <li>8月は Zone 2 単独で 60.6%</li>
+      <li>Zone 3 の19%は大半が8/19・8/20の2本（平均心拍143〜150）</li>
+    </ul>
     <div class="callout">
       <span class="lbl">資料と照合して分かること</span>
-      <p style="margin-bottom:0">資料のフォーム3ポイントは<strong>前傾・腕振り・オーバーストライド回避</strong>で、ピッチは含まれていない。歩幅107〜111cmは、この「オーバーストライド回避」に該当する数値。</p>
+      <p style="margin-bottom:0">資料のフォーム3ポイントは<strong>前傾・腕振り・オーバーストライド回避</strong>。歩幅107〜111cmは、この3つ目に該当する数値。</p>
     </div>
   </div>
 </section>
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">06</span><h2>ロードマップを、自分の数字に合わせて引き直す</h2></div>
-    <p class="sub">プログラムの骨格はそのまま。走行量と1本の長さだけを実力に合わせる</p>
+    <div class="shead"><span class="snum">06</span><h2>プログラムのロードマップと、いまの位置</h2></div>
+    <p class="sub">THE FULL CREW のロードマップに、7〜8月の実績を並べたもの</p>
 
-    <p>ロードマップはフル未経験者向けの設計。7〜8月の実績は目安を上回る一方、「1本の長さ」だけが届いていない。</p>
+    <ul class="pts">
+      <li>走行量は目安を上回っている（7月82.0km／8月50.7km）</li>
+      <li>届いていないのは<strong>「1本の長さ」</strong>の項目のみ</li>
+      <li>9月の目安は「10km安定」。現在の最長は5.82km</li>
+    </ul>
   </div>
 
   <div class="tablebox">
     <table>
-      <thead><tr><th>月</th><th>プログラム標準</th><th>実績／あなた向け案</th><th>最長1本</th></tr></thead>
+      <thead><tr><th>月</th><th>ロードマップの目安</th><th>実績</th><th>最長1本</th></tr></thead>
       <tbody>
-        <tr><td>7月</td><td>習慣化／〜20km</td><td class="good">実績 82.0km・10本</td><td>5.52km</td></tr>
-        <tr><td>8月</td><td>ジョグ習慣／〜30km</td><td class="good">実績 50.7km・13本</td><td class="crit">5.82km</td></tr>
-        <tr class="mark"><td>9月</td><td>10km安定／〜50km</td><td><strong>80km</strong></td><td><strong>12km</strong></td></tr>
-        <tr class="mark"><td>10月</td><td>20km挑戦／〜70km</td><td><strong>100km</strong></td><td><strong>20km</strong></td></tr>
-        <tr class="mark"><td>11月</td><td>30kmピーク／〜90km</td><td><strong>120km</strong></td><td><strong>28km</strong></td></tr>
-        <tr class="mark"><td>12月</td><td>テーパリング／〜50km</td><td><strong>130km</strong></td><td><strong>30km</strong></td></tr>
-        <tr class="mark"><td>1月</td><td>本番</td><td><strong>85km</strong>（調整）</td><td><strong>28km</strong>（1/10）</td></tr>
+        <tr><td>7月</td><td>習慣化／〜20km</td><td class="good">82.0km・10本</td><td>5.52km</td></tr>
+        <tr><td>8月</td><td>ジョグ習慣／〜30km</td><td class="good">50.7km・13本</td><td class="crit">5.82km</td></tr>
+        <tr class="mark"><td>9月</td><td><strong>10km安定</strong>／〜50km</td><td>—</td><td>—</td></tr>
+        <tr><td>10月</td><td>20km挑戦／〜70km</td><td>—</td><td>—</td></tr>
+        <tr><td>11月</td><td>30kmピーク／〜90km</td><td>—</td><td>—</td></tr>
+        <tr><td>12月</td><td>テーパリング／〜50km</td><td>—</td><td>—</td></tr>
+        <tr><td>1月</td><td>本番（1/31）</td><td>—</td><td>—</td></tr>
       </tbody>
     </table>
   </div>
-
-  <div class="col">
-    <div class="callout">
-      <span class="lbl">標準から変えた点は3つだけ</span>
-      <p><strong>① 走行量を1.6〜2.6倍に。</strong>7月に82km走れているため、9月80kmは一度こなした量に戻すことになる。</p>
-      <p><strong>② 12月をテーパリングではなくピークに。</strong>資料の「テーパリングは2〜3週間前」に合わせ、テーパーを1月中旬からに移した。</p>
-      <p style="margin-bottom:0"><strong>③ 30km走を2本に。</strong>標準は11月の1本。12月中旬と1月10日に追加した。</p>
-    </div>
-
-    <div class="phase">
-      <div class="p-when">全期間を通して</div>
-      <h4>ピッチ170。意識するのはこれ1つ</h4>
-      <ul>
-        <li>メトロノームアプリを170bpmで鳴らして走る。歩幅は意識しない</li>
-        <li>判定：ピッチ170以上／接地280ms以下／歩幅は縮んでよい。<strong>3つ同時に動いたら成功</strong></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="tablebox">
-    <table>
-      <thead><tr><th>時期</th><th>ロング走の伸ばし方</th><th>強度</th><th>その他</th></tr></thead>
-      <tbody>
-        <tr><td>9月</td><td>6 → 8 → 10 → 12 km</td><td>Zone 2のみ（心拍127以下）<br>ペース走は休む</td><td>筋トレ週2回は継続</td></tr>
-        <tr><td>10–11月</td><td>14 → 16 → 20 → 16<br>22 → 20 → 25 → 28 km</td><td>週1回だけ閾値走<br>6'15"/km × 20分</td><td>11月の30km走は<br>補給の練習に使う</td></tr>
-        <tr><td>12月</td><td>25 → <strong>30km（12/13）</strong> → 20 → 28 km</td><td>ピーク維持</td><td>寒い時間帯のウェアを確定</td></tr>
-        <tr class="mark"><td>1月</td><td><strong>28km（1/10）</strong> → 18 → 10<br>1/29 20分ジョグ ／ 1/30 休養</td><td>3週かけて<br>70→50→30%へ</td><td>2週前から当日と<br>同じ時刻・朝食で試す</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="col">
-    <p style="margin-top:26px"><strong>週の増加は前週の10%以内。</strong>資料のSTOPルール（安静時痛・3日以上続く痛み・37.5度以上の発熱）に該当したら、距離ではなく頻度を落とす。</p>
-  </div>
-</section>
 
 <section>
   <div class="col">
@@ -560,7 +562,7 @@ footer p{margin:0 0 8px}
       <div class="lines">—</div>
     </div>
 
-    <p style="margin-top:20px; font-size:15px; color:var(--ink-3)">※ 上の計画はデータから引いた仮のもの。目標タイムはサブ5想定。勝田全国マラソンの制限時間・関門・エントリー期間は公式サイトで確認すること。</p>
+    <p style="margin-top:20px; font-size:15px; color:var(--ink-3)">※ 目標タイムはサブ5想定。勝田全国マラソンの制限時間・関門・エントリー期間は公式サイトで確認すること。</p>
   </div>
 </section>
 
