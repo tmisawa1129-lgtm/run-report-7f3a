@@ -153,7 +153,14 @@ footer p{margin:0 0 8px}
 .zkey i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:middle; font-style:normal}
 .target-line{margin-top:14px; padding:11px 14px; border-left:3px solid var(--warn); background:var(--warn-soft); font-size:14.5px; color:var(--ink-2); border-radius:0 3px 3px 0}
 
-@media (max-width:620px){ body{font-size:16px} .wrap{padding:0 18px 72px} .masthead{padding:48px 0 32px} .zbar span{font-size:10px} }
+@media (max-width:620px){
+  body{font-size:16px} .wrap{padding:0 18px 72px} .masthead{padding:48px 0 32px} .zbar span{font-size:10px}
+  /* 横スクロールしても日付が見えるよう1列目を固定する */
+  table{font-size:13px; min-width:440px; line-height:1.4}
+  th,td{padding:9px 11px}
+  th:first-child,td:first-child{position:sticky; left:0; background:var(--surface); z-index:1; box-shadow:1px 0 0 var(--line)}
+  tbody tr.mark td:first-child{background:var(--accent-soft)}
+}
 
 @media print{
   /* ダークテーマ用の :root:not([data-theme="light"]) より詳細度を高くして必ず勝たせる */
