@@ -609,7 +609,7 @@ footer p{margin:0 0 8px}
     var el=document.getElementById("cd-days");
     if(el) el.textContent=days;
     var w=document.getElementById("cd-weeks");
-    if(w) w.textContent="まで残り"+Math.floor(days/7)+"週"+(days%7)+"日";
+    if(w) w.textContent="まで残り"+Math.floor(days/7)+"週"+(days%7?(days%7)+"日":"");
   })();
 
   // 色はハードコードせずCSS変数のまま埋め込む。
