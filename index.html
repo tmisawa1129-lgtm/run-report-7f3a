@@ -53,8 +53,8 @@ body{
   font-family:"Newsreader",ui-serif,Georgia,"Hiragino Mincho ProN",serif;
   font-size:17px; line-height:1.75; -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:1120px; margin:0 auto; padding:0 24px 96px}
-.col{max-width:68ch; margin:0 auto}
+.wrap{max-width:860px; margin:0 auto; padding:0 24px 96px}
+.col{max-width:none}
 
 /* ---------- masthead ---------- */
 .masthead{padding:72px 0 40px; border-bottom:1px solid var(--line)}
@@ -68,13 +68,13 @@ h1{
   font-weight:700; font-size:clamp(38px,6.2vw,62px); line-height:1.04;
   letter-spacing:-.022em; margin:0 0 18px; text-wrap:balance;
 }
-.standfirst{font-size:19px; color:var(--ink-2); max-width:56ch; margin:0}
+.standfirst{font-size:19px; color:var(--ink-2); margin:0}
 
 /* ---------- verdict ---------- */
-.verdict{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); margin:36px 0 0}
+.verdict{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); margin:36px 0 0}
 .vcard{background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:20px 20px 22px; box-shadow:var(--shadow)}
 .vcard .k{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3)}
-.vcard .v{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:31px; line-height:1.15; letter-spacing:-.02em; margin:8px 0 6px; font-variant-numeric:tabular-nums}
+.vcard .v{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:28px; line-height:1.15; letter-spacing:-.02em; margin:8px 0 6px; font-variant-numeric:tabular-nums}
 .vcard .n{font-size:14.5px; line-height:1.6; color:var(--ink-2)}
 .vcard.good .v{color:var(--accent)}
 .vcard.warn .v{color:var(--warn)}
@@ -98,16 +98,16 @@ em{font-style:normal; background:var(--accent-soft); padding:1px 5px; border-rad
 
 /* ---------- figure ---------- */
 figure{margin:34px 0 30px; background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:26px 24px 20px; box-shadow:var(--shadow)}
-figure.wide{max-width:none}
+
 figcaption{font-size:13.5px; color:var(--ink-3); margin-top:16px; padding-top:14px; border-top:1px solid var(--line); line-height:1.6}
 .figtitle{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:16px; letter-spacing:-.01em; margin:0 0 4px}
 .figsub{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.08em; color:var(--ink-3); text-transform:uppercase; margin:0 0 20px}
 .chartbox{overflow-x:auto}
 svg{display:block; max-width:100%; height:auto}
-.panels{display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.panels{display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
 
 /* ---------- compare ---------- */
-.compare{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(270px,1fr)); margin:30px 0}
+.compare{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:30px 0}
 .ccard{border:1px solid var(--line); border-radius:3px; padding:22px; background:var(--surface); box-shadow:var(--shadow)}
 .ccard.hero{border-color:var(--accent); background:var(--accent-soft)}
 .ccard h4{font-family:"Bricolage Grotesque",sans-serif; font-size:15px; font-weight:700; margin:0 0 3px; letter-spacing:-.01em}
@@ -387,8 +387,7 @@ footer p{margin:0 0 8px}
     <div class="shead"><span class="snum">05</span><h2>心拍ゾーンの内訳と、資料の目安</h2></div>
     <p class="sub">THE FULL CREW の資料に書かれている基準に、7〜8月の実データを当てはめる</p>
 
-    <p>プログラムの資料には「<strong>初心者の練習の80〜90%はZone 2が正解</strong>」と明記されている。Zone 2は「楽に話せるペース」で、最大心拍の60〜70%にあたる。時計の設定上、最大心拍は184とされているので、Zone 2は<strong>おおよそ110〜127拍</strong>になる。</p>
-    <p>7月と8月の全ラン、合計19時間23分を1秒ずつ心拍で仕分けた結果がこれである。</p>
+    <p>資料には「初心者の練習の80〜90%はZone 2が正解」とある。最大心拍184の設定では Zone 2＝<strong>110〜127拍</strong>。7〜8月の全ラン19時間23分を1秒ずつ仕分けた。</p>
   </div>
 
   <figure>
@@ -476,8 +475,7 @@ footer p{margin:0 0 8px}
     <div class="shead"><span class="snum">07</span><h2>ロードマップを、自分の数字に合わせて引き直す</h2></div>
     <p class="sub">プログラムの骨格はそのまま。走行量と1本の長さだけを実力に合わせる</p>
 
-    <p>プログラムのロードマップは<strong>フル未経験者を対象に設計されている</strong>。走る習慣がゼロから始まる人を想定した数字なので、すでに月50〜80km走っている人間には、そのまま当てはめると軽すぎる。</p>
-    <p>実際、7月と8月の実績はロードマップの目安を大きく超えていた。<em>一方で「1本の長さ」だけは、目安に届いていない。</em></p>
+    <p>ロードマップはフル未経験者向けに設計されたもの。7〜8月の実績は目安を上回っている一方、「1本の長さ」だけが届いていない。</p>
   </div>
 
   <div class="tablebox">
@@ -498,15 +496,15 @@ footer p{margin:0 0 8px}
   <div class="col">
     <div class="callout">
       <span class="lbl">標準から変えた点は3つだけ</span>
-      <p><strong>① 走行量を1.6〜2.6倍に引き上げた。</strong>7月に82kmを走れているので、9月80kmは新しい負荷ではなく「一度こなした量に戻す」ことになる。ここが起点なら、10%ルールを守りながら12月130kmまで届く。</p>
-      <p><strong>② 12月をテーパリングではなくピークにした。</strong>標準では12月に落として1月本番だが、資料自体が「テーパリングはレース前2〜3週間」と書いている。11月ピークだと本番まで8週も空くので、<em>ピークを12月に寄せ、テーパーは1月中旬から</em>に組み替えた。</p>
-      <p style="margin-bottom:0"><strong>③ 30km走を2本にした。</strong>標準は11月の1本。<strong>12月中旬</strong>と<strong>1月10日</strong>にもう1本ずつ置き、フルの後半を2回経験してから本番に入る形にしている。</p>
+      <p><strong>① 走行量を1.6〜2.6倍に。</strong>7月に82km走れているため、9月80kmは一度こなした量に戻すことになる。</p>
+      <p><strong>② 12月をテーパリングではなくピークに。</strong>資料の「テーパリングは2〜3週間前」に合わせ、テーパーを1月中旬からに移した。</p>
+      <p style="margin-bottom:0"><strong>③ 30km走を2本に。</strong>標準は11月の1本。12月中旬と1月10日に追加した。</p>
     </div>
 
     <div class="phase">
       <div class="p-when">9月（80km／最長12km）— 1本を長くする</div>
       <h4>総量より、週1本の「長い日」を作ることが先</h4>
-      <p>いまは13本すべてが4〜6kmに揃っている。まず週1本を長い日に変える。6 → 8 → 10 → 12km。他の日は短くしてよい。</p>
+      <p>13本すべてが4〜6kmに揃っている。週1本を 6 → 8 → 10 → 12km に伸ばす。</p>
       <ul>
         <li>ロング走のペースは 8'00"〜8'30"、<strong>心拍127以下（Zone 2）</strong>を厳守</li>
         <li>ペース走は9月いっぱい休む。Zone 3を26%→20%以下に落とすのが狙い</li>
@@ -517,7 +515,7 @@ footer p{margin:0 0 8px}
     <div class="phase">
       <div class="p-when">10〜11月（100→120km／最長20→28km）— 距離とスピードを両立</div>
       <h4>Zone 2の土台ができたら、週1回だけ強度を戻す</h4>
-      <p>ロング走を20km、28kmへ伸ばしつつ、週1回だけ閾値走（6'15"/kmで20分）を再開する。3kmで17分02秒を出せる脚があるので、この強度は維持しておいたほうが目標タイムに効く。</p>
+      <p>ロング走を20km・28kmへ伸ばしつつ、週1回だけ閾値走（6'15"/kmで20分）を再開する。</p>
       <ul>
         <li>ロング走：14 → 16 → 20 → 16 → 22 → 20 → 25 → 28 km</li>
         <li>強度配分の目標：Zone 1＋2 で80%以上、Zone 3以上は20%以内</li>
@@ -528,7 +526,7 @@ footer p{margin:0 0 8px}
     <div class="phase">
       <div class="p-when">12月〜1月（130→85km）— ピークと、3週間のテーパー</div>
       <h4>12月中旬に30km。そこから逆算して落とす</h4>
-      <p>12月13日前後に30km走を置き、1月10日に28kmでもう一度確認する。そこからは資料のテーパリング基準（3週前70〜80%、2週前50〜60%、1週前30〜40%）に従って落とす。</p>
+      <p>12/13前後に30km走、1/10に28km。そこからは資料の基準（3週前70〜80%／2週前50〜60%／1週前30〜40%）で落とす。</p>
       <ul>
         <li>1/10 → 28km ／ 1/17 → 18km ／ 1/24 → 10km ／ 1/29 → 20分ジョグ ／ 1/30 → 完全休養</li>
         <li>本番2週前から、当日と同じ時刻・同じ朝食で走って試す</li>
@@ -539,14 +537,14 @@ footer p{margin:0 0 8px}
     <div class="phase">
       <div class="p-when">全期間を通して</div>
       <h4>ピッチ170。意識する対象はこれ1つだけ</h4>
-      <p>先生の個別指摘であり、配布資料の「オーバーストライドを避ける」とも一致する。メトロノームアプリを170bpmで鳴らして走ると習得が早い。<strong>ピッチが上がれば歩幅は自動的に縮む</strong>ので、歩幅は意識しない。</p>
+      <p>メトロノームアプリを170bpmで鳴らして走る。ピッチが上がれば歩幅は自動的に縮むため、歩幅は意識しない。</p>
       <ul>
         <li>判定：ピッチ170以上／接地280ms以下／歩幅は縮んでよい</li>
         <li>3つが同時に動いたら成功。1つだけ動いた場合は違うことをしている</li>
       </ul>
     </div>
 
-    <p style="margin-top:26px">距離を増やす時期は故障が最も起きやすい。<strong>週の増加は前週の10%以内</strong>。資料の<strong>STOPルール</strong>（安静時痛・3日以上続く痛み・37.5度以上の発熱）に該当したら、距離ではなく頻度を落とす。膝や足底の違和感は、多くの場合ピッチの低さと歩幅の大きさが原因になる。</p>
+    <p style="margin-top:26px"><strong>週の増加は前週の10%以内。</strong>資料のSTOPルール（安静時痛・3日以上続く痛み・37.5度以上の発熱）に該当したら、距離ではなく頻度を落とす。</p>
   </div>
 </section>
 
@@ -554,8 +552,7 @@ footer p{margin:0 0 8px}
   <div class="col">
     <div class="shead"><span class="snum">08</span><h2>元データ</h2></div>
     <p class="sub">Amazfit Active Max の記録した全ラン20本</p>
-    <p>すべて時計が記録した実測値である。<strong>「表示値」はZeppアプリに出る数字そのままで、歩行・信号待ち・停止を含む全体平均。</strong>「走行中」は1秒ごとのログから、実際に走っている区間だけを抜き出して再計算した値である。同じ走りでも集計範囲が違うため差が出る。</p>
-    <p>ピッチだけ両方を並べた。他の項目は表示値である。<strong>緑の行は走行中ピッチが170以上だった回。</strong></p>
+    <p><strong>「表示値」はZeppアプリに出る数字そのまま</strong>（歩行・信号待ちを含む全体平均）。<strong>「走行中」</strong>は1秒ログから走行区間だけを抜き出した再計算値。ピッチのみ両方を併記した。他は表示値。<strong>緑の行は走行中ピッチ170以上。</strong></p>
   </div>
 
   <div class="tablebox">
