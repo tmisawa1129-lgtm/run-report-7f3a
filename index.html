@@ -273,7 +273,7 @@ footer p{margin:0 0 8px}
       <span><i class="dot" style="background:var(--steel)"></i>その月の最長ラン</span>
       <span>7月の44.23kmは記録時間9.6時間・走行判定2.3時間のため、実質はロングウォーク</span>
     </div>
-    <figcaption>8月は本数（13本）が最も多いのに、最長は5.82km。距離を刻む回数は増えたが、1本を伸ばす練習が抜け落ちている。</figcaption>
+    <figcaption>8月は本数（13本）が最も多く、最長は5.82km。</figcaption>
   </figure>
 
   <div class="col">
@@ -654,11 +654,11 @@ footer p{margin:0 0 8px}
     var iw=W-L-R, ih=H-T-B, max=90;
     var y=function(v){ return T+ih-(v/max)*ih; };
     var bw=iw/months.length, out="";
-    // 指導開始（7月＝プログラム開始）の区切り線
+    // 7月以降＝Amazfitでフォーム計測している期間
     var gx = L + bw*4;
     out+='<rect x="'+gx+'" y="'+T+'" width="'+(iw-bw*4)+'" height="'+ih+'" fill="'+C('--accent-soft')+'" fill-opacity="0.5"/>';
     out+='<line x1="'+gx+'" y1="'+T+'" x2="'+gx+'" y2="'+(T+ih)+'" stroke="'+C('--accent')+'" stroke-width="1.5" stroke-dasharray="4 3"/>';
-    out+='<text x="'+(gx+10)+'" y="'+(T+16)+'" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--accent-ink')+'">▶ 7月 指導開始</text>';
+    out+='<text x="'+(gx+10)+'" y="'+(T+16)+'" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--accent-ink')+'">7月〜 Amazfit計測</text>';
     [0,30,60,90].forEach(function(g){
       out+='<line x1="'+L+'" y1="'+y(g)+'" x2="'+(W-R)+'" y2="'+y(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
       out+='<text x="'+(L-12)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+g+'</text>';
