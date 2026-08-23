@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-<meta name="description" content="Strava・Amazfitの5ヶ月分のログ解析と、2027年1月31日の勝田全国マラソンから逆算した23週間のトレーニング計画。">
+<meta name="description" content="Strava・Amazfitの5ヶ月分のログ解析と、THE FULL CREWのロードマップとの照合。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="フルマラソンへの現在地">
-<meta property="og:description" content="5ヶ月分のランログを1秒単位で解析。ピッチ・接地時間の課題と、勝田全国マラソンまで23週間の計画。">
+<meta property="og:description" content="5ヶ月分のランログを1秒単位で解析。プログラムの資料と突き合わせた現状と課題。">
 <meta property="og:url" content="https://tmisawa1129-lgtm.github.io/run-report-7f3a/">
 <meta property="og:image" content="https://tmisawa1129-lgtm.github.io/run-report-7f3a/ogp.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -144,7 +144,16 @@ footer p{margin:0 0 8px}
 .legend{display:flex; flex-wrap:wrap; gap:8px 20px; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); margin-top:14px; letter-spacing:.04em}
 .legend span{display:flex; align-items:center; gap:7px}
 .dot{width:9px; height:9px; border-radius:50%; display:inline-block}
-@media (max-width:620px){ body{font-size:16px} .wrap{padding:0 18px 72px} .masthead{padding:48px 0 32px} }
+/* 心拍ゾーンの積み上げバー */
+.zrow{margin:20px 0 4px}
+.zrow .zlab{display:flex; justify-content:space-between; align-items:baseline; font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-3); margin-bottom:7px}
+.zbar{display:flex; height:34px; border-radius:3px; overflow:hidden; border:1px solid var(--line-2)}
+.zbar span{display:flex; align-items:center; justify-content:center; font-family:"IBM Plex Mono",monospace; font-size:11.5px; font-weight:600; color:#12160F; min-width:0; overflow:hidden}
+.zkey{display:flex; flex-wrap:wrap; gap:6px 18px; margin-top:12px; font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-3)}
+.zkey i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:middle; font-style:normal}
+.target-line{margin-top:14px; padding:11px 14px; border-left:3px solid var(--warn); background:var(--warn-soft); font-size:14.5px; color:var(--ink-2); border-radius:0 3px 3px 0}
+
+@media (max-width:620px){ body{font-size:16px} .wrap{padding:0 18px 72px} .masthead{padding:48px 0 32px} .zbar span{font-size:10px} }
 
 @media print{
   /* ダークテーマ用の :root:not([data-theme="light"]) より詳細度を高くして必ず勝たせる */
@@ -182,10 +191,10 @@ footer p{margin:0 0 8px}
 
 <header class="masthead">
   <div class="eyebrow">
-    <span>2026.03.21 — 08.22</span><span>ラン41本</span><span>Strava + Amazfit</span><span>目標／勝田全国マラソン 2027.01.31</span>
+    <span>2026.03.21 — 08.22</span><span>ラン41本</span><span>Strava + Amazfit</span><span>THE FULL CREW ／ 勝田全国マラソン 2027.01.31</span>
   </div>
   <h1>フルマラソンへの現在地</h1>
-  <p class="standfirst">5ヶ月分のログを1秒単位まで解析した。走力の問題ではない。足りないのは距離と、ピッチという1つの癖だった。本番まで23週間ある。</p>
+  <p class="standfirst">5ヶ月分のログを1秒単位まで解析し、プログラムの資料と突き合わせた。走行量は足りている。足りないのは「1本の長さ」と、ピッチという1つの癖だった。</p>
 
   <div class="verdict">
     <div class="vcard good">
@@ -196,7 +205,7 @@ footer p{margin:0 0 8px}
     <div class="vcard crit">
       <div class="k">8月の最長距離</div>
       <div class="v">5.82 km</div>
-      <div class="n">フルの 13.8%。6km以上のランは1本もない。最優先の課題。</div>
+      <div class="n">9月の目安は「10km安定」。6km以上のランは1本もない。最優先の課題。</div>
     </div>
     <div class="vcard warn">
       <div class="k">ピッチ（走行中のみ）</div>
@@ -352,14 +361,80 @@ footer p{margin:0 0 8px}
   <div class="col">
     <p>3kmの自己ベスト17分02秒（8月19日）から換算すると、フルの理論値は<strong>4時間41分</strong>になる。スピードの素質という点では、サブ5どころかサブ4.5が射程に入る数字だ。</p>
     <p>ただしこの換算式は「その距離に必要な走り込みができている」ことが前提になっている。最長5.8kmの状態で42kmに出れば、30km過ぎで脚が止まり、理論値より30分から1時間は遅くなる。<strong>足りないのは能力ではなく、その能力を42km持たせるための土台</strong>である。</p>
-    <p>幸い、本番の2027年1月31日まで<strong>23週間ある</strong>。月間50kmから130kmへは2.6倍で、一気にやれば故障するが、23週かけて段階的に上げるなら十分に届く。<em>期間は足りている</em>。</p>
+    <p>幸い、本番の2027年1月31日まで<strong>23週間ある</strong>。しかも走行量そのものは、すでにプログラムのロードマップを上回っている。積み増すべきは総量ではなく「1本の長さ」だけで、<em>期間は充分に足りている</em>。</p>
     <p>そしてもう1つ。歩幅で押す走りは1歩あたりの負担が大きく、距離が伸びるほど不利に働く。ピッチの改善は、フォームの美しさの話ではなく<em>後半に脚を残すための対策</em>として効いてくる。</p>
   </div>
 </section>
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">05</span><h2>目標タイムを決める</h2></div>
+    <div class="shead"><span class="snum">05</span><h2>プログラムの方針と、実際の走り方のズレ</h2></div>
+    <p class="sub">THE FULL CREW の資料に書かれている基準に、7〜8月の実データを当てはめる</p>
+
+    <p>プログラムの資料には「<strong>初心者の練習の80〜90%はZone 2が正解</strong>」と明記されている。Zone 2は「楽に話せるペース」で、最大心拍の60〜70%にあたる。時計の設定上、最大心拍は184とされているので、Zone 2は<strong>おおよそ110〜127拍</strong>になる。</p>
+    <p>7月と8月の全ラン、合計19時間23分を1秒ずつ心拍で仕分けた結果がこれである。</p>
+  </div>
+
+  <figure>
+    <figcaption>心拍ゾーンごとの滞在時間<span class="cap-note">2026年7〜8月／Amazfit装着後の全ラン20本・計1,163分</span></figcaption>
+
+    <div class="zrow">
+      <div class="zlab"><span>7月 ＋ 8月 合計</span><span>1,163分</span></div>
+      <div class="zbar">
+        <span style="width:21.4%; background:var(--accent-soft)">21%</span>
+        <span style="width:45.8%; background:var(--accent)">46%</span>
+        <span style="width:25.6%; background:var(--warn)">26%</span>
+        <span style="width:6.8%;  background:var(--crit); color:#fff">7%</span>
+        <span style="width:0.4%;  background:var(--ink-2)"></span>
+      </div>
+    </div>
+
+    <div class="zrow">
+      <div class="zlab"><span>7月</span><span>742分</span></div>
+      <div class="zbar">
+        <span style="width:28.5%; background:var(--accent-soft)">29%</span>
+        <span style="width:37.4%; background:var(--accent)">37%</span>
+        <span style="width:29.6%; background:var(--warn)">30%</span>
+        <span style="width:4.6%;  background:var(--crit); color:#fff">5%</span>
+      </div>
+    </div>
+
+    <div class="zrow">
+      <div class="zlab"><span>8月</span><span>421分</span></div>
+      <div class="zbar">
+        <span style="width:9.0%;  background:var(--accent-soft)">9%</span>
+        <span style="width:60.6%; background:var(--accent)">61%</span>
+        <span style="width:18.6%; background:var(--warn)">19%</span>
+        <span style="width:10.6%; background:var(--crit); color:#fff">11%</span>
+        <span style="width:1.2%;  background:var(--ink-2)"></span>
+      </div>
+    </div>
+
+    <div class="zkey">
+      <span><i style="background:var(--accent-soft)"></i>Zone 1 ／ 〜109拍</span>
+      <span><i style="background:var(--accent)"></i>Zone 2 ／ 110〜127拍</span>
+      <span><i style="background:var(--warn)"></i>Zone 3 ／ 128〜146拍</span>
+      <span><i style="background:var(--crit)"></i>Zone 4 ／ 147〜164拍</span>
+      <span><i style="background:var(--ink-2)"></i>Zone 5 ／ 165拍〜</span>
+    </div>
+
+    <div class="target-line"><strong>Zone 1＋2 は 67.2%。</strong>プログラムの目安である80〜90%に届いていない。差を埋めているのは Zone 3（26%）で、ここは「楽でもきつくもない、一番中途半端な強度」にあたる。</div>
+  </figure>
+
+  <div class="col">
+    <p>ただし<em>方向としては good</em>である。7月の Zone 1＋2 は 66%、8月は 70%。わずかだが増えている。8月に限れば Zone 2 単独で 60.6% を占めており、<strong>ジョグそのものは正しい強度で走れている</strong>。</p>
+    <p>問題は Zone 3 の使い方だ。8月のZone 3・19%の大半は、8月19日と20日のペース走で発生している。この2本は心拍143〜150、資料の分類でいえば Zone 3〜4 にあたる。<strong>プログラムが「慣れてから」としているテンポ走を、土台ができる前に始めてしまっている</strong>状態である。</p>
+    <div class="callout">
+      <div class="c-lab">資料と照合して分かること</div>
+      <p>先生の指摘「ピッチ170台」は、配布資料には載っていない。資料のフォーム3ポイントは<strong>前傾・腕振り・オーバーストライド回避</strong>の3つで、ピッチは含まれていない。</p>
+      <p style="margin-bottom:0">つまりこれは、走りを直接見た上での<strong>個別指摘</strong>だったことになる。そして歩幅107〜111cmというデータは、資料が挙げる「オーバーストライドを避ける」にそのまま該当していた。一般論と個別指導が、同じ一点を指している。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">06</span><h2>目標タイムを決める</h2></div>
     <p class="sub">勝田は平坦基調のコース。1月末で気温も低く、記録は出やすい条件</p>
     <p>いまは暑熱下（25〜33℃）で走っている。1月末の勝田は気温一桁が普通で、同じ努力でも心拍が下がりペースは上がる。<strong>この気温差は、そのまま追い風になる。</strong></p>
   </div>
@@ -383,58 +458,66 @@ footer p{margin:0 0 8px}
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">06</span><h2>本番までの23週間</h2></div>
-    <p class="sub">2026年8月24日 — 2027年1月31日／日曜をロング走の日と仮定して逆算</p>
+    <div class="shead"><span class="snum">07</span><h2>プログラムのロードマップと、いまの位置</h2></div>
+    <p class="sub">計画は THE FULL CREW のロードマップに従う。以下はそこに実データを重ねたもの</p>
+
+    <p>練習計画はすでにプログラム側で用意されている。月2回の合同練習会があり、11月以降は駒沢公園で30km走も組まれている。<strong>ここで独自の計画を立てる必要はない</strong>。やるべきは、ロードマップに対して自分がどこにいるかを把握することだけである。</p>
+  </div>
+
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>月</th><th>プログラムの目安</th><th>実績</th><th>判定</th></tr></thead>
+      <tbody>
+        <tr><td>7月</td><td>習慣化／〜20km</td><td>82.0km・10本</td><td class="good">達成</td></tr>
+        <tr><td>8月</td><td>ジョグ習慣／〜30km</td><td>50.7km・13本</td><td class="good">達成</td></tr>
+        <tr class="mark"><td>9月</td><td><strong>10km安定</strong>／〜50km</td><td>現在の最長 5.82km</td><td class="crit">ここが課題</td></tr>
+        <tr><td>10月</td><td>20km挑戦／〜70km</td><td>—</td><td>—</td></tr>
+        <tr><td>11月</td><td>30kmピーク／〜90km</td><td>—</td><td>—</td></tr>
+        <tr><td>12月</td><td>テーパリング／〜50km</td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <p>この表が、これまでの分析を1行にまとめている。<strong>走行量ではロードマップを大きく上回っているのに、「1本の長さ」だけが取り残されている。</strong>9月に求められるのは「10km安定」だが、いまの最長は5.82kmで、その半分をわずかに超える程度しかない。</p>
+    <p>裏を返せば、<em>やることは1つに絞られる</em>。総量を増やす必要はない。いまの月50kmの中身を組み替えて、長い1本を作るだけでいい。</p>
 
     <div class="phase">
-      <div class="p-when">第1期 ／ 9〜10月（9週）— 土台を作る</div>
-      <h4>1本を長くする。ペースは完全に捨てる</h4>
-      <p>週1回のロング走を作り、8km から 20km まで少しずつ伸ばす。ペースは7'30"〜8'00"、心拍130以下を厳守。速く走りたくなるが、この期間に見るのは距離だけ。</p>
+      <div class="p-when">9月にやること（ロードマップ：10km安定）</div>
+      <h4>週1本を長い日にする。総量は増やさなくていい</h4>
+      <p>いまは13本すべてが4〜6kmに揃っている。このうち週1本を長い日に変え、6 → 8 → 10 → 10km と伸ばす。他の日はむしろ短くしてよい。</p>
       <ul>
-        <li>ロング走：8 → 10 → 12 → 14 → 12 → 16 → 18 → 20 → 16 km</li>
-        <li>ジョグ：週2〜3本、5km前後（いまのままでよい）</li>
-        <li>月間目標：9月 80km ／ 10月 100km</li>
+        <li>ペースは 8'00"〜8'30"、<strong>心拍127以下（Zone 2）</strong>を厳守。遅すぎるくらいでちょうどいい</li>
+        <li>ペース走は9月いっぱい休む。Zone 3を26%→20%以下に下げるのが狙い</li>
+        <li>合同練習会の翌日は完全休養か軽いジョグに充てる</li>
       </ul>
     </div>
 
     <div class="phase">
-      <div class="p-when">第2期 ／ 11〜12月（9週）— フォームと距離を同時に</div>
-      <h4>全部のランでピッチ170を固定し、30kmに到達する</h4>
-      <p>距離を伸ばしながら、意識する対象をピッチ1つに絞る。メトロノームアプリを170bpmで鳴らして走ると習得が早い。ピッチが上がれば歩幅は自然に縮むので、歩幅は意識しない。</p>
+      <div class="p-when">全期間を通して意識すること</div>
+      <h4>ピッチ170。意識する対象はこれ1つだけ</h4>
+      <p>先生の個別指摘であり、配布資料の「オーバーストライドを避ける」とも一致する。メトロノームアプリを170bpmで鳴らして走ると習得が早い。<strong>ピッチが上がれば歩幅は自動的に縮む</strong>ので、歩幅は意識しない。</p>
       <ul>
-        <li>ロング走：22 → 20 → 25 → 22 → 25 → <strong>30km（12/13）</strong> → 20 → 28 km</li>
-        <li>閾値走：6'15"/kmで20分を月2回（スピードの維持）</li>
-        <li>判定基準：ピッチ170以上／接地280ms以下／歩幅は縮んでよい</li>
-        <li>月間目標：11月 120km ／ 12月 130km</li>
+        <li>判定：ピッチ170以上／接地280ms以下／歩幅は縮んでよい</li>
+        <li>この3つが同時に動いたら成功。1つだけ動いた場合は何か違うことをしている</li>
       </ul>
     </div>
 
-    <div class="phase">
-      <div class="p-when">第3期 ／ 1月（5週）— 仕上げと調整</div>
-      <h4>2本目の30kmを終えたら、あとは減らすだけ</h4>
-      <p>1月10日に2本目の30km走を置き、そこから3週かけて距離を落とす。<strong>直前に走り込んでも間に合わないし、疲労を持ち込むだけ</strong>なので、我慢して減らす。</p>
-      <ul>
-        <li>1/3 → 20km ／ 1/10 → <strong>30km走②</strong> ／ 1/17 → 20km ／ 1/24 → 12km</li>
-        <li>月間目標：90km（意図的に落とす）</li>
-        <li>本番2週前から、レース当日と同じ時刻・同じ朝食で走って試す</li>
-      </ul>
-    </div>
-
-    <p style="margin-top:26px">距離を増やす時期は故障が最も起きやすい。<strong>週の増加は前週の10%以内</strong>に抑え、痛みが出たら距離ではなく頻度を落とす。膝や足底に違和感が出た場合、原因は多くの場合ピッチの低さと歩幅の大きさにある。</p>
+    <p style="margin-top:26px">距離を増やす時期は故障が最も起きやすい。資料の<strong>STOPルール</strong>（安静時痛・3日以上続く痛み・37.5度以上の発熱）に該当したら、距離ではなく頻度を落とす。膝や足底の違和感は、多くの場合ピッチの低さと歩幅の大きさが原因になる。</p>
   </div>
 </section>
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">07</span><h2>この計画の分かれ目</h2></div>
-    <p class="sub">残り23週で決めておきたいこと</p>
+    <div class="shead"><span class="snum">08</span><h2>先生に確認したいこと</h2></div>
+    <p class="sub">データからは決められなかった点</p>
     <ul style="font-size:16.5px">
-      <li><strong>ロング走を入れる曜日。</strong>週1回、最終的に3時間以上まとまって取れる曜日を1つ固定できるかが、この計画の成否をほぼ決める。上の表は日曜を前提に組んでいる。</li>
-      <li><strong>補給の練習。</strong>30km走ではジェルと給水を本番と同じ形で試す。フルは補給の失敗で崩れることが多く、練習しておく価値が高い。</li>
-      <li><strong>7月19日の44kmは何だったか。</strong>記録時間9.6時間・走行判定2.3時間なので大部分は歩き。ただし「9時間動き続けられた」実績は、初フルの不安要素をかなり潰している。</li>
-      <li><strong>冬装備。</strong>1月末の茨城は氷点下になる朝もある。11月以降のロング走で、寒い時間帯のウェアを試しておく。</li>
+      <li><strong>ロードマップの「〜20km」「〜50km」は月間距離という理解で合っているか。</strong>その読み方だと7月82km・8月50.7kmはすでに大きく上回っていることになる。もし「1回の最長距離」を指しているなら、判定は真逆になり、かなり遅れていることになる。<em>ここの読み違いは計画全体に影響するので、最初に確認したい。</em></li>
+      <li><strong>9月にペース走を止めて、Zone 2のロング走に振り切ってよいか。</strong>Zone 1＋2 が67%と目安を下回っているため、こう判断した。ただしスピードが落ちる懸念もあるので、方針として合っているか見てほしい。</li>
+      <li><strong>ピッチ170を、ジョグを含む全部のランで意識してよいか。</strong>ペースが落ちてもピッチ優先で問題ないか。</li>
+      <li><strong>ロング走を入れる曜日。</strong>最終的に3時間以上まとまって取れる曜日を固定したい。合同練習会との間隔をどう取るのがよいか。</li>
     </ul>
-    <p style="margin-top:18px; font-size:15px; color:var(--ink-3)">※ 勝田全国マラソンの制限時間・関門・エントリー期間は、公式サイトで必ず確認すること。この計画はサブ5想定で組んでいる。</p>
+    <p style="margin-top:18px; font-size:15px; color:var(--ink-3)">※ 目標タイムはサブ5想定。勝田全国マラソンの制限時間・関門・エントリー期間は公式サイトで確認すること。</p>
   </div>
 </section>
 
@@ -468,6 +551,11 @@ footer p{margin:0 0 8px}
     var iw=W-L-R, ih=H-T-B, max=90;
     var y=function(v){ return T+ih-(v/max)*ih; };
     var bw=iw/months.length, out="";
+    // 指導開始（7月＝プログラム開始）の区切り線
+    var gx = L + bw*4;
+    out+='<rect x="'+gx+'" y="'+T+'" width="'+(iw-bw*4)+'" height="'+ih+'" fill="'+C('--accent-soft')+'" fill-opacity="0.5"/>';
+    out+='<line x1="'+gx+'" y1="'+T+'" x2="'+gx+'" y2="'+(T+ih)+'" stroke="'+C('--accent')+'" stroke-width="1.5" stroke-dasharray="4 3"/>';
+    out+='<text x="'+(gx+10)+'" y="'+(T+16)+'" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--accent-ink')+'">▶ 7月 指導開始</text>';
     [0,30,60,90].forEach(function(g){
       out+='<line x1="'+L+'" y1="'+y(g)+'" x2="'+(W-R)+'" y2="'+y(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
       out+='<text x="'+(L-12)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+g+'</text>';
