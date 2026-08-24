@@ -755,7 +755,7 @@ footer p{margin:0 0 8px}
         out+='<text x="'+(L-10)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+g+'</text>';
       });
       out+='<line x1="'+L+'" y1="'+y(target)+'" x2="'+(W-R)+'" y2="'+y(target)+'" stroke="'+C('--warn')+'" stroke-width="1.5" stroke-dasharray="5 4"/>';
-      out+='<text x="'+(W-R)+'" y="'+(y(target)-8)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--warn')+'">目標 '+target+'</text>';
+      out+='<text x="'+(L+10)+'" y="'+(y(target)-8)+'" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--warn')+'">目標 '+target+'</text>';
       out+='<polyline fill="none" stroke="'+C('--steel')+'" stroke-width="2" points="'+trend.map(function(r,i){return x(i)+","+y(r[key]);}).join(" ")+'"/>';
       trend.forEach(function(r,i){
         var col = r.t===3 ? C('--accent') : (r.t===2 ? C('--crit') : (r.t===1 ? C('--warn') : C('--steel')));
