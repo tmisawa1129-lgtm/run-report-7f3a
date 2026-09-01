@@ -144,6 +144,12 @@ footer p{margin:0 0 8px}
 .legend{display:flex; flex-wrap:wrap; gap:8px 20px; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); margin-top:14px; letter-spacing:.04em}
 .legend span{display:flex; align-items:center; gap:7px}
 .dot{width:9px; height:9px; border-radius:50%; display:inline-block}
+/* 目標の進捗バー */
+.pb{height:7px; background:var(--line); border-radius:4px; margin-top:8px; overflow:hidden; position:relative}
+.pb i{display:block; height:100%; background:var(--accent); border-radius:4px}
+.pb u{position:absolute; top:-2px; bottom:-2px; width:2px; background:var(--ink-2); left:var(--t)}
+.gtag{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--accent); font-weight:600}
+
 /* カウントダウン */
 .countdown{display:flex; align-items:baseline; gap:10px 20px; flex-wrap:wrap; margin:0}
 .cd-main{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:clamp(30px,6.4vw,52px); line-height:1.1; letter-spacing:-.025em; color:var(--accent); font-variant-numeric:tabular-nums; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
@@ -567,7 +573,79 @@ footer p{margin:0 0 8px}
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">08</span><h2>元データ</h2></div>
+    <div class="shead"><span class="snum">08</span><h2>月ごとの目標と、ロング走の計画</h2></div>
+    <p class="sub">8月の実績と、9月の目標。ロング走は本番まで5kmずつ積む</p>
+  </div>
+
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>8月の目標</th><th>目標値</th><th>実績</th><th>達成率</th></tr></thead>
+      <tbody>
+        <tr class="mark"><td>Zone 2 で走る時間</td><td>240 分</td><td>307 分（5時間7分）</td><td class="good">128%</td></tr>
+        <tr class="mark"><td>ラン本数</td><td>8 本</td><td>17 本</td><td class="good">213%</td></tr>
+        <tr class="mark"><td>いつもより1回長め</td><td>15 km</td><td>15.02 km（8/30）</td><td class="good">100%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <div class="verdict" style="margin:0 0 26px">
+      <div class="vcard">
+        <div class="k">9月／ラン本数</div><div class="v">12<span style="font-size:.45em">本</span></div>
+        <div class="pb"><i style="width:0%"></i></div>
+        <div class="n">週2〜3回。8月は17本</div>
+      </div>
+      <div class="vcard">
+        <div class="k">9月／Zone 2</div><div class="v">320<span style="font-size:.45em">分</span></div>
+        <div class="pb"><i style="width:0%"></i></div>
+        <div class="n">40分 × 週2回。8月は307分</div>
+      </div>
+      <div class="vcard">
+        <div class="k">9月／ロング走</div><div class="v">20<span style="font-size:.45em">km</span></div>
+        <div class="pb"><i style="width:0%"></i></div>
+        <div class="n">9月後半に1本。8月は15.02km</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tablebox">
+    <table>
+      <thead><tr><th>ロング走の計画</th><th>距離</th><th>前回比</th><th>所要時間の目安</th></tr></thead>
+      <tbody>
+        <tr class="mark"><td>9月</td><td><strong>20 km</strong></td><td class="warn">+33%</td><td>2:22 〜 2:35</td></tr>
+        <tr><td>10月</td><td>25 km</td><td>+25%</td><td>2:57 〜 3:13</td></tr>
+        <tr><td>11月</td><td>30 km</td><td>+20%</td><td>3:33 〜 3:52</td></tr>
+        <tr><td>12月</td><td>35 km</td><td>+17%</td><td>4:09 〜 4:31</td></tr>
+        <tr><td>1月</td><td>42.195 km（本番）</td><td>+21%</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="col">
+    <ul class="pts">
+      <li>増加率は <strong>+33% → +25% → +20% → +17%</strong> と、進むほど緩やかになる</li>
+      <li>最長35kmだと本番の「はみ出し」は<strong>+21%（未知7.2km）</strong></li>
+      <li>いちばん大きい一歩は<strong>9月の20km</strong>。ここが山場</li>
+    </ul>
+
+    <div class="callout">
+      <span class="lbl">先生の基準（2026.09.01の配信）</span>
+      <p>比べるのは「先週の合計」ではなく<strong>「直近30日でいちばん長く走った距離」</strong>。そこからの増加率で故障リスクが変わる。</p>
+      <p>最長走の<strong>+10〜30%</strong>の日はリスク1.64倍、<strong>+30〜100%</strong>で1.52倍、<strong>2倍以上</strong>で2.28倍。じわじわ増やしたことではなく「たった1回の走りすぎ」が故障を作る。</p>
+      <p style="margin-bottom:0">増やす順番は <strong>① 頻度 → ② 時間 → ③ 強度</strong>。同時に2つ以上増やさない。増やした分はすべてゆっくりに充てる。</p>
+    </div>
+
+    <ul class="pts">
+      <li>いまの基準（直近30日の最長）：<strong>15.02 km</strong>（8/30）</li>
+      <li>今週のロング走の上限：<strong>16.5 km</strong>（15.02 × 1.1）</li>
+      <li>参考：8/30の15.02kmは、直前の基準5.82kmから<strong>+158%</strong>だった</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">09</span><h2>元データ</h2></div>
     <p class="sub">Amazfit Active Max の記録した全ラン24本／2026.07.18 — 08.30</p>
     <p><strong>表示値</strong>＝Zeppアプリの数字そのまま（歩行・信号待ち込みの全体平均）。<strong>走行中</strong>＝1秒ログから走行区間だけを再計算した値。ピッチのみ併記、他は表示値。<strong>緑の行は走行中ピッチ170以上。</strong></p>
   </div>
@@ -611,7 +689,7 @@ footer p{margin:0 0 8px}
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">09</span><h2>メモ</h2></div>
+    <div class="shead"><span class="snum">10</span><h2>メモ</h2></div>
     <p class="sub">指摘やアドバイスをもらったら、ここに追記していきます</p>
 
     <div class="notes">
@@ -688,7 +766,8 @@ footer p{margin:0 0 8px}
           <tr><td>2026.08.23</td><td>初版。3〜8月のラン41本を集計</td></tr>
           <tr><td>2026.08.24</td><td>ピッチを上げる意識に切り替えた1本を追加</td></tr>
           <tr><td>2026.08.25</td><td>8/25を追加。ピッチ170に到達。先生のフィードバックを記録</td></tr>
-          <tr class="mark"><td>2026.08.30</td><td>Stravaを再取得し8/27・8/30を追加。15.02kmで月間最長を更新</td></tr>
+          <tr><td>2026.08.30</td><td>Stravaを再取得し8/27・8/30を追加。15.02kmで月間最長を更新</td></tr>
+          <tr class="mark"><td>2026.09.01</td><td>8月の達成率と9月の目標、ロング走の5ヶ月計画を追加</td></tr>
         </tbody>
       </table>
     </div>
