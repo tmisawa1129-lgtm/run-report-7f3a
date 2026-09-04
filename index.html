@@ -7,7 +7,7 @@
 <meta name="description" content="Amazfitのログ集計。勝田全国マラソンに向けた現在地。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="勝田マラソンへの現在地">
-<meta property="og:description" content="ラン41本のログを1秒単位で集計。数値とグラフでまとめた現在地。">
+<meta property="og:description" content="ラン全本数のログを自動集計。数値とグラフでまとめた現在地。">
 <meta property="og:url" content="https://tmisawa1129-lgtm.github.io/run-report-7f3a/">
 <meta property="og:image" content="https://tmisawa1129-lgtm.github.io/run-report-7f3a/ogp.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -21,8 +21,8 @@
   --paper:#F1F2ED; --surface:#FBFBF8; --surface-2:#E9EBE3;
   --ink:#1E241C; --ink-2:#4A5147; --ink-3:#767C72;
   --line:#DCDED6; --line-2:#C8CBC0;
-  --accent:#3F6B34; --accent-ink:#2C4B24; --accent-soft:#E2EADB;
-  --warn:#8E6420; --warn-soft:#F0E7D3;
+  --accent:#3F6B34; --accent-ink:#2C4B24; --accent-soft:#E2EADB; --accent-bar:#B9D3A6;
+  --warn:#8E6420; --warn-soft:#F0E7D3; --warn-bar:#E3CE9E;
   --crit:#9C3D2E; --steel:#4E677A;
   --shadow:0 1px 2px rgba(30,36,28,.06), 0 8px 24px -16px rgba(30,36,28,.18);
 }
@@ -31,8 +31,8 @@
     --paper:#14180F; --surface:#1C211A; --surface-2:#252B22;
     --ink:#E9EBE3; --ink-2:#B2B8AB; --ink-3:#7E867A;
     --line:#2C3328; --line-2:#3C4437;
-    --accent:#9BC57C; --accent-ink:#B9DA9F; --accent-soft:#232E1C;
-    --warn:#D6A954; --warn-soft:#2E2716;
+    --accent:#9BC57C; --accent-ink:#B9DA9F; --accent-soft:#232E1C; --accent-bar:#3C5230;
+    --warn:#D6A954; --warn-soft:#2E2716; --warn-bar:#4A3B1C;
     --crit:#D9836F; --steel:#8CA7B8;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
   }
@@ -41,8 +41,8 @@
   --paper:#14180F; --surface:#1C211A; --surface-2:#252B22;
   --ink:#E9EBE3; --ink-2:#B2B8AB; --ink-3:#7E867A;
   --line:#2C3328; --line-2:#3C4437;
-  --accent:#9BC57C; --accent-ink:#B9DA9F; --accent-soft:#232E1C;
-  --warn:#D6A954; --warn-soft:#2E2716;
+  --accent:#9BC57C; --accent-ink:#B9DA9F; --accent-soft:#232E1C; --accent-bar:#3C5230;
+  --warn:#D6A954; --warn-soft:#2E2716; --warn-bar:#4A3B1C;
   --crit:#D9836F; --steel:#8CA7B8;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
 }
@@ -56,147 +56,94 @@ body{
 .wrap{max-width:860px; margin:0 auto; padding:0 24px 96px}
 .col{max-width:none}
 
-/* ---------- masthead ---------- */
-.masthead{padding:72px 0 40px; border-bottom:1px solid var(--line)}
+.masthead{padding:56px 0 32px; border-bottom:1px solid var(--line)}
 .eyebrow{
   font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px;
   letter-spacing:.14em; text-transform:uppercase; color:var(--ink-3);
-  display:flex; flex-wrap:wrap; gap:6px 18px; margin-bottom:22px;
+  display:flex; flex-wrap:wrap; gap:6px 18px; margin-bottom:20px;
 }
 h1{
   font-family:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
-  font-weight:700; font-size:clamp(38px,6.2vw,62px); line-height:1.04;
-  letter-spacing:-.022em; margin:0 0 18px; text-wrap:balance;
+  font-weight:700; font-size:clamp(34px,5.6vw,52px); line-height:1.04;
+  letter-spacing:-.022em; margin:0 0 14px; text-wrap:balance;
 }
-.standfirst{font-size:19px; color:var(--ink-2); margin:0}
-
-/* ---------- verdict ---------- */
-.verdict{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); margin:36px 0 0}
-.vcard{background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:20px 20px 22px; box-shadow:var(--shadow)}
-.vcard .k{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3)}
-.vcard .v{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:28px; line-height:1.15; letter-spacing:-.02em; margin:8px 0 6px; font-variant-numeric:tabular-nums}
-.vcard .n{font-size:14.5px; line-height:1.6; color:var(--ink-2)}
-.vcard.good .v{color:var(--accent)}
-.vcard.warn .v{color:var(--warn)}
-.vcard.crit .v{color:var(--crit)}
-
-/* ---------- sections ---------- */
-section{padding:64px 0 0}
-.shead{display:flex; align-items:baseline; gap:16px; margin:0 0 8px}
-.snum{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--accent); letter-spacing:.1em; padding-top:6px}
-h2{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:clamp(25px,3.4vw,33px); line-height:1.2; letter-spacing:-.018em; margin:0; text-wrap:balance}
-.sub{color:var(--ink-3); font-size:15px; margin:0 0 28px; padding-left:34px}
-p{margin:0 0 18px}
-.col p+p{margin-top:-2px}
-strong{font-weight:600; color:var(--ink)}
-em{font-style:normal; background:var(--accent-soft); padding:1px 5px; border-radius:2px; color:var(--accent-ink); font-weight:500}
-
-/* ---------- callout ---------- */
-.callout{background:var(--warn-soft); border:1px solid var(--line); border-left:3px solid var(--warn); border-radius:3px; padding:22px 24px; margin:0 0 26px}
-.callout .lbl{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--warn); display:block; margin-bottom:10px}
-.callout p:last-child{margin-bottom:0}
-
-/* ---------- figure ---------- */
-figure{margin:34px 0 30px; background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:26px 24px 20px; box-shadow:var(--shadow)}
-
-figcaption{font-size:13.5px; color:var(--ink-3); margin-top:16px; padding-top:14px; border-top:1px solid var(--line); line-height:1.6}
-.figtitle{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:16px; letter-spacing:-.01em; margin:0 0 4px}
-.figsub{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.08em; color:var(--ink-3); text-transform:uppercase; margin:0 0 20px}
-.chartbox{overflow-x:auto}
-svg{display:block; max-width:100%; height:auto}
-.panels{display:grid; gap:18px; grid-template-columns:repeat(auto-fit,minmax(215px,1fr))}
-
-/* ---------- compare ---------- */
-.compare{display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); margin:30px 0}
-.ccard{border:1px solid var(--line); border-radius:3px; padding:22px; background:var(--surface); box-shadow:var(--shadow)}
-.ccard.hero{border-color:var(--accent); background:var(--accent-soft)}
-.ccard h4{font-family:"Bricolage Grotesque",sans-serif; font-size:15px; font-weight:700; margin:0 0 3px; letter-spacing:-.01em}
-.ccard .when{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); letter-spacing:.08em; margin-bottom:16px}
-.ccard dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:7px 14px; align-items:baseline}
-.ccard dt{font-size:13.5px; color:var(--ink-2)}
-.ccard dd{margin:0; text-align:right; font-family:"IBM Plex Mono",monospace; font-weight:500; font-size:15px; font-variant-numeric:tabular-nums}
-.ccard dd.hi{color:var(--accent)}
-.ccard dd.lo{color:var(--crit)}
-
-/* ---------- table ---------- */
-.tablebox{overflow-x:auto; margin:28px 0; border:1px solid var(--line); border-radius:3px; background:var(--surface); box-shadow:var(--shadow)}
-table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:520px}
-th,td{padding:11px 16px; text-align:right; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums}
-th{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); font-weight:500; white-space:nowrap}
-th:first-child,td:first-child{text-align:left; font-family:"IBM Plex Mono",monospace; font-size:13px; white-space:nowrap}
-tbody tr:last-child td{border-bottom:none}
-tbody tr.mark td{background:var(--accent-soft)}
-td.warn{color:var(--warn); font-weight:600}
-td.crit{color:var(--crit); font-weight:600}
-td.good{color:var(--accent); font-weight:600}
-
-/* ---------- plan ---------- */
-.phase{border-left:2px solid var(--line-2); padding:0 0 4px 26px; margin:0 0 30px; position:relative}
-.phase::before{content:""; position:absolute; left:-5px; top:9px; width:8px; height:8px; border-radius:50%; background:var(--accent)}
-.phase .p-when{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:5px}
-.phase h4{font-family:"Bricolage Grotesque",sans-serif; font-size:18px; font-weight:700; margin:0 0 8px; letter-spacing:-.01em}
-.phase p{margin:0 0 10px; font-size:16px}
-.phase ul{margin:0; padding-left:20px; font-size:16px}
-.phase li{margin-bottom:5px}
-
-footer{margin-top:80px; padding-top:26px; border-top:1px solid var(--line); font-size:13.5px; color:var(--ink-3)}
-footer p{margin:0 0 8px}
-.legend{display:flex; flex-wrap:wrap; gap:8px 20px; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-3); margin-top:14px; letter-spacing:.04em}
-.legend span{display:flex; align-items:center; gap:7px}
-.dot{width:9px; height:9px; border-radius:50%; display:inline-block}
-/* 目標の進捗バー */
-.pb{height:7px; background:var(--line); border-radius:4px; margin-top:8px; overflow:hidden; position:relative}
-.pb i{display:block; height:100%; background:var(--accent); border-radius:4px}
-.pb u{position:absolute; top:-2px; bottom:-2px; width:2px; background:var(--ink-2); left:var(--t)}
-.gtag{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--accent); font-weight:600}
-
-/* カウントダウン */
 .countdown{display:flex; align-items:baseline; gap:10px 20px; flex-wrap:wrap; margin:0}
-.cd-main{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:clamp(30px,6.4vw,52px); line-height:1.1; letter-spacing:-.025em; color:var(--accent); font-variant-numeric:tabular-nums; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
+.cd-main{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:clamp(30px,6.4vw,48px); line-height:1.1; letter-spacing:-.025em; color:var(--accent); font-variant-numeric:tabular-nums; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
 .cd-main .u{font-size:.44em; margin-left:-8px; color:var(--ink-2); letter-spacing:0}
 .cd-clock{font-family:"IBM Plex Mono",monospace; font-size:1em; font-weight:500; letter-spacing:-.02em; color:var(--ink-2); font-variant-numeric:tabular-nums; white-space:nowrap}
 .cd-clock .s{color:var(--accent)}
 .cd-sub{font-family:"IBM Plex Mono",monospace; font-size:12.5px; letter-spacing:.06em; color:var(--ink-3); line-height:1.7}
 
-/* 本文の箇条書き */
-.pts{margin:0 0 18px; padding:0; list-style:none}
-.pts li{position:relative; padding-left:18px; margin-bottom:8px; font-size:16.5px}
-.pts li::before{content:""; position:absolute; left:0; top:12px; width:6px; height:1px; background:var(--ink-3)}
+.verdict{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); margin:30px 0 0}
+.vcard{background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:18px 18px 20px; box-shadow:var(--shadow)}
+.vcard .k{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3)}
+.vcard .v{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:27px; line-height:1.15; letter-spacing:-.02em; margin:7px 0 5px; font-variant-numeric:tabular-nums}
+.vcard .n{font-size:13.5px; line-height:1.55; color:var(--ink-2)}
+.vcard.good .v{color:var(--accent)}
+.vcard.warn .v{color:var(--warn)}
+.vcard.crit .v{color:var(--crit)}
+.vcard .pb{height:6px; background:var(--line); border-radius:3px; margin:8px 0 2px; overflow:hidden; position:relative}
+.vcard .pb i{display:block; height:100%; background:var(--accent); border-radius:3px}
+.vcard .pb u{position:absolute; top:-2px; bottom:-2px; width:2px; background:var(--ink-2); left:var(--t)}
+
+section{padding:52px 0 0}
+.shead{display:flex; align-items:baseline; gap:16px; margin:0 0 6px}
+.snum{font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--accent); letter-spacing:.1em; padding-top:6px}
+h2{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:clamp(23px,3.2vw,29px); line-height:1.2; letter-spacing:-.018em; margin:0; text-wrap:balance}
+.sub{color:var(--ink-3); font-size:14.5px; margin:0 0 22px; padding-left:34px}
+p{margin:0 0 16px}
+.col p+p{margin-top:-2px}
+strong{font-weight:600; color:var(--ink)}
+em{font-style:normal; background:var(--accent-soft); padding:1px 5px; border-radius:2px; color:var(--accent-ink); font-weight:500}
+
+.pts{margin:0 0 16px; padding:0; list-style:none}
+.pts li{position:relative; padding-left:18px; margin-bottom:7px; font-size:16px}
+.pts li::before{content:""; position:absolute; left:0; top:11px; width:6px; height:1px; background:var(--ink-3)}
 .pts li:last-child{margin-bottom:0}
 
-/* 先生のフィードバック記入欄 */
-.qbox{border:1px solid var(--line); border-radius:3px; background:var(--surface); padding:20px 22px; margin:0 0 14px; box-shadow:var(--shadow)}
-.qbox .q{font-size:16px; margin:0 0 12px}
-.qbox .q strong{display:block; margin-bottom:3px}
-.fb{border-top:1px dashed var(--line-2); padding-top:12px; display:flex; gap:12px; align-items:flex-start}
-.fb .tag{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.12em; color:var(--ink-3); border:1px solid var(--line-2); border-radius:2px; padding:3px 7px; white-space:nowrap; margin-top:2px}
-.fb .slot{flex:1; min-height:26px; color:var(--ink-3); font-size:15px}
-.fb.filled .tag{color:var(--accent); border-color:var(--accent)}
-.fb.filled .slot{color:var(--ink)}
-.notes{border:1px solid var(--line); border-left:3px solid var(--line-2); border-radius:3px; background:var(--surface-2); padding:20px 22px; margin-top:24px}
-.notes .lbl{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--ink-3); display:block; margin-bottom:10px}
-.notes .lines{min-height:96px; color:var(--ink-3); font-size:15px}
+.callout{background:var(--warn-soft); border:1px solid var(--line); border-left:3px solid var(--warn); border-radius:3px; padding:18px 20px; margin:0 0 22px}
+.callout .lbl{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--warn); display:block; margin-bottom:8px}
+.callout p:last-child{margin-bottom:0}
 
-/* 心拍ゾーンの積み上げバー */
-.zrow{margin:20px 0 4px}
-.zrow .zlab{display:flex; justify-content:space-between; align-items:baseline; font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-3); margin-bottom:7px}
-.zbar{display:flex; height:34px; border-radius:3px; overflow:hidden; border:1px solid var(--line-2)}
-.zbar span{display:flex; align-items:center; justify-content:center; font-family:"IBM Plex Mono",monospace; font-size:11.5px; font-weight:600; color:#12160F; min-width:0; overflow:hidden}
-.zkey{display:flex; flex-wrap:wrap; gap:6px 18px; margin-top:12px; font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--ink-3)}
-.zkey i{display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:6px; vertical-align:middle; font-style:normal}
-.target-line{margin-top:14px; padding:11px 14px; border-left:3px solid var(--warn); background:var(--warn-soft); font-size:14.5px; color:var(--ink-2); border-radius:0 3px 3px 0}
+figure{margin:26px 0 24px; background:var(--surface); border:1px solid var(--line); border-radius:3px; padding:22px 20px 16px; box-shadow:var(--shadow)}
+figcaption{font-size:13px; color:var(--ink-3); margin-top:14px; padding-top:12px; border-top:1px solid var(--line); line-height:1.6}
+.figtitle{font-family:"Bricolage Grotesque",sans-serif; font-weight:700; font-size:15px; letter-spacing:-.01em; margin:0 0 3px}
+.figsub{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.08em; color:var(--ink-3); text-transform:uppercase; margin:0 0 16px}
+.chartbox{overflow-x:auto}
+svg{display:block; max-width:100%; height:auto}
+
+.tablebox{overflow-x:auto; margin:22px 0; border:1px solid var(--line); border-radius:3px; background:var(--surface); box-shadow:var(--shadow)}
+table{border-collapse:collapse; width:100%; font-size:14px; min-width:480px}
+th,td{padding:10px 14px; text-align:right; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums}
+th{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); font-weight:500; white-space:nowrap}
+th:first-child,td:first-child{text-align:left; font-family:"IBM Plex Mono",monospace; font-size:12.5px; white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+tbody tr.mark td{background:var(--accent-soft)}
+tbody tr.sep td{border-top:2px solid var(--line-2)}
+td.warn{color:var(--warn); font-weight:600}
+td.crit{color:var(--crit); font-weight:600}
+td.good{color:var(--accent); font-weight:600}
+td.bc{position:relative}
+.b{position:relative; display:inline-block; padding:2px 4px; z-index:1}
+.b::before{content:""; position:absolute; right:0; top:1px; bottom:1px; width:var(--w); border-radius:1px; z-index:-1; background:var(--accent-bar)}
+.b.w::before{background:var(--warn-bar)}
+sup{font-size:.62em; vertical-align:super; color:var(--warn); font-weight:600; margin-left:1px}
+
+.notes{border:1px solid var(--line); border-left:3px solid var(--line-2); border-radius:3px; background:var(--surface-2); padding:16px 18px; margin-top:14px}
+.notes .lbl{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); display:block; margin-bottom:8px}
+
+footer{margin-top:60px; padding:26px 0 48px; border-top:1px solid var(--line)}
+footer p{font-size:13.5px; color:var(--ink-3); line-height:1.7}
 
 @media (max-width:620px){
-  body{font-size:16px} .wrap{padding:0 18px 72px} .masthead{padding:48px 0 32px} .zbar span{font-size:10px}
-  /* 横スクロールしても日付が見えるよう1列目を固定する */
-  table{font-size:13px; min-width:440px; line-height:1.4}
-  th,td{padding:9px 11px}
+  body{font-size:16px} .wrap{padding:0 18px 72px} .masthead{padding:40px 0 28px}
+  table{font-size:12.5px; min-width:0; line-height:1.4}
+  th,td{padding:8px 9px}
   th:first-child,td:first-child{position:sticky; left:0; background:var(--surface); z-index:1; box-shadow:1px 0 0 var(--line)}
   tbody tr.mark td:first-child{background:var(--accent-soft)}
 }
 
 @media print{
-  /* ダークテーマ用の :root:not([data-theme="light"]) より詳細度を高くして必ず勝たせる */
   :root:root:root{
     --paper:#FFFFFF; --surface:#FFFFFF; --surface-2:#F1F2ED;
     --ink:#1E241C; --ink-2:#4A5147; --ink-3:#6B7267;
@@ -205,34 +152,18 @@ footer p{margin:0 0 8px}
     --warn:#7A5518; --warn-soft:#F3EBD8; --crit:#8C3323; --steel:#3F5768;
     --shadow:none;
   }
-  body{font-size:11.5pt; background:#fff}
-  .wrap{max-width:none; padding:0}
-  .col{max-width:none}
-  @page{ margin:14mm 15mm }
-  .masthead{padding:0 0 18px}
-  h1{font-size:30pt}
-  .standfirst{font-size:12.5pt}
-  section{padding:22px 0 0; break-inside:auto}
-  h2{font-size:17pt}
-  figure,.tablebox,.ccard,.vcard,.phase,.callout{break-inside:avoid; page-break-inside:avoid; box-shadow:none}
-  .verdict{break-inside:avoid}
-  h2,.shead{break-after:avoid; page-break-after:avoid}
-  figure{padding:14px 14px 10px}
-  .chartbox{overflow:visible}
-  footer{margin-top:30px}
-  a{color:var(--accent-ink); text-decoration:none}
   .cd-clock{display:none}
+  a{color:var(--accent-ink); text-decoration:none}
 }
 </style>
+
+
 </head>
 <body>
-
-
 <div class="wrap">
-
 <header class="masthead">
   <div class="eyebrow">
-    <span>記録 2026.03 — 09.03／ラン48本</span><span>フォーム計測 2026.07.18 —／24本</span><span>THE FULL CREW ／ 勝田全国マラソン 2027.01.31</span>
+    <span id="ev-period">記録 —</span><span>AMAZFIT ACTIVE MAX</span><span>THE FULL CREW ／ 勝田全国マラソン 2027.01.31</span>
   </div>
   <h1>勝田マラソンへの現在地</h1>
   <div class="countdown">
@@ -240,155 +171,46 @@ footer p{margin:0 0 8px}
     <div class="cd-sub">第74回 勝田全国マラソン ／ 2027年1月31日（日）10:30 スタート<br><span id="cd-weeks"></span></div>
   </div>
 
-  <div class="verdict">
-    <div class="vcard good">
-      <div class="k">8月の最長距離</div>
-      <div class="v">15.02 km</div>
-      <div class="n">8/30に更新。9月の目安「10km安定」を先に上回った。</div>
-    </div>
-    <div class="vcard warn">
-      <div class="k">ピッチ（直近5本）</div>
-      <div class="v">168–171</div>
-      <div class="n">9/1に171で最高値。それ以前の8月ジョグは162.8。</div>
-    </div>
-    <div class="vcard good">
-      <div class="k">3km 自己ベストからの理論値</div>
-      <div class="v">4:41:00</div>
-      <div class="n">3km 17分02秒（8/19）からの単純換算値。走り込み量は考慮していない。</div>
-    </div>
-  </div>
+  <div class="verdict" id="stat-cards"></div>
 </header>
 
 <section>
   <div class="col">
-</div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="shead"><span class="snum">01</span><h2>月間距離と、1本の長さ</h2></div>
-    <p class="sub">月別の走行距離と、その月の最長ラン</p>
+    <div class="shead"><span class="snum">01</span><h2>月間距離</h2></div>
+    <p class="sub">走った量そのものの推移</p>
   </div>
-
-  <figure class="wide">
-    <p class="figtitle">月間距離と最長距離の推移</p>
-    <p class="figsub">2026年3月 — 9月3日／ランのみ・ウォークは除外</p>
-    <div class="chartbox"><svg id="chart-vol" viewBox="0 0 1040 380" role="img" aria-label="月間距離の棒グラフと最長距離の折れ線"></svg></div>
-    <div class="legend">
-      <span><i class="dot" style="background:var(--accent)"></i>月間合計距離</span>
-      <span><i class="dot" style="background:var(--steel)"></i>その月の最長ラン</span>
-      <span>7月の44.23kmは記録時間9.6時間・走行判定2.3時間のため、実質はロングウォーク</span>
-    </div>
-    <figcaption>8月は本数17本・77.4kmで最多。最長は8/30の15.02km。9月は3日時点で3本・15.1km。</figcaption>
-  </figure>
-
-  <div class="col">
-    <ul class="pts">
-      <li><strong>3月18.9km・3本 → 8月77.4km・17本</strong>。累計は3〜9月で約276km</li>
-      <li>最長は8/30の<strong>15.02km</strong>。それ以前の8月は最長5.82kmだった</li>
-    </ul>
-  </div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="shead"><span class="snum">02</span><h2>ペースとフォームの関係</h2></div>
-    <p class="sub">Amazfit装着後の22本／緑＝8月24日以降（ピッチを意識して以降）</p>
-  </div>
-
-  <figure class="wide">
-    <p class="figtitle">ペースが上がると、体の何が変わるか</p>
-    <p class="figsub">横軸＝ペース（右に行くほど速い）／1点＝ラン1本</p>
-    <div class="chartbox"><div class="panels">
-      <svg id="p-cad" viewBox="0 0 340 260" role="img" aria-label="ペースとピッチの散布図"></svg>
-      <svg id="p-step" viewBox="0 0 340 260" role="img" aria-label="ペースと歩幅の散布図"></svg>
-      <svg id="p-gct" viewBox="0 0 340 260" role="img" aria-label="ペースと接地時間の散布図"></svg>
-    </div></div>
-    <figcaption>灰色（8/22まで）はピッチが平坦で、速い日ほど接地時間が長い。緑（8/24以降）はピッチが168〜171に持ち上がり、接地時間も下がっている。</figcaption>
-  </figure>
-
-  <div class="col">
-    <ul class="pts">
-      <li><strong>8/22まで</strong>：ペース 7'58"→5'27" でピッチは163〜164のまま。歩幅が78→108cmに伸び、接地時間も長くなっていた</li>
-      <li><strong>8/24以降</strong>：ピッチ168〜171。速いペース帯でも接地時間は290ms前後に収まっている</li>
-    </ul>
-  </div>
-
-  <div class="compare">
-    <div class="ccard hero">
-      <h4>練習会でのラン</h4>
-      <div class="when">2026.08.09 — 0.75km</div>
-      <dl>
-        <dt>ペース</dt><dd class="hi">5'12"/km</dd>
-        <dt>ピッチ</dt><dd class="hi">175</dd>
-        <dt>歩幅</dt><dd>107 cm</dd>
-        <dt>接地時間</dt><dd class="hi">259 ms</dd>
-        <dt>上下動比</dt><dd class="hi">8.5 %</dd>
-      </dl>
-    </div>
-    <div class="ccard">
-      <h4>一人でのラン</h4>
-      <div class="when">2026.08.19 — 5.63km</div>
-      <dl>
-        <dt>ペース</dt><dd>5'54"/km</dd>
-        <dt>ピッチ</dt><dd class="lo">163</dd>
-        <dt>歩幅</dt><dd>105 cm</dd>
-        <dt>接地時間</dt><dd class="lo">345 ms</dd>
-        <dt>上下動比</dt><dd>8.4 %</dd>
-      </dl>
-    </div>
-  </div>
-
-  <div class="col">
-    <ul class="pts">
-      <li>歩幅はほぼ同じ（107cm / 105cm）</li>
-      <li>練習会の日は<strong>ピッチ +12／接地 −86ms／ペース −42秒/km</strong></li>
-      <li>ただし距離が0.75kmと短い点は差し引く必要がある</li>
-    </ul>
-  </div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="shead"><span class="snum">03</span><h2>フォーム改善の推移</h2></div>
-    <p class="sub">8月24日にピッチを上げる意識へ切り替え、以降6本</p>
-
-    <ul class="pts">
-      <li>意識するのは<strong>Zone 2に収めながら回転数を上げる</strong>ことのみ。9月からメトロノームを使用</li>
-      <li>速いペース帯（8/27・8/30）でも168を維持</li>
-      <li>9/1に<strong>ピッチ171</strong>で最高値</li>
-    </ul>
-  </div>
-
   <figure>
-    <div class="figtitle">ピッチと接地時間の推移</div>
-    <div class="figsub">2026年8月〜9月／ウォームアップ・ドリルを除く18本</div>
-    <div class="chartbox"><svg id="chart-trend" viewBox="0 0 1040 460" role="img" aria-label="ピッチと接地時間の推移"></svg></div>
-    <figcaption>8/24以降の6本はピッチ168〜171で安定。接地時間は283〜291msの範囲に収まっている。</figcaption>
+    <div class="figtitle">月間距離と最長距離</div>
+    <div class="figsub" id="vol-figsub">—</div>
+    <div class="chartbox"><svg id="chart-vol" viewBox="0 0 1040 380" role="img" aria-label="月間距離の棒グラフ"></svg></div>
+    <figcaption id="vol-caption">—</figcaption>
   </figure>
+</section>
 
-  <div class="tablebox">
-    <table>
-      <thead><tr><th></th><th colspan="3">ジョグ（心拍120台）</th><th colspan="2">速いペース帯</th></tr>
-      <tr><th>項目</th><th>8月平均<br>（5本）</th><th>8/24・8/25</th><th>9/1〜9/3</th><th>8/19・8/20</th><th>8/27・8/30</th></tr></thead>
-      <tbody>
-        <tr><td>ペース</td><td>7'54"</td><td>7'41" / 7'37"</td><td>7'47" / 8'15" / 8'25"</td><td>5'45" / 5'54"</td><td>5'14" / 5'35"</td></tr>
-        <tr><td>心拍</td><td>122</td><td>124 / 124</td><td>123 / 123 / 117</td><td>144 / 150</td><td>156 / 151</td></tr>
-        <tr class="mark"><td><strong>ピッチ</strong></td><td>162.8</td><td>168 / 170</td><td class="good"><strong>171 / 169 / 165</strong></td><td class="crit">162 / 152</td><td class="good"><strong>168 / 168</strong></td></tr>
-        <tr class="mark"><td><strong>接地時間</strong></td><td>298 ms</td><td>286 / 283</td><td class="good">285 / 283 / 286</td><td class="crit">344 / 302</td><td class="good">290 / 291</td></tr>
-        <tr><td>歩幅</td><td>77 cm</td><td>76 / 76</td><td class="good">74 / 71 / 71</td><td>107 / 111</td><td>112 / 106</td></tr>
-        <tr class="mark"><td><strong>Zone 2率</strong></td><td>—</td><td>81% / 85%</td><td class="good"><strong>97% / 97% / 85%</strong></td><td>4% / 2%</td><td>2% / 2%</td></tr>
-      </tbody>
-    </table>
-  </div>
-
+<section>
   <div class="col">
-    <ul class="pts">
-      <li><strong>速いペース帯：ピッチ152〜162 → 168</strong>。接地時間 344/302ms → 290/291ms。歩幅は107〜112cmで不変</li>
-      <li><strong>ジョグ：ピッチ162.8 → 169〜171</strong>。歩幅は77cm → 71〜74cmに縮んだ</li>
-      <li>上下動は速い日9.5cm、ジョグ8.4〜8.8cm</li>
-    </ul>
+    <div class="shead"><span class="snum">02</span><h2>フォームの推移</h2></div>
+    <p class="sub">ピッチ・接地時間の変化。緑はピッチを意識し始めた8/24以降</p>
   </div>
+  <figure>
+    <div class="figtitle">ピッチと接地時間</div>
+    <div class="figsub" id="trend-figsub">—</div>
+    <div class="chartbox"><svg id="chart-trend" viewBox="0 0 1040 460" role="img" aria-label="ピッチと接地時間の推移"></svg></div>
+  </figure>
+  <div class="tablebox" id="form-compare"></div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">03</span><h2>Zone 2 の実績</h2></div>
+    <p class="sub">資料の目安：練習の80〜90%はZone 2（心拍110〜127・最大心拍184設定）</p>
+  </div>
+  <figure>
+    <div class="figtitle">1本ごとのZone 2率</div>
+    <div class="figsub" id="zone-figsub">—</div>
+    <div class="chartbox"><svg id="chart-zone" viewBox="0 0 1040 400" role="img" aria-label="Zone2率の推移"></svg></div>
+    <figcaption>資料の目安は80〜90%。緑の線がその範囲。</figcaption>
+  </figure>
 </section>
 
 <section>
@@ -396,116 +218,13 @@ footer p{margin:0 0 8px}
     <div class="shead"><span class="snum">04</span><h2>目標タイム</h2></div>
     <p class="sub">第一目標は「サブ5（5時間切り）」</p>
   </div>
-
   <div class="tablebox">
     <table>
-      <thead><tr><th>目標</th><th>必要ペース</th><th>いまのジョグとの差</th></tr></thead>
+      <thead><tr><th>目標</th><th>必要ペース</th><th>備考</th></tr></thead>
       <tbody>
-        <tr><td>完走（6時間）</td><td>8'32"/km</td><td class="good">現状のジョグより遅い</td></tr>
-        <tr class="mark"><td><strong>サブ5</strong></td><td><strong>7'07"/km</strong></td><td class="good">心拍130前後で出せる</td></tr>
-        <tr><td>4時間30分</td><td>6'24"/km</td><td class="warn">閾値6'16"に近い</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="col">
-    <ul class="pts">
-      <li>1月末の勝田は気温一桁が普通。25〜33℃の現在より心拍は下がる条件になる</li>
-    </ul>
-  </div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="shead"><span class="snum">05</span><h2>心拍ゾーンの内訳と、資料の目安</h2></div>
-    <p class="sub">資料の目安「練習の80〜90%はZone 2」に対する実績</p>
-
-    <ul class="pts">
-      <li>最大心拍184の設定では Zone 2＝<strong>110〜127拍</strong></li>
-      <li>Zone 2率：<strong>7月 37.4% → 8月 60.6% → 9月 93%</strong>（3本平均）</li>
-    </ul>
-  </div>
-
-  <figure>
-    <figcaption>心拍ゾーンごとの滞在時間<span class="cap-note">2026年7〜8月／Amazfit装着後の全ラン20本・計1,163分</span></figcaption>
-
-    <div class="zrow">
-      <div class="zlab"><span>7月 ＋ 8月 合計</span><span>1,163分</span></div>
-      <div class="zbar">
-        <span style="width:21.4%; background:var(--accent-soft); color:var(--ink-2)">21%</span>
-        <span style="width:45.8%; background:var(--accent)">46%</span>
-        <span style="width:25.6%; background:var(--warn)">26%</span>
-        <span style="width:6.8%;  background:var(--crit); color:#fff">7%</span>
-        <span style="width:0.4%;  background:var(--ink-2)"></span>
-      </div>
-    </div>
-
-    <div class="zrow">
-      <div class="zlab"><span>7月</span><span>742分</span></div>
-      <div class="zbar">
-        <span style="width:28.5%; background:var(--accent-soft); color:var(--ink-2)">29%</span>
-        <span style="width:37.4%; background:var(--accent)">37%</span>
-        <span style="width:29.6%; background:var(--warn)">30%</span>
-        <span style="width:4.6%;  background:var(--crit); color:#fff">5%</span>
-      </div>
-    </div>
-
-    <div class="zrow">
-      <div class="zlab"><span>8月</span><span>421分</span></div>
-      <div class="zbar">
-        <span style="width:9.0%;  background:var(--accent-soft); color:var(--ink-2)">9%</span>
-        <span style="width:60.6%; background:var(--accent)">61%</span>
-        <span style="width:18.6%; background:var(--warn)">19%</span>
-        <span style="width:10.6%; background:var(--crit); color:#fff">11%</span>
-        <span style="width:1.2%;  background:var(--ink-2)"></span>
-      </div>
-    </div>
-
-    <div class="zkey">
-      <span><i style="background:var(--accent-soft); color:var(--ink-2)"></i>Zone 1 ／ 〜109拍</span>
-      <span><i style="background:var(--accent)"></i>Zone 2 ／ 110〜127拍</span>
-      <span><i style="background:var(--warn)"></i>Zone 3 ／ 128〜146拍</span>
-      <span><i style="background:var(--crit)"></i>Zone 4 ／ 147〜164拍</span>
-      <span><i style="background:var(--ink-2)"></i>Zone 5 ／ 165拍〜</span>
-    </div>
-
-    <div class="target-line"><strong>7〜8月の平均は 45.8%。</strong>ペース走・練習会・15km走が Zone 3以上で、そのぶん割合が下がっていた。<strong>9月は3本平均93%。</strong>9/3は心拍117と低く、15%がZone 1に落ちたぶん85%になった。</div>
-  </figure>
-
-  <div class="col">
-    <ul class="pts">
-      <li>1本ごとの推移：8/24 81% → 8/25 85% → <strong>9/1 97% → 9/2 97% → 9/3 85%</strong></li>
-      <li>9月の2本はラップの心拍が119〜124でほぼ一定。ペースを落として心拍を守った結果</li>
-    </ul>
-    <div class="callout">
-      <span class="lbl">資料と照合して分かること</span>
-      <p style="margin-bottom:0">資料のフォーム3ポイントは<strong>前傾・腕振り・オーバーストライド回避</strong>。ピッチの指摘は資料になく、走りを見た上での個別指導だった。</p>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="shead"><span class="snum">06</span><h2>プログラムのロードマップと、いまの位置</h2></div>
-    <p class="sub">プログラムのロードマップに実績を並べたもの</p>
-
-    <ul class="pts">
-      <li>走行量は目安を上回っている（7月82.0km／8月77.4km）</li>
-      <li>8/30の15.02kmで、<strong>9月の目安「10km安定」を先に上回った</strong></li>
-    </ul>
-  </div>
-
-  <div class="tablebox">
-    <table>
-      <thead><tr><th>月</th><th>ロードマップの目安</th><th>実績</th><th>最長1本</th></tr></thead>
-      <tbody>
-        <tr><td>7月</td><td>習慣化／〜20km</td><td class="good">82.0km・10本</td><td>5.52km</td></tr>
-        <tr><td>8月</td><td>ジョグ習慣／〜30km</td><td class="good">77.4km・17本</td><td class="good">15.02km</td></tr>
-        <tr class="mark"><td>9月</td><td><strong>10km安定</strong>／〜50km</td><td>10.1km・2本<span style="color:var(--ink-3)">（9/2時点）</span></td><td>5.14km</td></tr>
-        <tr><td>10月</td><td>20km挑戦／〜70km</td><td>—</td><td>—</td></tr>
-        <tr><td>11月</td><td>30kmピーク／〜90km</td><td>—</td><td>—</td></tr>
-        <tr><td>12月</td><td>テーパリング／〜50km</td><td>—</td><td>—</td></tr>
-        <tr><td>1月</td><td>本番（1/31）</td><td>—</td><td>—</td></tr>
+        <tr><td>完走（6時間）</td><td>8'32"/km</td><td>関門の目安。現状のジョグより遅い</td></tr>
+        <tr class="mark"><td><strong>サブ5</strong></td><td><strong>7'07"/km</strong></td><td>Zone 2の心拍帯で出せるペース</td></tr>
+        <tr><td>4時間30分</td><td>6'24"/km</td><td>閾値ペース（3km 15:37）に近い</td></tr>
       </tbody>
     </table>
   </div>
@@ -513,328 +232,245 @@ footer p{margin:0 0 8px}
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">07</span><h2>勝田までの道のり</h2></div>
-    <p class="sub">8月の実績、9月の目標、ロング走は本番まで5kmずつ積む</p>
+    <div class="shead"><span class="snum">05</span><h2>今月の目標</h2></div>
+    <p class="sub" id="goal-sub">—</p>
   </div>
+  <div class="verdict" id="goal-cards"></div>
+</section>
 
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">06</span><h2>勝田までの道のり</h2></div>
+    <p class="sub">ロング走は本番まで5kmずつ積む</p>
+  </div>
   <div class="tablebox">
     <table>
-      <thead><tr><th>8月の目標</th><th>目標値</th><th>実績</th><th>達成率</th></tr></thead>
+      <thead><tr><th>月</th><th>ロング走の目安</th><th>前回比</th></tr></thead>
       <tbody>
-        <tr class="mark"><td>Zone 2 で走る時間</td><td>240 分</td><td>307 分（5時間7分）</td><td class="good">128%</td></tr>
-        <tr class="mark"><td>ラン本数</td><td>8 本</td><td>17 本</td><td class="good">213%</td></tr>
-        <tr class="mark"><td>いつもより1回長め</td><td>15 km</td><td>15.02 km（8/30）</td><td class="good">100%</td></tr>
+        <tr><td>9月</td><td>20 km</td><td class="warn">+33%</td></tr>
+        <tr><td>10月</td><td>25 km</td><td>+25%</td></tr>
+        <tr><td>11月</td><td>30 km</td><td>+20%</td></tr>
+        <tr><td>12月</td><td>35 km</td><td>+17%</td></tr>
+        <tr><td>1月</td><td>42.195 km（本番）</td><td>+21%</td></tr>
       </tbody>
     </table>
   </div>
-
   <div class="col">
-    <div class="verdict" style="margin:0 0 26px">
-      <div class="vcard">
-        <div class="k">9月／ラン本数</div><div class="v">3<span style="font-size:.45em"> / 12本</span></div>
-        <div class="pb"><i style="width:25%"></i></div>
-        <div class="n">達成率 25%。合計15.05km</div>
-      </div>
-      <div class="vcard">
-        <div class="k">9月／Zone 2</div><div class="v">114<span style="font-size:.45em"> / 320分</span></div>
-        <div class="pb"><i style="width:36%"></i></div>
-        <div class="n">達成率 36%。3本平均で Zone 2率93%</div>
-      </div>
-      <div class="vcard">
-        <div class="k">9月／ロング走</div><div class="v">—<span style="font-size:.45em"> / 20km</span></div>
-        <div class="pb"><i style="width:0%"></i></div>
-        <div class="n">9月後半に1本。今週の上限は16.5km</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="tablebox">
-    <table>
-      <thead><tr><th>ロング走の計画</th><th>距離</th><th>前回比</th><th>所要時間の目安</th></tr></thead>
-      <tbody>
-        <tr class="mark"><td>9月</td><td><strong>20 km</strong></td><td class="warn">+33%</td><td>2:22 〜 2:35</td></tr>
-        <tr><td>10月</td><td>25 km</td><td>+25%</td><td>2:57 〜 3:13</td></tr>
-        <tr><td>11月</td><td>30 km</td><td>+20%</td><td>3:33 〜 3:52</td></tr>
-        <tr><td>12月</td><td>35 km</td><td>+17%</td><td>4:09 〜 4:31</td></tr>
-        <tr><td>1月</td><td>42.195 km（本番）</td><td>+21%</td><td>—</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="col">
-    <ul class="pts">
-      <li>増加率は <strong>+33% → +25% → +20% → +17%</strong> と進むほど緩やかになる。山場は9月の20km</li>
-      <li>最長35kmだと本番の「はみ出し」は<strong>+21%（未知7.2km）</strong></li>
-    </ul>
-
     <div class="callout">
       <span class="lbl">先生の基準（2026.09.01の配信）</span>
       <p>比べるのは「先週の合計」ではなく<strong>「直近30日でいちばん長く走った距離」</strong>。<strong>+10〜30%</strong>の日はリスク1.64倍、<strong>+30〜100%</strong>で1.52倍、<strong>2倍以上</strong>で2.28倍。</p>
-      <p style="margin-bottom:0">増やす順番は <strong>① 頻度 → ② 時間 → ③ 強度</strong>。同時に2つ以上増やさない。増やした分はすべてゆっくりに充てる。</p>
+      <p style="margin-bottom:0">増やす順番は <strong>① 頻度 → ② 時間 → ③ 強度</strong>。同時に2つ以上増やさない。</p>
     </div>
-
-    <ul class="pts">
-      <li>いまの基準（直近30日の最長）：<strong>15.02 km</strong>（8/30）</li>
-      <li>今週のロング走の上限：<strong>16.5 km</strong>（15.02 × 1.1）</li>
-      <li>参考：8/30の15.02kmは、直前の基準5.82kmから<strong>+158%</strong>だった</li>
-    </ul>
+    <ul class="pts" id="overload-status"></ul>
   </div>
 </section>
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">08</span><h2>元データ</h2></div>
-    <p class="sub">Amazfit Active Max の記録した全ラン27本／2026.07.18 — 09.03</p>
-    <p><strong>表示値</strong>＝Zeppアプリの数字そのまま（歩行・信号待ち込みの全体平均）。<strong>走行中</strong>＝1秒ログから走行区間だけを再計算した値。ピッチのみ併記、他は表示値。<strong>緑の行は走行中ピッチ170以上。</strong></p>
+    <div class="shead"><span class="snum">07</span><h2>元データ</h2></div>
+    <p class="sub" id="raw-sub">—</p>
   </div>
-
   <div class="tablebox">
     <table>
-      <thead><tr><th>日付</th><th>距離<br>km</th><th>時間</th><th>ペース<br>/km</th><th>心拍<br>bpm</th><th>ピッチ<br>表示値</th><th>ピッチ<br>走行中</th><th>歩幅<br>cm</th><th>接地<br>ms</th><th>上下動<br>cm</th></tr></thead>
-      <tbody>
-        <tr><td>07/18</td><td>4.13</td><td>32:35</td><td>7&#39;53&quot;</td><td>—</td><td>162</td><td><strong>164</strong></td><td>—</td><td>—</td><td>—</td></tr>
-        <tr><td>07/19</td><td>44.23</td><td>576:01</td><td>13&#39;01&quot;</td><td>117</td><td>100</td><td><strong>164</strong></td><td>76</td><td>326</td><td>7.0</td></tr>
-        <tr><td>07/20</td><td>1.08</td><td>8:59</td><td>8&#39;19&quot;</td><td>123</td><td>147</td><td><strong>169</strong></td><td>81</td><td>285</td><td>8.7</td></tr>
-        <tr><td>07/24</td><td>4.42</td><td>31:31</td><td>7&#39;07&quot;</td><td>129</td><td>165</td><td><strong>167</strong></td><td>84</td><td>284</td><td>8.8</td></tr>
-        <tr><td>07/25</td><td>2.35</td><td>27:44</td><td>11&#39;48&quot;</td><td>138</td><td>117</td><td><strong>168</strong></td><td>72</td><td>280</td><td>8.2</td></tr>
-        <tr><td>07/26</td><td>8.50</td><td>67:57</td><td>7&#39;59&quot;</td><td>131</td><td>138</td><td>—</td><td>89</td><td>—</td><td>—</td></tr>
-        <tr><td>07/29</td><td>3.67</td><td>30:05</td><td>8&#39;11&quot;</td><td>126</td><td>164</td><td><strong>166</strong></td><td>74</td><td>300</td><td>8.3</td></tr>
-        <tr><td>08/02</td><td>4.71</td><td>47:45</td><td>10&#39;08&quot;</td><td>124</td><td>154</td><td>—</td><td>64</td><td>309</td><td>7.4</td></tr>
-        <tr><td>08/05</td><td>5.22</td><td>40:46</td><td>7&#39;48&quot;</td><td>126</td><td>161</td><td><strong>164</strong></td><td>79</td><td>314</td><td>8.2</td></tr>
-        <tr><td>08/08</td><td>4.29</td><td>39:05</td><td>9&#39;06&quot;</td><td>123</td><td>163</td><td>—</td><td>67</td><td>302</td><td>8.0</td></tr>
-        <tr><td>08/09</td><td>1.89</td><td>14:26</td><td>7&#39;38&quot;</td><td>138</td><td>165</td><td><strong>167</strong></td><td>79</td><td>278</td><td>9.0</td></tr>
-        <tr class="mark"><td>08/09</td><td>0.75</td><td>3:56</td><td>5&#39;15&quot;</td><td>153</td><td>174</td><td><strong>175</strong></td><td>109</td><td>259</td><td>9.1</td></tr>
-        <tr><td>08/10</td><td>5.20</td><td>41:07</td><td>7&#39;54&quot;</td><td>124</td><td>166</td><td><strong>168</strong></td><td>76</td><td>282</td><td>8.5</td></tr>
-        <tr><td>08/11</td><td>5.33</td><td>40:01</td><td>7&#39;30&quot;</td><td>124</td><td>164</td><td><strong>165</strong></td><td>81</td><td>296</td><td>8.7</td></tr>
-        <tr><td>08/12</td><td>4.87</td><td>40:22</td><td>8&#39;17&quot;</td><td>120</td><td>162</td><td><strong>163</strong></td><td>74</td><td>309</td><td>8.7</td></tr>
-        <tr><td>08/15</td><td>3.71</td><td>30:14</td><td>8&#39;09&quot;</td><td>117</td><td>163</td><td><strong>165</strong></td><td>75</td><td>288</td><td>9.1</td></tr>
-        <tr><td>08/19</td><td>5.63</td><td>32:24</td><td>5&#39;45&quot;</td><td>144</td><td>162</td><td><strong>163</strong></td><td>107</td><td>344</td><td>8.9</td></tr>
-        <tr><td>08/20</td><td>1.21</td><td>11:08</td><td>9&#39;12&quot;</td><td>113</td><td>122</td><td><strong>163</strong></td><td>89</td><td>319</td><td>7.4</td></tr>
-        <tr><td>08/20</td><td>5.82</td><td>34:25</td><td>5&#39;54&quot;</td><td>150</td><td>152</td><td><strong>164</strong></td><td>111</td><td>302</td><td>8.8</td></tr>
-        <tr><td>08/22</td><td>2.08</td><td>45:02</td><td>21&#39;39&quot;</td><td>117</td><td>66</td><td><strong>167</strong></td><td>70</td><td>283</td><td>8.2</td></tr>
-        <tr class="mark"><td>08/24</td><td>3.96</td><td>30:31</td><td>7&#39;41&quot;</td><td>124</td><td>168</td><td><strong>168</strong></td><td>76</td><td>286</td><td>8.8</td></tr>
-        <tr class="mark"><td>08/25</td><td>4.00</td><td>30:33</td><td>7&#39;37&quot;</td><td>124</td><td>170</td><td><strong>170</strong></td><td>76</td><td>283</td><td>8.7</td></tr>
-        <tr class="mark"><td>08/27</td><td>3.67</td><td>19:13</td><td>5&#39;14&quot;</td><td>156</td><td>168</td><td><strong>168</strong></td><td>112</td><td>290</td><td>9.5</td></tr>
-        <tr class="mark"><td>08/30</td><td>15.02</td><td>84:06</td><td>5&#39;35&quot;</td><td>151</td><td>168</td><td><strong>168</strong></td><td>106</td><td>291</td><td>9.5</td></tr>
-        <tr class="mark"><td>09/01</td><td>5.14</td><td>40:03</td><td>7&#39;47&quot;</td><td>123</td><td>171</td><td><strong>171</strong></td><td>74</td><td>285</td><td>8.7</td></tr>
-        <tr class="mark"><td>09/02</td><td>4.98</td><td>41:03</td><td>8&#39;15&quot;</td><td>123</td><td>169</td><td><strong>169</strong></td><td>71</td><td>283</td><td>8.4</td></tr>
-        <tr class="mark"><td>09/03</td><td>4.93</td><td>41:27</td><td>8&#39;25&quot;</td><td>117</td><td>165</td><td><strong>165</strong></td><td>71</td><td>286</td><td>8.7</td></tr>
-      </tbody>
+      <thead><tr>
+        <th>日付</th><th>距離<br>km</th><th>時間</th><th>ペース<br>/km</th><th>心拍<br>bpm</th>
+        <th>Zone2<br>割合</th><th>ピッチ<br>spm</th><th>歩幅<br>cm</th><th>接地<br>ms</th>
+      </tr></thead>
+      <tbody id="raw-table"></tbody>
     </table>
   </div>
-
-  <div class="col">
-    <p style="font-size:15px; color:var(--ink-3)">データ元はすべて Amazfit Active Max（Stravaは書き出しの経路）。3〜6月はスマホGPS記録のため心拍・ピッチなし。7/26はウォーキングモードで記録されており、接地時間・上下動は計測対象外（ピッチは歩行時の値）。<br>7/19の44.23kmは走行判定2時間18分／記録9時間36分で実質ロングウォーク。8/22はフォーム練習のため表示値のピッチが66と低い。</p>
+  <div class="notes">
+    <span class="lbl">注記</span>
+    <div style="font-size:13.5px; color:var(--ink-3); line-height:1.7">
+      距離・時間・心拍・歩幅・接地時間はZeppアプリの表示値（歩行・信号待ち込みの全体平均）。
+      <strong>ピッチのみ、1秒ログから走行区間だけを抽出した実測値</strong>（歩行の影響を除いた実際の回転数）。
+      3〜7月上旬はスマホGPS記録のため心拍・ピッチなし。7/26はウォーキングモードで記録され接地時間・上下動は計測対象外。
+      7/19の44.23kmは走行判定2時間18分で実質ロングウォーク。9/1以降はZeppアプリの表示値を元に手入力（走行中ピッチは表示値と同一として扱う）。
+    </div>
   </div>
 </section>
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">09</span><h2>メモ</h2></div>
-    <p class="sub">指摘やアドバイスをもらったら、ここに追記していきます</p>
+    <div class="shead"><span class="snum">08</span><h2>メモ</h2></div>
+    <p class="sub">指摘やアドバイスをもらったら、ここに追記していく</p>
 
     <div class="notes">
-      <span class="lbl">2026.08.24 ／ 8/24のランについて</span>
-      <div class="lines" style="color:var(--ink)">
+      <span class="lbl">2026.09.02 ／ 先生からのフィードバック（8/24のラン）</span>
+      <div style="color:var(--ink)">
         <ul class="pts" style="margin:0">
           <li>ピッチが上がったことで接地時間が短くなったのは、意識した結果</li>
-          <li><strong>平均より速いペースで、かつ慣れないフォームなのに、平均心拍がほぼ同じだった点が良い</strong></li>
+          <li><strong>平均より速いペースで、慣れないフォームなのに、平均心拍がほぼ同じだった点が良い</strong></li>
           <li>総評は「めちゃくちゃ良いラン」</li>
         </ul>
       </div>
     </div>
 
-    <div class="notes" style="margin-top:22px">
-      <span class="lbl">2026.08.25 ／ 心拍ゾーンの設定について（記録のみ）</span>
-      <div class="lines" style="color:var(--ink)">
-        <ul class="pts" style="margin:0">
-          <li>時計の心拍ゾーンは<strong>初期設定のまま</strong>（220−年齢＝最大心拍184で計算されている）</li>
-          <li>実測の最大は<strong>192</strong>（7/26のワークアウト）。8/07に180。ランでの最大は169</li>
-          <li>設定を192にすると、7〜8月のZone 2は <strong>45.8% → 48.6%</strong> に変わる（Zone 1は21.4%→30.2%）</li>
-          <li>ただし筋トレ中の光学式心拍は誤検出しやすく、192の信頼性は不明</li>
-          <li>本レポートの数値は<strong>すべて初期設定（184）のまま</strong>で計算している</li>
-        </ul>
+    <div class="notes" style="margin-top:14px">
+      <span class="lbl">2026.09.01 ／ 大会情報</span>
+      <div style="color:var(--ink); font-size:15px">
+        第74回は開催日（2027年1月31日）のみ発表済み。第73回の実績値：スタート10:30・制限6時間・参加費8,000円。
+        前回のエントリーは先行9/12〜24・一般9/26〜10/31。<strong>同時期なら今月中に開始</strong>、公式サイトの新着情報を要確認。
       </div>
     </div>
 
-    <p style="margin-top:18px">指摘の中心は<strong>ペースと心拍の関係</strong>だった。ピッチや接地時間は意識すれば動かせるが、<em>同じ心拍のまま速く走れたことは意識では作れない</em>。フォーム変更が有酸素効率の向上として出ていることになる。</p>
-    <ul class="pts">
-      <li>当時の確認点「距離が伸びてもピッチを維持できるか」「速く走る日に維持できるか」は、<strong>8/27・8/30でどちらも確認できた</strong>（3.67km 5'14"／15.02km 5'35" ともピッチ168）</li>
-    </ul>
-
-    <div class="notes" style="margin-top:22px">
-      <span class="lbl">2026.09.01 ／ 9月最初のラン</span>
-      <div class="lines" style="color:var(--ink)">
-        <ul class="pts" style="margin:0">
-          <li>5.14km / 40:03 / 7'47" / 心拍123</li>
-          <li><strong>ピッチ171・Zone 2率97%（39分02秒）でどちらも最高値</strong></li>
-          <li>メトロノームを聴きながら走った。ケイデンスのばらつきが明らかに小さい</li>
-          <li>歩幅は74cmで、8月ジョグ平均77cm・8/24-25の76cmよりさらに縮んだ</li>
-          <li>ラップは 7'08" → 9'26" と落ちたが、心拍は119〜124で一定。Zone 2を守った結果</li>
-        </ul>
-        <p style="margin:10px 0 0"><strong>9/3（3日連続・人と一緒に走った日）</strong>：4.93km / 41:27 / 8'25" / 心拍117。Zone 2率85%（35分26秒）。<strong>相手のペースに合わせたため、ペース・ピッチ・心拍がいずれも下がっている</strong>（ピッチ 171→169→165、心拍123→123→117）。歩幅は71cmで9/2と同じなので、遅くなったぶんはピッチで調整されている。1km目を9'20"（心拍109）とゆっくり入り、2km目以降は8'11"〜8'14"・心拍117〜120で安定した。</p>
-    <p style="margin:10px 0 0"><strong>9/2（2日連続）</strong>：4.98km / 41:03 / 8'15" / 心拍123。<strong>Zone 2率97%（40分04秒）で2日連続</strong>。ピッチ169、歩幅71cm、上下動8.4cmはいずれも直近で最小。ラップの心拍が 122・122・123・122・122 とほぼ完全に一定だった。</p>
+    <div class="notes" style="margin-top:14px">
+      <span class="lbl">2026.08.25 ／ 心拍ゾーン設定について（記録のみ・未対応）</span>
+      <div style="color:var(--ink); font-size:15px">
+        時計は初期設定のまま（220−年齢＝最大心拍184）。実測の最大は192（7/26のワークアウト、ただし筋トレ中の光学式心拍は誤検出しやすく信頼性は不明）。
+        本レポートの数値はすべて184基準で計算している。判断は先生待ち。
       </div>
     </div>
 
-    <div class="notes" style="margin-top:22px">
-      <span class="lbl">2026.08.30 ／ 数値の訂正</span>
-      <div class="lines" style="color:var(--ink)">
-        <ul class="pts" style="margin:0">
-          <li>8/24の接地時間を <strong>266ms → 286ms</strong>、ピッチを 169 → 168 に訂正</li>
-          <li>スクリーンショットから読んだ値に誤りがあったため、Stravaの元ファイルの値に置き換えた</li>
-          <li>8/24 → 8/25 は 286→283ms で、わずかに短縮していたことになる</li>
-        </ul>
-      </div>
-    </div>
-
-    <p style="margin-top:20px; font-size:15px; color:var(--ink-3)">※ 目標タイムはサブ5想定。</p>
-  </div>
-
-  <div class="tablebox">
-    <table>
-      <thead><tr><th>第73回（2026.1.25）の実績値</th><th>時間</th><th>必要ペース</th></tr></thead>
-      <tbody>
-        <tr><td>第1関門 17.6km</td><td>2時間30分</td><td>8'31"/km</td></tr>
-        <tr><td>第2関門 30.0km</td><td>4時間30分</td><td>9'00"/km</td></tr>
-        <tr><td>第3関門 34.9km</td><td>5時間10分</td><td>8'53"/km</td></tr>
-        <tr class="mark"><td><strong>フィニッシュ</strong></td><td><strong>6時間</strong>（16:30）</td><td><strong>8'32"/km</strong></td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="col">
-    <ul class="pts">
-      <li>第74回は開催日（2027年1月31日）のみ発表済み。種目・要項は未発表</li>
-      <li>上は第73回の実績値。スタート10:30／参加費8,000円／満18歳以上</li>
-      <li>前回のエントリーは<strong>先行9/12〜24・一般9/26〜10/31</strong>。<strong>同時期なら今月中に開始</strong>。公式サイトの新着情報を要確認</li>
-    </ul>
+    <p style="margin-top:20px; font-size:14px; color:var(--ink-3)">※ 目標タイムはサブ5想定。</p>
   </div>
 </section>
+</div>
 
 <footer>
-  <div class="col">
-    <div class="tablebox" style="margin-top:0">
-      <table style="min-width:0">
-        <thead><tr><th>更新日</th><th>内容</th></tr></thead>
-        <tbody>
-          <tr><td>2026.08.23</td><td>初版。3〜8月のラン41本を集計</td></tr>
-          <tr><td>2026.08.24</td><td>ピッチを上げる意識に切り替えた1本を追加</td></tr>
-          <tr><td>2026.08.25</td><td>8/25を追加。ピッチ170に到達。先生のフィードバックを記録</td></tr>
-          <tr><td>2026.08.30</td><td>Stravaを再取得し8/27・8/30を追加。15.02kmで月間最長を更新</td></tr>
-          <tr><td>2026.09.01</td><td>8月の達成率と9月の目標、ロング走の5ヶ月計画を追加</td></tr>
-          <tr><td>2026.09.01</td><td>9/1のランを追加。ピッチ171・Zone2 97%でどちらも最高値</td></tr>
-          <tr><td>2026.09.02</td><td>9/2のランを追加。Zone2 97%が2日連続</td></tr>
-          <tr><td>2026.09.03</td><td>全体を見直し。古い記述を更新し、文章を整理して累計データ中心の構成に</td></tr>
-          <tr class="mark"><td>2026.09.03</td><td>9/3のランを追加（人と一緒に走った日）</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="margin-top:24px"><strong>データについて</strong>／Stravaの全アクティビティ書き出し（2026年8月30日取得）127件のうち、ランニング45本が対象。うち24本はAmazfit Active MaxのFITファイルで、1秒ごとの心拍・ピッチ・歩幅・接地時間・上下動を含む。9/1以降はZeppアプリの表示値を手入力している。</p>
-    <p>フォーム指標の平均は<strong>速度2.0m/s（8'20"/km）以上かつピッチ検出ありの区間のみ</strong>で再計算した値。フル予測タイムはリーゲルの公式（指数1.06）による理論値で、走り込み量は考慮していない。</p>
-    <p style="color:var(--ink-3); font-size:15px">このページは月次で更新していきます。URLは変わりません。</p>
+  <div class="wrap">
+    <p><strong>データについて</strong>／Amazfit Active Maxで記録。Strava経由で書き出したFITファイル（1秒ごとの心拍・ピッチ・歩幅・接地時間・上下動）と、Zeppアプリの表示値を併用。フォーム指標は速度2.0m/s以上かつピッチ検出ありの区間のみで再計算。フル予測タイムはリーゲルの公式（指数1.06）。</p>
+    <p><strong>更新のしかた</strong>／このHTML内の <code>RUNS</code> 配列に1本分のデータを追加するだけ。グラフ・表・進捗はすべて自動で再計算される。URLは変わらない。</p>
   </div>
 </footer>
 
-</div>
-
 <script>
 (function(){
-  // 本番までのカウントダウン（1秒ごとに更新）
-  (function(){
-    var race=new Date(2027,0,31,10,30,0);        // 第74回スタート予定 10:30（前回実績）
-    var elD=document.getElementById("cd-days");
-    var elC=document.getElementById("cd-clock");
-    var elW=document.getElementById("cd-weeks");
-    function p(v){ return v<10 ? "0"+v : ""+v; }
-    function tick(){
-      var ms=race-new Date();
-      if(ms<0) ms=0;
-      var d=Math.floor(ms/86400000);
-      var h=Math.floor(ms%86400000/3600000);
-      var m=Math.floor(ms%3600000/60000);
-      var s=Math.floor(ms%60000/1000);
-      if(elD) elD.textContent=d;
-      if(elC) elC.innerHTML=p(h)+":"+p(m)+':<span class="s">'+p(s)+"</span>";
-      if(elW) elW.textContent="まで残り "+Math.floor(d/7)+"週"+(d%7?(d%7)+"日":"");
-    }
-    tick();
-    setInterval(tick,1000);
-  })();
-
-  // 色はハードコードせずCSS変数のまま埋め込む。
-  // これで印刷用パレットやテーマ切替がSVGにもそのまま効く。
+  var css = getComputedStyle(document.documentElement);
   function C(n){ return "var(" + n + ")"; }
 
-  // ---------- chart 1 : monthly volume ----------
-  var months = [
+  // ============================================================
+  //  データ：ここに1本追加するだけで全部が更新される
+  // ============================================================
+  var RUNS = [{"d": "20260718", "t": "22:30", "km": 4.13, "sec": 1955, "hr": null, "cad": 162, "cadM": 164, "step": null, "gct": null, "vo": null, "z2": null, "note": "心拍・接地時間・上下動が記録されていない"}, {"d": "20260719", "t": "11:59", "km": 44.23, "sec": 34561, "hr": 117, "cad": 100, "cadM": 164, "step": 76, "gct": 326, "vo": 7.0, "z2": 13654, "note": "44.23km/9時間36分。走行判定2時間18分で実質ロングウォーク"}, {"d": "20260720", "t": "18:24", "km": 1.08, "sec": 539, "hr": 123, "cad": 146, "cadM": 169, "step": 81, "gct": 285, "vo": 8.7, "z2": 263, "note": ""}, {"d": "20260724", "t": "20:37", "km": 4.42, "sec": 1891, "hr": 129, "cad": 164, "cadM": 167, "step": 84, "gct": 284, "vo": 8.8, "z2": 269, "note": ""}, {"d": "20260725", "t": "07:34", "km": 2.35, "sec": 1664, "hr": 138, "cad": 116, "cadM": 168, "step": 72, "gct": 280, "vo": 8.2, "z2": 297, "note": ""}, {"d": "20260726", "t": "12:05", "km": 8.5, "sec": 4077, "hr": 131, "cad": 138, "cadM": 166, "step": 89, "gct": null, "vo": null, "z2": 1053, "note": "ウォーキングモードで記録。ピッチは歩行時の値、接地時間・上下動は計測対象外"}, {"d": "20260729", "t": "10:36", "km": 3.67, "sec": 1805, "hr": 126, "cad": 164, "cadM": 166, "step": 74, "gct": 300, "vo": 8.3, "z2": 1111, "note": ""}, {"d": "20260802", "t": "13:43", "km": 4.71, "sec": 2865, "hr": 124, "cad": 154, "cadM": null, "step": 64, "gct": 309, "vo": 7.4, "z2": 2370, "note": ""}, {"d": "20260805", "t": "20:48", "km": 5.22, "sec": 2446, "hr": 126, "cad": 160, "cadM": 164, "step": 79, "gct": 314, "vo": 8.2, "z2": 1835, "note": ""}, {"d": "20260808", "t": "12:52", "km": 4.29, "sec": 2345, "hr": 123, "cad": 162, "cadM": null, "step": 67, "gct": 302, "vo": 8.0, "z2": 2251, "note": ""}, {"d": "20260809", "t": "07:25", "km": 1.89, "sec": 866, "hr": 138, "cad": 164, "cadM": 167, "step": 79, "gct": 278, "vo": 9.0, "z2": 10, "note": ""}, {"d": "20260809", "t": "07:43", "km": 0.75, "sec": 236, "hr": 153, "cad": 174, "cadM": 175, "step": 109, "gct": 259, "vo": 9.1, "z2": 8, "note": ""}, {"d": "20260810", "t": "10:48", "km": 5.2, "sec": 2467, "hr": 124, "cad": 166, "cadM": 168, "step": 76, "gct": 282, "vo": 8.5, "z2": 2324, "note": ""}, {"d": "20260811", "t": "11:00", "km": 5.33, "sec": 2401, "hr": 124, "cad": 164, "cadM": 165, "step": 81, "gct": 296, "vo": 8.7, "z2": 1692, "note": ""}, {"d": "20260812", "t": "20:08", "km": 4.87, "sec": 2422, "hr": 120, "cad": 162, "cadM": 163, "step": 74, "gct": 309, "vo": 8.7, "z2": 2241, "note": ""}, {"d": "20260815", "t": "17:53", "km": 3.71, "sec": 1814, "hr": 117, "cad": 162, "cadM": 165, "step": 75, "gct": 288, "vo": 9.1, "z2": 1654, "note": "トレッドミル"}, {"d": "20260819", "t": "15:51", "km": 5.63, "sec": 1944, "hr": 144, "cad": 162, "cadM": 163, "step": 107, "gct": 344, "vo": 8.9, "z2": 71, "note": ""}, {"d": "20260820", "t": "15:45", "km": 1.21, "sec": 668, "hr": 113, "cad": 122, "cadM": 163, "step": 89, "gct": 319, "vo": 7.4, "z2": 235, "note": "直後のペース走のウォームアップ"}, {"d": "20260820", "t": "16:00", "km": 5.82, "sec": 2065, "hr": 150, "cad": 152, "cadM": 164, "step": 111, "gct": 302, "vo": 8.8, "z2": 37, "note": ""}, {"d": "20260822", "t": "07:15", "km": 2.08, "sec": 2702, "hr": 117, "cad": 66, "cadM": 167, "step": 70, "gct": 283, "vo": 8.2, "z2": 564, "note": "フォーム練習。ドリル中心で歩行が大半のため参考値"}, {"d": "20260824", "t": "21:00", "km": 3.96, "sec": 1831, "hr": 124, "cad": 168, "cadM": 172, "step": 76, "gct": 286, "vo": 8.8, "z2": 1572, "note": ""}, {"d": "20260825", "t": "20:53", "km": 4.0, "sec": 1833, "hr": 124, "cad": 170, "cadM": 173, "step": 76, "gct": 283, "vo": 8.7, "z2": 1415, "note": ""}, {"d": "20260827", "t": "21:06", "km": 3.67, "sec": 1153, "hr": 156, "cad": 168, "cadM": 171, "step": 112, "gct": 290, "vo": 9.5, "z2": 24, "note": ""}, {"d": "20260830", "t": "14:00", "km": 15.02, "sec": 5046, "hr": 151, "cad": 168, "cadM": 171, "step": 106, "gct": 291, "vo": 9.5, "z2": 121, "note": "月間最長。プログラムの9月の目安「10km安定」を上回る"}, {"d": "20260901", "t": "", "km": 5.14, "sec": 2403, "hr": 123, "cad": 171, "cadM": 171, "step": 74, "gct": 285, "vo": 8.7, "z2": 2342, "note": "Zone2 97%（39分02秒）。ピッチ・Zone2率とも過去最高"}, {"d": "20260902", "t": "", "km": 4.98, "sec": 2463, "hr": 123, "cad": 169, "cadM": 169, "step": 71, "gct": 283, "vo": 8.4, "z2": 2404, "note": "Zone2 97%（40分04秒）。2日連続、ラップ心拍122で一定"}, {"d": "20260903", "t": "", "km": 4.93, "sec": 2487, "hr": 117, "cad": 165, "cadM": 165, "step": 71, "gct": 286, "vo": 8.7, "z2": 2126, "note": "人と一緒に走った日。相手のペースに合わせて低めの強度。Zone2 85%（35分26秒）"}];
+
+  // 8月以前の月次サマリー（詳細ログを持たない期間）
+  var MONTHLY_STATIC = [
     {m:"3月", km:18.9, longest:7.81, n:3},
     {m:"4月", km:33.4, longest:9.23, n:5},
     {m:"5月", km:43.3, longest:14.79, n:7},
     {m:"6月", km:23.0, longest:10.79, n:3},
-    {m:"7月", km:82.0, longest:44.23, n:10},
-    {m:"8月", km:77.4, longest:15.02, n:17},
-    {m:"9月", km:15.1, longest:5.14, n:3}
+    {m:"7月", km:82.0, longest:5.52, n:10}
   ];
+
+  var GOALS = { monthKey:"09", label:"9月", runs:12, zone2min:320, longKm:20 }; // 月が変わったらここだけ書き換える
+  var RACE_DATE = new Date(2027,0,31,10,30,0);
+
+  // ---------- helpers ----------
+  function parseD(d){ return new Date(+d.slice(0,4), +d.slice(4,6)-1, +d.slice(6,8)); }
+  function mmss(s){ if(s==null) return "—"; var t=Math.round(s), m=Math.floor(t/60), r=t%60; return m+"'"+(r<10?"0":"")+r+'"'; }
+  function hms(s){ var m=Math.floor(s/60), r=Math.round(s%60); return m+":"+(r<10?"0":"")+r; }
+  function pace(sec,km){ return sec/km; }
+  function fmtShort(d){ return (+d.slice(4,6))+"/"+d.slice(6,8); }
+  function monthLabel(d){ return (+d.slice(4,6))+"月"; }
+  function monthKey(d){ return d.slice(0,6); }
+  function avg(arr){ arr=arr.filter(function(x){return x!=null;}); if(!arr.length) return null; return arr.reduce(function(a,b){return a+b;},0)/arr.length; }
+  function sum(arr){ return arr.filter(function(x){return x!=null;}).reduce(function(a,b){return a+b;},0); }
+
+  var runsSorted = RUNS.slice().sort(function(a,b){ return a.d===b.d ? (a.t||"").localeCompare(b.t||"") : a.d.localeCompare(b.d); });
+  var formRuns = runsSorted.filter(function(r){ return r.cadM!=null; }); // ピッチ計測ありの本
+
+  // ---------- ヘッダー：期間・本数 ----------
   (function(){
+    var last = runsSorted[runsSorted.length-1].d;
+    var staticN = MONTHLY_STATIC.reduce(function(a,m){return a+m.n;},0); // 3〜7月（7月はRUNSの7/18-29分を含む集計値）
+    var augPlusN = runsSorted.filter(function(r){ return monthKey(r.d) >= "202608"; }).length;
+    var totalRuns = staticN + augPlusN;
+    document.getElementById("ev-period").textContent = "記録 2026.03 — " + last.slice(4,6)+"."+last.slice(6,8) + "／ラン" + totalRuns + "本";
+  })();
+
+  // ---------- カウントダウン ----------
+  (function(){
+    var elD=document.getElementById("cd-days"), elC=document.getElementById("cd-clock"), elW=document.getElementById("cd-weeks");
+    function p(v){ return v<10 ? "0"+v : ""+v; }
+    function tick(){
+      var ms=RACE_DATE-new Date(); if(ms<0) ms=0;
+      var d=Math.floor(ms/86400000), h=Math.floor(ms%86400000/3600000), m=Math.floor(ms%3600000/60000), s=Math.floor(ms%60000/1000);
+      elD.textContent=d;
+      elC.innerHTML=p(h)+":"+p(m)+':<span class="s">'+p(s)+"</span>";
+      elW.textContent="まで残り "+Math.floor(d/7)+"週"+(d%7?(d%7)+"日":"");
+    }
+    tick(); setInterval(tick,1000);
+  })();
+
+  // ---------- 月別集計（8月以降はRUNSから、それ以前はSTATIC） ----------
+  function monthlyAll(){
+    var dyn = {};
+    formRuns.concat(runsSorted.filter(function(r){return r.cadM==null && r.d.slice(0,6)>="202608";})).forEach(function(r){
+      var mk = monthKey(r.d);
+      if(mk < "202608") return; // 7月以前はSTATICで扱う
+      if(!dyn[mk]) dyn[mk] = {km:0, longest:0, n:0, label:monthLabel(r.d)};
+      dyn[mk].km += r.km; dyn[mk].n += 1; dyn[mk].longest = Math.max(dyn[mk].longest, r.km);
+    });
+    var out = MONTHLY_STATIC.slice();
+    Object.keys(dyn).sort().forEach(function(k){ out.push({m:dyn[k].label, km:dyn[k].km, longest:dyn[k].longest, n:dyn[k].n}); });
+    return out;
+  }
+
+  // ---------- 上部カード ----------
+  (function(){
+    var months = monthlyAll();
+    var curMonth = months[months.length-1];
+    var now30 = new Date(); now30.setDate(now30.getDate()-30);
+    var maxLong = 0, maxLongDate=null;
+    runsSorted.forEach(function(r){ if(r.km<42 && r.km>maxLong && parseD(r.d)>=now30){ maxLong=r.km; maxLongDate=r.d; } });
+    var recentForm = formRuns.filter(function(r){ return r.d>="20260901"; });
+    var cadRange = recentForm.length ? [Math.min.apply(null,recentForm.map(function(r){return r.cadM;})), Math.max.apply(null,recentForm.map(function(r){return r.cadM;}))] : [null,null];
+
+    var cards = [
+      {k:"直近30日の最長", v:maxLong.toFixed(2)+"km", n:"今週のロング走上限 "+(maxLong*1.1).toFixed(1)+"km", cls:"good"},
+      {k:"直近ピッチ", v:(cadRange[0]===cadRange[1]?cadRange[0]:cadRange[0]+"–"+cadRange[1])+"", n:"9月の走行中平均", cls:""},
+      {k:curMonth.m+"の実績", v:curMonth.km.toFixed(1)+"km", n:curMonth.n+"本／最長"+curMonth.longest.toFixed(1)+"km", cls:""}
+    ];
+    document.getElementById("stat-cards").innerHTML = cards.map(function(c){
+      return '<div class="vcard '+c.cls+'"><div class="k">'+c.k+'</div><div class="v">'+c.v+'</div><div class="n">'+c.n+'</div></div>';
+    }).join("");
+  })();
+
+  // ---------- 01: 月間距離グラフ ----------
+  (function(){
+    var months = monthlyAll();
+    document.getElementById("vol-figsub").textContent = "2026年3月 — " + months[months.length-1].m + "／ランのみ";
+    var last = months[months.length-1];
+    document.getElementById("vol-caption").textContent = months.map(function(m){return m.m+" "+m.km.toFixed(1)+"km";}).slice(-3).join(" ／ ") + "。最長は" + (function(){
+      var mx=0,lbl=""; months.forEach(function(m){ if(m.longest>mx){mx=m.longest; lbl=m.m;} });
+      return lbl+"の"+mx.toFixed(2)+"km";
+    })() + "。";
+
     var svg=document.getElementById("chart-vol");
     var W=1040,H=380,L=58,R=28,T=26,B=58;
-    var iw=W-L-R, ih=H-T-B, max=90;
+    var iw=W-L-R, ih=H-T-B, max=Math.max(90, Math.ceil(Math.max.apply(null,months.map(function(m){return m.km;}))/10)*10);
     var y=function(v){ return T+ih-(v/max)*ih; };
     var bw=iw/months.length, out="";
-    // 7月以降＝Amazfitでフォーム計測している期間
-    var gx = L + bw*4;
-    out+='<rect x="'+gx+'" y="'+T+'" width="'+(iw-bw*4)+'" height="'+ih+'" fill="'+C('--accent-soft')+'" fill-opacity="0.5"/>';
-    out+='<line x1="'+gx+'" y1="'+T+'" x2="'+gx+'" y2="'+(T+ih)+'" stroke="'+C('--accent')+'" stroke-width="1.5" stroke-dasharray="4 3"/>';
-    out+='<text x="'+(gx+10)+'" y="'+(T+16)+'" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--accent-ink')+'">7月〜 Amazfit計測</text>';
-    [0,30,60,90].forEach(function(g){
+    var ticks=[0,Math.round(max/3/10)*10,Math.round(max*2/3/10)*10,max];
+    ticks.forEach(function(g){
       out+='<line x1="'+L+'" y1="'+y(g)+'" x2="'+(W-R)+'" y2="'+y(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
       out+='<text x="'+(L-12)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+g+'</text>';
     });
     months.forEach(function(d,i){
       var cx=L+bw*i+bw/2, w=bw*0.42;
-      out+='<rect x="'+(cx-w/2)+'" y="'+y(d.km)+'" width="'+w+'" height="'+(y(0)-y(d.km))+'" fill="'+C('--accent')+'" rx="1"/>';
+      var isCur = i===months.length-1;
+      out+='<rect x="'+(cx-w/2)+'" y="'+y(d.km)+'" width="'+w+'" height="'+(y(0)-y(d.km))+'" fill="'+(isCur?C('--accent'):C('--accent'))+'" fill-opacity="'+(isCur?1:0.85)+'" rx="1"/>';
       out+='<text x="'+cx+'" y="'+(y(d.km)-10)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="600" fill="'+C('--ink')+'">'+d.km.toFixed(1)+'</text>';
       out+='<text x="'+cx+'" y="'+(H-B+24)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" fill="'+C('--ink-2')+'">'+d.m+'</text>';
       out+='<text x="'+cx+'" y="'+(H-B+42)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="'+C('--ink-3')+'">'+d.n+'本</text>';
     });
-    var pts=months.map(function(d,i){ return [L+bw*i+bw/2, y(Math.min(d.longest,90))]; });
+    var pts=months.map(function(d,i){ return [L+bw*i+bw/2, y(Math.min(d.longest,max))]; });
     out+='<polyline fill="none" stroke="'+C('--steel')+'" stroke-width="2" stroke-dasharray="5 4" points="'+pts.map(function(p){return p[0]+","+p[1];}).join(" ")+'"/>';
     months.forEach(function(d,i){
       var p=pts[i];
       out+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="4.5" fill="'+C('--surface')+'" stroke="'+C('--steel')+'" stroke-width="2"/>';
-      // 棒に重なっても読めるよう、文字の周囲を背景色で縁取りする
       out+='<text x="'+p[0]+'" y="'+(p[1]-13)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="600" paint-order="stroke" stroke="'+C('--surface')+'" stroke-width="3.5" stroke-linejoin="round" fill="'+C('--steel')+'">'+d.longest.toFixed(1)+'</text>';
     });
     out+='<text x="'+L+'" y="'+(T-8)+'" font-family="IBM Plex Mono,monospace" font-size="10.5" letter-spacing="1" fill="'+C('--ink-3')+'">KM</text>';
     svg.innerHTML=out;
   })();
 
-
-  // ---------- chart : フォーム改善の推移 ----------
-  var trend=[
-    {d:"8/02", cad:154, gct:309, t:0},
-    {d:"8/05", cad:161, gct:314, t:0},
-    {d:"8/08", cad:163, gct:302, t:0},
-    {d:"8/09", cad:165, gct:278, t:1},
-    {d:"8/09", cad:174, gct:259, t:1},
-    {d:"8/10", cad:166, gct:282, t:0},
-    {d:"8/11", cad:164, gct:296, t:0},
-    {d:"8/12", cad:162, gct:309, t:0},
-    {d:"8/15", cad:163, gct:288, t:0},
-    {d:"8/19", cad:162, gct:344, t:2},
-    {d:"8/20", cad:152, gct:302, t:2},
-    {d:"8/24", cad:168, gct:286, t:3},
-    {d:"8/25", cad:170, gct:283, t:3},
-    {d:"8/27", cad:168, gct:290, t:3},
-    {d:"8/30", cad:168, gct:291, t:3},
-    {d:"9/01", cad:171, gct:285, t:3},
-    {d:"9/02", cad:169, gct:283, t:3},
-    {d:"9/03", cad:165, gct:286, t:3}
-  ];
+  // ---------- 02: フォーム推移 ----------
   (function(){
+    var trend = formRuns.filter(function(r){ return r.km>=1.2; }); // ドリル・ウォームアップ除外目安
+    document.getElementById("trend-figsub").textContent = "2026年7月〜／ピッチ計測のある" + trend.length + "本";
     var svg=document.getElementById("chart-trend");
-    if(!svg) return;
     var W=1040,L=64,R=24;
     var iw=W-L-R, n=trend.length;
     var x=function(i){ return L + iw*(i/(n-1)); };
@@ -845,83 +481,153 @@ footer p{margin:0 0 8px}
         out+='<line x1="'+L+'" y1="'+y(g)+'" x2="'+(W-R)+'" y2="'+y(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
         out+='<text x="'+(L-10)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+g+'</text>';
       });
-      out+='<line x1="'+L+'" y1="'+y(target)+'" x2="'+(W-R)+'" y2="'+y(target)+'" stroke="'+C('--warn')+'" stroke-width="1.5" stroke-dasharray="5 4"/>';
       out+='<text x="'+(L+10)+'" y="'+(y(target)-8)+'" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--warn')+'">目標 '+target+'</text>';
+      out+='<line x1="'+L+'" y1="'+y(target)+'" x2="'+(W-R)+'" y2="'+y(target)+'" stroke="'+C('--warn')+'" stroke-width="1.5" stroke-dasharray="5 4"/>';
       out+='<polyline fill="none" stroke="'+C('--steel')+'" stroke-width="2" points="'+trend.map(function(r,i){return x(i)+","+y(r[key]);}).join(" ")+'"/>';
       trend.forEach(function(r,i){
-        var col = r.t===3 ? C('--accent') : (r.t===2 ? C('--crit') : (r.t===1 ? C('--warn') : C('--steel')));
-        var rad = r.t===3 ? 8 : 5;
-        out+='<circle cx="'+x(i)+'" cy="'+y(r[key])+'" r="'+rad+'" fill="'+col+'" stroke="'+C('--surface')+'" stroke-width="2"/>';
+        var isNew = r.d>="20260824";
+        var col = isNew ? C('--accent') : C('--steel');
+        out+='<circle cx="'+x(i)+'" cy="'+y(r[key])+'" r="'+(isNew?6:4.5)+'" fill="'+col+'" stroke="'+C('--surface')+'" stroke-width="2"/>';
       });
       var last=trend[n-1];
-      out+='<text x="'+x(n-1)+'" y="'+(y(last[key])-16)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="14" font-weight="700" paint-order="stroke" stroke="'+C('--surface')+'" stroke-width="4" stroke-linejoin="round" fill="'+C('--accent')+'">'+last[key]+'</text>';
-      out+='<text x="'+L+'" y="'+(top-10)+'" font-family="Bricolage Grotesque,sans-serif" font-size="14" font-weight="700" fill="'+C('--ink')+'">'+label+'</text>';
-      out+='<text x="'+(W-R)+'" y="'+(top-10)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+unit+'</text>';
+      out+='<text x="'+x(n-1)+'" y="'+(y(last[key])-14)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="700" paint-order="stroke" stroke="'+C('--surface')+'" stroke-width="4" stroke-linejoin="round" fill="'+C('--accent')+'">'+Math.round(last[key])+'</text>';
+      out+='<text x="'+L+'" y="'+(top-10)+'" font-family="Bricolage Grotesque,sans-serif" font-size="13" font-weight="700" fill="'+C('--ink')+'">'+label+'</text>';
+      out+='<text x="'+(W-R)+'" y="'+(top-10)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--ink-3')+'">'+unit+'</text>';
     }
-    panel(30,150,"cad",145,180,[150,160,170,180],170,"ピッチ","spm");
+    panel(30,150,"cadM",140,185,[150,160,170,180],170,"ピッチ","spm");
     panel(260,150,"gct",250,355,[260,290,320,350],280,"接地時間","ms");
     trend.forEach(function(r,i){
-      out+='<text x="'+x(i)+'" y="446" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+(r.t===3?C('--accent'):C('--ink-3'))+'">'+r.d+'</text>';
+      var isNew = r.d>="20260824";
+      out+='<text x="'+x(i)+'" y="446" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+(isNew?C('--accent'):C('--ink-3'))+'" font-weight="'+(isNew?700:400)+'">'+fmtShort(r.d)+'</text>';
     });
     svg.innerHTML=out;
   })();
 
-  // ---------- panels : pace vs form ----------
-  var runs=[
-    {d:"07/19", pace:436, cad:164, step:84, gct:284, hl:0},
-    {d:"07/20", pace:476, cad:169, step:83, gct:282, hl:0},
-    {d:"07/24", pace:452, cad:167, step:85, gct:283, hl:0},
-    {d:"07/25", pace:406, cad:168, step:84, gct:275, hl:0},
-    {d:"07/29", pace:476, cad:166, step:78, gct:295, hl:0},
-    {d:"08/05", pace:456, cad:164, step:80, gct:311, hl:0},
-    {d:"08/09", pace:458, cad:167, step:77, gct:278, hl:0},
-    {d:"08/09", pace:312, cad:175, step:107, gct:259, hl:1},
-    {d:"08/10", pace:483, cad:168, step:76, gct:282, hl:0},
-    {d:"08/11", pace:460, cad:165, step:83, gct:293, hl:0},
-    {d:"08/12", pace:478, cad:163, step:78, gct:308, hl:0},
-    {d:"08/15", pace:483, cad:165, step:76, gct:288, hl:0},
-    {d:"08/19", pace:354, cad:163, step:105, gct:345, hl:2},
-    {d:"08/20", pace:393, cad:163, step:94, gct:286, hl:0},
-    {d:"08/20", pace:327, cad:164, step:108, gct:300, hl:0},
-    {d:"08/22", pace:366, cad:167, step:88, gct:274, hl:0},
-    {d:"08/24", pace:461, cad:168, step:76, gct:286, hl:1},
-    {d:"08/25", pace:457, cad:170, step:76, gct:283, hl:1},
-    {d:"08/27", pace:314, cad:168, step:112, gct:290, hl:1},
-    {d:"08/30", pace:335, cad:168, step:106, gct:291, hl:1},
-    {d:"09/01", pace:467, cad:171, step:74, gct:285, hl:1},
-    {d:"09/02", pace:495, cad:169, step:71, gct:283, hl:1},
-    {d:"09/03", pace:505, cad:165, step:71, gct:286, hl:1}
-  ];
-  function panel(id,key,lo,hi,label,unit,ticks,target){
-    var svg=document.getElementById(id);
-    var W=340,H=260,L=46,R=14,T=30,B=42;
-    var iw=W-L-R, ih=H-T-B;
-    var px=function(p){ return L+iw*(1-(p-300)/(500-300)); };
-    var py=function(v){ return T+ih-((v-lo)/(hi-lo))*ih; };
+  // ---------- フォーム比較表：直近5本 vs それ以前のジョグ平均 ----------
+  (function(){
+    var after = formRuns.filter(function(r){ return r.d>="20260824"; }).slice(-6); // 直近6本のみ表示（無限に増えないように）
+    var cutoff = after.length ? after[0].d : "20260824";
+    var before = formRuns.filter(function(r){ return r.d<cutoff && r.km>=3 && r.km<8; });
+    function cell(r,key,fmt){ return "<td>"+(r[key]!=null?fmt(r[key]):"—")+"</td>"; }
+    var rowsHtml = "";
+    rowsHtml += "<tr><td>ペース</td><td>"+mmss(avg(before.map(function(r){return pace(r.sec,r.km);})))+"/km</td>"+after.map(function(r){return cell(r,"sec",function(v){return mmss(pace(v,r.km))+"/km";});}).join("")+"</tr>";
+    rowsHtml += "<tr><td>心拍</td><td>"+Math.round(avg(before.map(function(r){return r.hr;})))+"</td>"+after.map(function(r){return cell(r,"hr",function(v){return Math.round(v);});}).join("")+"</tr>";
+    rowsHtml += '<tr class="mark"><td><strong>ピッチ</strong></td><td>'+avg(before.map(function(r){return r.cadM;})).toFixed(1)+"</td>"+after.map(function(r){return cell(r,"cadM",function(v){return "<strong>"+Math.round(v)+"</strong>";});}).join("")+"</tr>";
+    rowsHtml += '<tr class="mark"><td><strong>接地時間</strong></td><td>'+Math.round(avg(before.map(function(r){return r.gct;})))+" ms</td>"+after.map(function(r){return cell(r,"gct",function(v){return Math.round(v)+"ms";});}).join("")+"</tr>";
+    rowsHtml += "<tr><td>歩幅</td><td>"+Math.round(avg(before.map(function(r){return r.step;})))+" cm</td>"+after.map(function(r){return cell(r,"step",function(v){return Math.round(v)+"cm";});}).join("")+"</tr>";
+    rowsHtml += '<tr class="mark"><td><strong>Zone 2率</strong></td><td>—</td>'+after.map(function(r){
+      if(r.z2==null) return "<td>—</td>";
+      var rate=Math.round(r.z2/r.sec*100);
+      return "<td><strong>"+rate+"%</strong></td>";
+    }).join("")+"</tr>";
+    document.getElementById("form-compare").innerHTML =
+      "<table><thead><tr><th>項目</th><th>8/22以前<br>平均（"+before.length+"本）</th>"+after.map(function(r){return "<th>"+fmtShort(r.d)+"</th>";}).join("")+"</tr></thead><tbody>"+rowsHtml+"</tbody></table>";
+  })();
+
+  // ---------- 03: Zone2率チャート ----------
+  (function(){
+    var z = formRuns.filter(function(r){ return r.z2!=null && r.km>=1.2; });
+    document.getElementById("zone-figsub").textContent = "2026年7月〜／Zone2データのある" + z.length + "本";
+    var svg=document.getElementById("chart-zone");
+    var W=1040,L=54,R=24,T=30,B=48;
+    var H=400, ih=H-T-B, iw=W-L-R;
+    var x=function(i){ return L + iw*(i/(z.length-1)); };
+    var y=function(v){ return T+ih-(v/100)*ih; };
     var out="";
-    ticks.forEach(function(g){
-      out+='<line x1="'+L+'" y1="'+py(g)+'" x2="'+(W-R)+'" y2="'+py(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
-      out+='<text x="'+(L-8)+'" y="'+(py(g)+4)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--ink-3')+'">'+g+'</text>';
+    [0,25,50,75,100].forEach(function(g){
+      out+='<line x1="'+L+'" y1="'+y(g)+'" x2="'+(W-R)+'" y2="'+y(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
+      out+='<text x="'+(L-10)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+g+'%</text>';
     });
-    if(target!==null){
-      out+='<line x1="'+L+'" y1="'+py(target)+'" x2="'+(W-R)+'" y2="'+py(target)+'" stroke="'+C('--warn')+'" stroke-width="1.5" stroke-dasharray="4 3"/>';
-      out+='<text x="'+(W-R)+'" y="'+(py(target)-7)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--warn')+'">目標 '+target+'</text>';
-    }
-    runs.forEach(function(r){
-      var v=r[key]; if(v===null) return;
-      var col = r.hl===1 ? C('--accent') : (r.hl===2 ? C('--crit') : C('--steel'));
-      var rad = r.hl ? 6 : 4.5;
-      out+='<circle cx="'+px(r.pace)+'" cy="'+py(v)+'" r="'+rad+'" fill="'+col+'" fill-opacity="'+(r.hl?1:0.55)+'" stroke="'+col+'" stroke-width="1.5"/>';
+    out+='<rect x="'+L+'" y="'+y(90)+'" width="'+iw+'" height="'+(y(80)-y(90))+'" fill="'+C('--accent-soft')+'" fill-opacity="0.6"/>';
+    out+='<text x="'+(L+8)+'" y="'+(y(85)+4)+'" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--accent-ink')+'">目安 80–90%</text>';
+    var pts = z.map(function(r,i){ return [x(i), y(Math.round(r.z2/r.sec*100))]; });
+    out+='<polyline fill="none" stroke="'+C('--steel')+'" stroke-width="1.5" points="'+pts.map(function(p){return p[0]+","+p[1];}).join(" ")+'"/>';
+    z.forEach(function(r,i){
+      var rate = Math.round(r.z2/r.sec*100);
+      var isNew = r.d>="20260901";
+      out+='<circle cx="'+pts[i][0]+'" cy="'+pts[i][1]+'" r="'+(isNew?6:4)+'" fill="'+(isNew?C('--accent'):C('--steel'))+'" stroke="'+C('--surface')+'" stroke-width="2"/>';
     });
-    out+='<text x="'+L+'" y="'+(H-10)+'" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--ink-3')+'">8&#39;20&quot;</text>';
-    out+='<text x="'+(W-R)+'" y="'+(H-10)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--ink-3')+'">5&#39;00&quot; 速い →</text>';
-    out+='<text x="'+L+'" y="18" font-family="Bricolage Grotesque,sans-serif" font-size="13" font-weight="700" fill="'+C('--ink')+'">'+label+'</text>';
-    out+='<text x="'+(W-R)+'" y="18" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--ink-3')+'">'+unit+'</text>';
+    z.forEach(function(r,i){
+      out+='<text x="'+pts[i][0]+'" y="'+(H-B+22)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+(r.d>="20260901"?C('--accent'):C('--ink-3'))+'" font-weight="'+(r.d>="20260901"?700:400)+'" transform="rotate(-55 '+pts[i][0]+' '+(H-B+22)+')">'+fmtShort(r.d)+'</text>';
+    });
     svg.innerHTML=out;
-  }
-  panel("p-cad","cad",155,180,"ピッチ","spm",[160,170,180],170);
-  panel("p-step","step",70,115,"歩幅","cm",[70,90,110],null);
-  panel("p-gct","gct",250,360,"接地時間","ms",[260,300,340],280);
+  })();
+
+  // ---------- 05: 今月の目標 ----------
+  (function(){
+    var thisMonthRuns = runsSorted.filter(function(r){ return r.d.slice(4,6)===GOALS.monthKey; });
+    var nRuns = thisMonthRuns.length;
+    var z2sum = sum(thisMonthRuns.map(function(r){return r.z2;}));
+    var longMax = thisMonthRuns.length ? Math.max.apply(null, thisMonthRuns.map(function(r){return r.km;})) : 0;
+
+    document.getElementById("goal-sub").textContent = GOALS.label+"の目標と、"+(thisMonthRuns.length?thisMonthRuns[thisMonthRuns.length-1].d.slice(6,8)+"日時点の進捗":"進捗なし");
+
+    function card(k,val,goal,unit,note,pct){
+      pct = Math.min(100, Math.round(pct));
+      return '<div class="vcard'+(pct>=100?' good':'')+'"><div class="k">'+k+'</div>'
+        +'<div class="v">'+val+'<span style="font-size:.45em"> / '+goal+unit+'</span></div>'
+        +'<div class="pb"><i style="width:'+pct+'%"></i></div>'
+        +'<div class="n">達成率 '+pct+'%。'+note+'</div></div>';
+    }
+    var html = card("ラン本数", nRuns, GOALS.runs, "本", "", nRuns/GOALS.runs*100)
+      + card("Zone 2", Math.floor(z2sum/60), GOALS.zone2min, "分", hms(z2sum)+"（"+thisMonthRuns.length+"本の合計）", z2sum/60/GOALS.zone2min*100)
+      + card("ロング走", longMax? longMax.toFixed(2):"—", GOALS.longKm, "km", longMax?"最長 "+longMax.toFixed(2)+"km":"未実施", longMax/GOALS.longKm*100);
+    document.getElementById("goal-cards").innerHTML = html;
+  })();
+
+  // ---------- 06: 直近30日の最長との比較（オーバーロード判定） ----------
+  (function(){
+    function max30(targetDate){
+      var lo = new Date(targetDate); lo.setDate(lo.getDate()-30);
+      var prev = runsSorted.filter(function(r){ var d=parseD(r.d); return d>=lo && d<targetDate && r.km<42; }).map(function(r){return r.km;});
+      return prev.length? Math.max.apply(null,prev) : null;
+    }
+    var items = [];
+    runsSorted.slice(-6).forEach(function(r){
+      if(r.km<3) return;
+      var d = parseD(r.d);
+      var m = max30(d);
+      if(!m) return;
+      var rate = (r.km/m-1)*100;
+      var risk = rate<=10?null: rate<=30?"リスク1.64倍": rate<=100?"リスク1.52倍":"リスク2.28倍（要注意）";
+      if(risk) items.push(fmtShort(r.d)+"："+r.km.toFixed(2)+"km（直近30日最長比 "+(rate>=0?"+":"")+rate.toFixed(0)+"%、"+risk+"）");
+    });
+    var now30b = new Date(); now30b.setDate(now30b.getDate()-30);
+    var maxLong = 0; runsSorted.forEach(function(r){ if(r.km<42 && r.km>maxLong && parseD(r.d)>=now30b) maxLong=r.km; });
+    items.unshift("今週のロング走の目安上限：<strong>"+(maxLong*1.1).toFixed(1)+"km</strong>（直近30日の最長 "+maxLong.toFixed(2)+"km × 1.1）");
+    document.getElementById("overload-status").innerHTML = items.map(function(t){return "<li>"+t+"</li>";}).join("");
+  })();
+
+  // ---------- 07: 元データ ----------
+  (function(){
+    document.getElementById("raw-sub").textContent = "Amazfit Active Max の記録した全ラン"+runsSorted.length+"本／"+runsSorted[0].d.slice(0,4)+"."+runsSorted[0].d.slice(4,6)+"."+runsSorted[0].d.slice(6,8)+" — "+runsSorted[runsSorted.length-1].d.slice(0,4)+"."+runsSorted[runsSorted.length-1].d.slice(4,6)+"."+runsSorted[runsSorted.length-1].d.slice(6,8);
+    function bar(v,lo,hi,cls){
+      if(v==null) return "—";
+      var w=Math.max(3,Math.min(100,(v-lo)/(hi-lo)*100));
+      return '<span class="b '+cls+'" style="--w:'+w+'%">'+Math.round(v)+'</span>';
+    }
+    var rows = runsSorted.map(function(r){
+      var cls = r.d>="20260901" ? "mark" : (r.cadM>=170?"":"");
+      var sep = r.d==="20260802" ? "sep" : "";
+      var cadVal = r.cadM!=null ? r.cadM : r.cad; // 走行区間が短すぎる日は表示値にフォールバック
+      var cadDisplay = cadVal!=null ? bar(cadVal,140,185,"") : "—";
+      var gctDisplay = r.gct!=null ? bar(r.gct,250,350,"w") : "—";
+      var z2rate = r.z2!=null ? Math.round(r.z2/r.sec*100)+"%" : "—";
+      return '<tr class="'+(cls+" "+sep).trim()+'">'
+        +'<td>'+fmtShort(r.d)+'</td>'
+        +'<td>'+r.km.toFixed(2)+'</td>'
+        +'<td>'+hms(r.sec)+'</td>'
+        +'<td>'+mmss(pace(r.sec,r.km))+'</td>'
+        +'<td>'+(r.hr||"—")+'</td>'
+        +'<td class="bc">'+z2rate+'</td>'
+        +'<td class="bc">'+cadDisplay+'</td>'
+        +'<td>'+(r.step||"—")+'</td>'
+        +'<td class="bc">'+gctDisplay+'</td>'
+        +'</tr>';
+    });
+    document.getElementById("raw-table").innerHTML = rows.join("\n");
+  })();
+
 })();
 </script>
 
