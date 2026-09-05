@@ -185,7 +185,15 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">01</span><h2>月間距離</h2></div>
+    <div class="shead"><span class="snum">01</span><h2>今月の目標</h2></div>
+    <p class="sub" id="goal-sub">—</p>
+  </div>
+  <div class="verdict" id="goal-cards"></div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">02</span><h2>月間距離</h2></div>
     <p class="sub">走った量そのものの推移</p>
   </div>
   <figure>
@@ -194,19 +202,6 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     <div class="chartbox"><svg id="chart-vol" viewBox="0 0 1040 380" role="img" aria-label="月間距離の棒グラフ"></svg></div>
     <figcaption id="vol-caption">—</figcaption>
   </figure>
-</section>
-
-<section>
-  <div class="col">
-    <div class="shead"><span class="snum">02</span><h2>フォームの推移</h2></div>
-    <p class="sub">ピッチ・接地時間の変化。緑はピッチを意識し始めた8/24以降</p>
-  </div>
-  <figure>
-    <div class="figtitle">ピッチと接地時間</div>
-    <div class="figsub" id="trend-figsub">—</div>
-    <div class="chartbox"><svg id="chart-trend" viewBox="0 0 1040 460" role="img" aria-label="ピッチと接地時間の推移"></svg></div>
-  </figure>
-  <div class="tablebox" id="form-compare"></div>
 </section>
 
 <section>
@@ -224,10 +219,15 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">04</span><h2>今月の目標</h2></div>
-    <p class="sub" id="goal-sub">—</p>
+    <div class="shead"><span class="snum">04</span><h2>フォームの推移</h2></div>
+    <p class="sub">ピッチ・接地時間の変化。緑はピッチを意識し始めた8/24以降</p>
   </div>
-  <div class="verdict" id="goal-cards"></div>
+  <figure>
+    <div class="figtitle">ピッチと接地時間</div>
+    <div class="figsub" id="trend-figsub">—</div>
+    <div class="chartbox"><svg id="chart-trend" viewBox="0 0 1040 460" role="img" aria-label="ピッチと接地時間の推移"></svg></div>
+  </figure>
+  <div class="tablebox" id="form-compare"></div>
 </section>
 
 <section>
