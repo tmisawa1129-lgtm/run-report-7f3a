@@ -339,12 +339,17 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     return out;
   }
 
-  // ---------- 上部カード：今月・今週・直近の状態 ----------
+  // ---------- 上部カード：今月・今週（月内週）・直近の状態 ----------
   (function(){
     var thisMonthRuns = runsSorted.filter(function(r){ return r.d.slice(4,6)===GOALS.monthKey; });
     var monthKm = sum(thisMonthRuns.map(function(r){return r.km;}));
-    var elapsedDays = new Date().getDate(); // 月内の経過日数（今日まで）
-    var weekKmEst = elapsedDays>0 ? monthKm/elapsedDays*7 : 0; // 月間ペースを7日換算
+
+    // 月内を1-7,8-14,15-21,22-28,29-末の週ブロックに分け、今日が属する週の実績のみ集計（月をまたがない）
+    var dayOfMonth = new Date().getDate();
+    var weekStart = Math.floor((dayOfMonth-1)/7)*7 + 1;
+    var weekEnd = weekStart + 6;
+    var weekRuns = thisMonthRuns.filter(function(r){ var d=+r.d.slice(6,8); return d>=weekStart && d<=weekEnd; });
+    var weekKm = sum(weekRuns.map(function(r){return r.km;}));
 
     var recentN = formRuns.slice(-5); // 直近5本（月をまたいでも自動で追従）
     var cadVals = recentN.map(function(r){return r.cadM;}).filter(function(v){return v!=null;});
@@ -354,11 +359,12 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
       var lo=Math.min.apply(null,arr), hi=Math.max.apply(null,arr);
       return lo===hi ? ""+lo : lo+"–"+hi;
     }
+    var z2Avg = z2Vals.length ? Math.round(z2Vals.reduce(function(a,b){return a+b;},0)/z2Vals.length) : null;
 
     var cards = [
       {k:"今月の走行距離", v:monthKm.toFixed(1)+"km", n:thisMonthRuns.length+"本（"+GOALS.label+"）", cls:"good"},
-      {k:"今週の走行距離", v:weekKmEst.toFixed(1)+"km", n:"月間ペースを7日換算（1日平均"+(monthKm/elapsedDays).toFixed(1)+"km）", cls:"warn"},
-      {k:"直近Z2", v:range(z2Vals)+(z2Vals.length?"%":""), n:"直近5本のレンジ", cls:""},
+      {k:"今週の走行距離", v:weekKm.toFixed(1)+"km", n:weekRuns.length+"本（"+GOALS.label+" "+weekStart+"〜"+weekEnd+"日）", cls:"warn"},
+      {k:"直近Z2", v:(z2Avg!=null?z2Avg+"%":"—"), n:"直近5本の平均（練習会等を含む）", cls:""},
       {k:"直近ピッチ", v:range(cadVals), n:"直近5本の走行中平均", cls:""}
     ];
     document.getElementById("stat-cards").innerHTML = cards.map(function(c){
@@ -513,18 +519,18 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
         +'<div class="pb"><i style="width:'+pct+'%"></i></div>'
         +'<div class="n">達成率 '+pct+'%。'+note+'</div></div>';
     }
-    // ロング走は「1本で目標km以上を走ったか」の達成/未達（累積%にしない）
+    // ロング走は「1本で目標km以上を走ったか」の達成/未達（累積%にしない・分数表示もしない）
     function longCard(){
       var achieved = !!longRun;
       var pct = achieved ? 100 : 0;
-      var val = achieved ? longRun.km.toFixed(2) : (longMax? longMax.toFixed(2) : "—");
+      var val = achieved ? longRun.km.toFixed(2)+"km" : "未達成";
       var note = achieved
         ? "達成（"+fmtShort(longRun.d)+"）"
-        : (longMax ? "今月の最長 "+longMax.toFixed(2)+"km。20km以上はまだ" : "未実施");
-      return '<div class="vcard'+(achieved?' good':'')+'"><div class="k">ロング走</div>'
-        +'<div class="v">'+val+'<span style="font-size:.45em"> / '+GOALS.longKm+'km</span></div>'
+        : (longMax ? "今月の最長は"+longMax.toFixed(2)+"km" : "今月はまだ実施なし");
+      return '<div class="vcard'+(achieved?' good':'')+'"><div class="k">ロング走（'+GOALS.longKm+'km以上を1本）</div>'
+        +'<div class="v">'+val+'</div>'
         +'<div class="pb"><i style="width:'+pct+'%"></i></div>'
-        +'<div class="n">'+(achieved?"達成率 100%。":"")+note+'</div></div>';
+        +'<div class="n">'+note+'</div></div>';
     }
     var html = card("ラン本数", nRuns, GOALS.runs, "本", "", nRuns/GOALS.runs*100)
       + card("Zone 2", Math.floor(z2sum/60), GOALS.zone2min, "分", hms(z2sum)+"（"+thisMonthRuns.length+"本の合計）", z2sum/60/GOALS.zone2min*100)
