@@ -224,24 +224,7 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">04</span><h2>目標タイム</h2></div>
-    <p class="sub">第一目標は「サブ5（5時間切り）」</p>
-  </div>
-  <div class="tablebox">
-    <table>
-      <thead><tr><th>目標</th><th>必要ペース</th><th>備考</th></tr></thead>
-      <tbody>
-        <tr><td>完走（6時間）</td><td>8'32"/km</td><td>関門の目安。現状のジョグより遅い</td></tr>
-        <tr class="mark"><td><strong>サブ5</strong></td><td><strong>7'07"/km</strong></td><td>Zone 2の心拍帯で出せるペース</td></tr>
-        <tr><td>4時間30分</td><td>6'24"/km</td><td>閾値ペース（3km 15:37）に近い</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="shead"><span class="snum">05</span><h2>今月の目標</h2></div>
+    <div class="shead"><span class="snum">04</span><h2>今月の目標</h2></div>
     <p class="sub" id="goal-sub">—</p>
   </div>
   <div class="verdict" id="goal-cards"></div>
@@ -249,34 +232,7 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">06</span><h2>勝田までの道のり</h2></div>
-    <p class="sub">ロング走は本番まで5kmずつ積む</p>
-  </div>
-  <div class="tablebox">
-    <table>
-      <thead><tr><th>月</th><th>ロング走の目安</th><th>前回比</th></tr></thead>
-      <tbody>
-        <tr><td>9月</td><td>20 km</td><td class="warn">+33%</td></tr>
-        <tr><td>10月</td><td>25 km</td><td>+25%</td></tr>
-        <tr><td>11月</td><td>30 km</td><td>+20%</td></tr>
-        <tr><td>12月</td><td>35 km</td><td>+17%</td></tr>
-        <tr><td>1月</td><td>42.195 km（本番）</td><td>+21%</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="col">
-    <div class="callout">
-      <span class="lbl">先生の基準（2026.09.01の配信）</span>
-      <p>比べるのは「先週の合計」ではなく<strong>「直近30日でいちばん長く走った距離」</strong>。<strong>+10〜30%</strong>の日はリスク1.64倍、<strong>+30〜100%</strong>で1.52倍、<strong>2倍以上</strong>で2.28倍。</p>
-      <p style="margin-bottom:0">増やす順番は <strong>① 頻度 → ② 時間 → ③ 強度</strong>。同時に2つ以上増やさない。</p>
-    </div>
-    <ul class="pts" id="overload-status"></ul>
-  </div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="shead"><span class="snum">07</span><h2>元データ</h2></div>
+    <div class="shead"><span class="snum">05</span><h2>元データ</h2></div>
     <p class="sub" id="raw-sub">—</p>
   </div>
   <div class="tablebox">
@@ -546,29 +502,6 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
       + card("Zone 2", Math.floor(z2sum/60), GOALS.zone2min, "分", hms(z2sum)+"（"+thisMonthRuns.length+"本の合計）", z2sum/60/GOALS.zone2min*100)
       + card("ロング走", longMax? longMax.toFixed(2):"—", GOALS.longKm, "km", longMax?"最長 "+longMax.toFixed(2)+"km":"未実施", longMax/GOALS.longKm*100);
     document.getElementById("goal-cards").innerHTML = html;
-  })();
-
-  // ---------- 06: 直近30日の最長との比較（オーバーロード判定） ----------
-  (function(){
-    function max30(targetDate){
-      var lo = new Date(targetDate); lo.setDate(lo.getDate()-30);
-      var prev = runsSorted.filter(function(r){ var d=parseD(r.d); return d>=lo && d<targetDate && r.km<42; }).map(function(r){return r.km;});
-      return prev.length? Math.max.apply(null,prev) : null;
-    }
-    var items = [];
-    runsSorted.slice(-6).forEach(function(r){
-      if(r.km<3) return;
-      var d = parseD(r.d);
-      var m = max30(d);
-      if(!m) return;
-      var rate = (r.km/m-1)*100;
-      var risk = rate<=10?null: rate<=30?"リスク1.64倍": rate<=100?"リスク1.52倍":"リスク2.28倍（要注意）";
-      if(risk) items.push(fmtShort(r.d)+"："+r.km.toFixed(2)+"km（直近30日最長比 "+(rate>=0?"+":"")+rate.toFixed(0)+"%、"+risk+"）");
-    });
-    var now30b = new Date(); now30b.setDate(now30b.getDate()-30);
-    var maxLong = 0; runsSorted.forEach(function(r){ if(r.km<42 && r.km>maxLong && parseD(r.d)>=now30b) maxLong=r.km; });
-    items.unshift("今週のロング走の目安上限：<strong>"+(maxLong*1.1).toFixed(1)+"km</strong>（直近30日の最長 "+maxLong.toFixed(2)+"km × 1.1）");
-    document.getElementById("overload-status").innerHTML = items.map(function(t){return "<li>"+t+"</li>";}).join("");
   })();
 
   // ---------- 07: 元データ ----------
