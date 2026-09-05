@@ -78,6 +78,7 @@ h1{
 .cd-sub{font-family:"Roboto Mono",monospace; font-size:12.5px; letter-spacing:.04em; color:var(--ink-3); line-height:1.7}
 
 .verdict{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); margin:28px 0 0}
+.verdict>:last-child:nth-child(odd){grid-column:1/-1}
 .vcard{background:var(--surface); border:none; border-radius:var(--r-lg); padding:20px 20px 22px}
 .verdict .vcard:nth-child(3n+1){background:var(--accent-soft); color:var(--accent-ink)}
 .verdict .vcard:nth-child(3n+2){background:var(--warn-soft)}
@@ -351,8 +352,10 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
       return lo===hi ? ""+lo : lo+"–"+hi;
     }
 
+    var weekZ2 = sum(weekRuns.map(function(r){return r.z2;}));
     var cards = [
       {k:"今週の走行距離", v:weekKm.toFixed(1)+"km", n:weekRuns.length+"本（直近7日間）", cls:"good"},
+      {k:"今週のZone 2", v:Math.floor(weekZ2/60)+"分", n:hms(weekZ2)+"（直近7日間）", cls:"warn"},
       {k:"直近Z2", v:range(z2Vals)+(z2Vals.length?"%":""), n:"直近5本のレンジ", cls:""},
       {k:"直近ピッチ", v:range(cadVals), n:"直近5本の走行中平均", cls:""}
     ];
