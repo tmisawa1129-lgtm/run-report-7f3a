@@ -58,7 +58,10 @@ body{
 .wrap{max-width:860px; margin:0 auto; padding:0 24px 96px}
 .col{max-width:none}
 
-.masthead{padding:52px 0 32px}
+.masthead{padding:40px 0 32px}
+.hero-banner{position:relative; border-radius:var(--r-lg); overflow:hidden; margin-bottom:24px; background:var(--surface)}
+.hero-banner svg{display:block; width:100%; height:auto; aspect-ratio:860/220}
+.hero-cap{margin:-14px 0 20px; font-family:"Roboto Mono",monospace; font-size:11.5px; letter-spacing:.06em; color:var(--ink-3); text-align:right}
 .eyebrow{
   font-family:"Roboto Mono",ui-monospace,monospace; font-size:11.5px;
   letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
@@ -174,6 +177,58 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
 <body>
 <div class="wrap">
 <header class="masthead">
+  <div class="hero-banner" role="img" aria-label="勝田全国マラソンをイメージした梅と道のイラスト">
+    <svg viewBox="0 0 860 220" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="heroSky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--accent-soft)"/>
+          <stop offset="1" stop-color="var(--surface)"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="860" height="220" fill="url(#heroSky)"/>
+      <!-- 遠景の丘 -->
+      <path d="M0,150 Q140,110 300,140 T620,130 T860,150 L860,220 L0,220 Z" fill="var(--surface-2)" opacity="0.8"/>
+      <!-- コース（道） -->
+      <path d="M-20,205 C180,175 300,205 430,185 C560,165 680,195 880,175" fill="none" stroke="var(--surface)" stroke-width="34" stroke-linecap="round"/>
+      <path d="M-20,205 C180,175 300,205 430,185 C560,165 680,195 880,175" fill="none" stroke="var(--ink-3)" stroke-width="2.5" stroke-dasharray="10 12" opacity="0.5"/>
+      <!-- 梅の木（左） -->
+      <g transform="translate(90,95)">
+        <path d="M0,90 C-4,55 6,35 -8,0" stroke="var(--ink-2)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M-2,55 C-22,45 -34,50 -46,38" stroke="var(--ink-2)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M-4,30 C10,18 22,20 34,6" stroke="var(--ink-2)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <g fill="var(--crit)" opacity="0.85">
+          <circle cx="-46" cy="36" r="7"/><circle cx="-60" cy="30" r="6"/><circle cx="-36" cy="24" r="6"/>
+          <circle cx="34" cy="4" r="7"/><circle cx="48" cy="-4" r="6"/><circle cx="22" cy="-6" r="6"/>
+          <circle cx="-8" cy="-2" r="6"/><circle cx="4" cy="14" r="6"/>
+        </g>
+      </g>
+      <!-- 梅の木（右） -->
+      <g transform="translate(760,85)">
+        <path d="M0,95 C6,58 -6,38 10,0" stroke="var(--ink-2)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M4,50 C24,40 34,44 48,30" stroke="var(--ink-2)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M6,26 C-8,16 -20,18 -30,4" stroke="var(--ink-2)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <g fill="var(--warn)" opacity="0.85">
+          <circle cx="48" cy="28" r="6"/><circle cx="60" cy="22" r="6"/><circle cx="38" cy="18" r="6"/>
+          <circle cx="-30" cy="2" r="6"/><circle cx="-42" cy="-6" r="6"/><circle cx="-18" cy="-8" r="6"/>
+          <circle cx="10" cy="-4" r="6"/>
+        </g>
+      </g>
+      <!-- ランナー -->
+      <g transform="translate(430,178)" stroke="var(--accent-ink)" stroke-width="6" stroke-linecap="round" fill="none">
+        <circle cx="2" cy="-52" r="9" fill="var(--accent-ink)" stroke="none"/>
+        <path d="M2,-42 L-6,-18 L-20,-2"/>
+        <path d="M2,-42 L14,-16 L10,4"/>
+        <path d="M-6,-18 L14,-24 L26,-34"/>
+        <path d="M-6,-18 L-24,-22 L-34,-14"/>
+      </g>
+      <!-- ゴールの旗 -->
+      <g transform="translate(700,120)">
+        <line x1="0" y1="0" x2="0" y2="60" stroke="var(--ink-2)" stroke-width="4"/>
+        <path d="M0,4 L28,12 L0,22 Z" fill="var(--crit)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="hero-cap">第74回 勝田全国マラソン ／ 2027.01.31（茨城・ひたちなか）</div>
   <div class="eyebrow">
     <span id="ev-period">記録 —</span><span>AMAZFIT ACTIVE MAX</span><span>THE FULL CREW ／ 勝田全国マラソン 2027.01.31</span>
   </div>
