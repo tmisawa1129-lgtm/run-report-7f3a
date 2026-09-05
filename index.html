@@ -519,16 +519,15 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
         +'<div class="pb"><i style="width:'+pct+'%"></i></div>'
         +'<div class="n">達成率 '+pct+'%。'+note+'</div></div>';
     }
-    // ロング走は「1本で目標km以上を走ったか」の達成/未達（累積%にしない・分数表示もしない）
+    // ロング走は「1本で目標km以上を走ったか」を0/1本でカウント（累積%にしない）
     function longCard(){
       var achieved = !!longRun;
       var pct = achieved ? 100 : 0;
-      var val = achieved ? longRun.km.toFixed(2)+"km" : "未達成";
       var note = achieved
-        ? "達成（"+fmtShort(longRun.d)+"）"
+        ? "達成（"+fmtShort(longRun.d)+"）・"+longRun.km.toFixed(2)+"km"
         : (longMax ? "今月の最長は"+longMax.toFixed(2)+"km" : "今月はまだ実施なし");
-      return '<div class="vcard'+(achieved?' good':'')+'"><div class="k">ロング走（'+GOALS.longKm+'km以上を1本）</div>'
-        +'<div class="v">'+val+'</div>'
+      return '<div class="vcard'+(achieved?' good':'')+'"><div class="k">ロング走</div>'
+        +'<div class="v">'+(achieved?1:0)+'<span style="font-size:.45em"> / 1本（'+GOALS.longKm+'km以上）</span></div>'
         +'<div class="pb"><i style="width:'+pct+'%"></i></div>'
         +'<div class="n">'+note+'</div></div>';
     }
