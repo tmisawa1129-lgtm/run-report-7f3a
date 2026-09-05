@@ -79,6 +79,8 @@ h1{
 
 .verdict{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); margin:28px 0 0}
 .verdict>:last-child:nth-child(odd){grid-column:1/-1}
+#goal-cards{grid-template-columns:1fr} /* 今月の目標は常に横長・縦積み表示 */
+#goal-cards .vcard .pb{max-width:360px}
 .vcard{background:var(--surface); border:none; border-radius:var(--r-lg); padding:20px 20px 22px}
 .verdict .vcard:nth-child(3n+1){background:var(--accent-soft); color:var(--accent-ink)}
 .verdict .vcard:nth-child(3n+2){background:var(--warn-soft)}
@@ -337,11 +339,12 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     return out;
   }
 
-  // ---------- 上部カード：直近の状態（週次・直近5本） ----------
+  // ---------- 上部カード：今月・今週・直近の状態 ----------
   (function(){
-    var now7 = new Date(); now7.setDate(now7.getDate()-7);
-    var weekRuns = runsSorted.filter(function(r){ return parseD(r.d)>=now7; });
-    var weekKm = sum(weekRuns.map(function(r){return r.km;}));
+    var thisMonthRuns = runsSorted.filter(function(r){ return r.d.slice(4,6)===GOALS.monthKey; });
+    var monthKm = sum(thisMonthRuns.map(function(r){return r.km;}));
+    var elapsedDays = new Date().getDate(); // 月内の経過日数（今日まで）
+    var weekKmEst = elapsedDays>0 ? monthKm/elapsedDays*7 : 0; // 月間ペースを7日換算
 
     var recentN = formRuns.slice(-5); // 直近5本（月をまたいでも自動で追従）
     var cadVals = recentN.map(function(r){return r.cadM;}).filter(function(v){return v!=null;});
@@ -352,10 +355,9 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
       return lo===hi ? ""+lo : lo+"–"+hi;
     }
 
-    var weekZ2 = sum(weekRuns.map(function(r){return r.z2;}));
     var cards = [
-      {k:"今週の走行距離", v:weekKm.toFixed(1)+"km", n:weekRuns.length+"本（直近7日間）", cls:"good"},
-      {k:"今週のZone 2", v:Math.floor(weekZ2/60)+"分", n:hms(weekZ2)+"（直近7日間）", cls:"warn"},
+      {k:"今月の走行距離", v:monthKm.toFixed(1)+"km", n:thisMonthRuns.length+"本（"+GOALS.label+"）", cls:"good"},
+      {k:"今週の走行距離", v:weekKmEst.toFixed(1)+"km", n:"月間ペースを7日換算（1日平均"+(monthKm/elapsedDays).toFixed(1)+"km）", cls:"warn"},
       {k:"直近Z2", v:range(z2Vals)+(z2Vals.length?"%":""), n:"直近5本のレンジ", cls:""},
       {k:"直近ピッチ", v:range(cadVals), n:"直近5本の走行中平均", cls:""}
     ];
