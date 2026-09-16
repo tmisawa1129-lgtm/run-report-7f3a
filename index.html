@@ -141,7 +141,13 @@ td.warn{color:var(--warn); font-weight:700}
 td.crit{color:var(--crit); font-weight:700}
 td.good{color:var(--accent); font-weight:700}
 td.bc{position:relative}
-td.note{text-align:left; white-space:normal; max-width:360px; color:var(--ink-2); font-size:12.5px; line-height:1.5}
+tr.rawrow.has-note{cursor:pointer}
+tr.rawrow.has-note:hover td{background:var(--surface-2)}
+tr.rawrow.open td{background:var(--surface-2)}
+td.notemark{text-align:center; width:20px; padding-left:4px; padding-right:4px}
+td.notemark .dot{display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+tr.noterow td{text-align:left; white-space:normal; color:var(--ink-2); font-size:12.5px; line-height:1.6; background:var(--surface-2); border-bottom:1px solid var(--line)}
+tr.noterow:last-child td{border-bottom:none}
 .b{position:relative; display:inline-block; padding:3px 8px; z-index:1; border-radius:var(--r-pill)}
 .b::before{content:""; position:absolute; inset:0; border-radius:var(--r-pill); z-index:-1; background:var(--accent-bar); opacity:.35}
 .b.w::before{background:var(--warn-bar); opacity:.4}
@@ -309,7 +315,7 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     <table>
       <thead><tr>
         <th>日付</th><th>距離<br>km</th><th>時間</th><th>ペース<br>/km</th><th>心拍<br>bpm</th>
-        <th>Zone2<br>割合</th><th>ピッチ<br>spm</th><th>歩幅<br>cm</th><th>接地<br>ms</th><th>備考</th>
+        <th>Zone2<br>割合</th><th>ピッチ<br>spm</th><th>歩幅<br>cm</th><th>接地<br>ms</th><th></th>
       </tr></thead>
       <tbody id="raw-table"></tbody>
     </table>
@@ -605,14 +611,15 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
       var w=Math.max(3,Math.min(100,(v-lo)/(hi-lo)*100));
       return '<span class="b '+cls+'" style="--w:'+w+'%">'+Math.round(v)+'</span>';
     }
-    var rows = runsSorted.map(function(r){
+    var rows = runsSorted.map(function(r,i){
       var cls = r.d>="20260901" ? "mark" : (r.cadM>=170?"":"");
       var sep = r.d==="20260802" ? "sep" : "";
       var cadVal = r.cadM!=null ? r.cadM : r.cad; // 走行区間が短すぎる日は表示値にフォールバック
       var cadDisplay = cadVal!=null ? bar(cadVal,140,185,"") : "—";
       var gctDisplay = r.gct!=null ? bar(r.gct,250,350,"w") : "—";
       var z2rate = r.z2!=null ? Math.round(r.z2/r.sec*100)+"%" : "—";
-      return '<tr class="'+(cls+" "+sep).trim()+'">'
+      var hasNote = !!r.note;
+      return '<tr class="rawrow '+(cls+" "+sep).trim()+(hasNote?" has-note":"")+'" data-i="'+i+'">'
         +'<td>'+fmtShort(r.d)+'</td>'
         +'<td>'+r.km.toFixed(2)+'</td>'
         +'<td>'+hms(r.sec)+'</td>'
@@ -622,10 +629,23 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
         +'<td class="bc">'+cadDisplay+'</td>'
         +'<td>'+(r.step||"—")+'</td>'
         +'<td class="bc">'+gctDisplay+'</td>'
-        +'<td class="note">'+(r.note||"—")+'</td>'
+        +'<td class="notemark">'+(hasNote?'<span class="dot"></span>':'')+'</td>'
         +'</tr>';
     });
     document.getElementById("raw-table").innerHTML = rows.join("\n");
+
+    document.getElementById("raw-table").addEventListener("click", function(e){
+      var tr = e.target.closest("tr.has-note");
+      if(!tr) return;
+      var open = tr.classList.contains("open");
+      var prevNote = document.querySelector("#raw-table tr.noterow");
+      if(prevNote) prevNote.remove();
+      document.querySelectorAll("#raw-table tr.open").forEach(function(x){x.classList.remove("open");});
+      if(open) return;
+      tr.classList.add("open");
+      var r = runsSorted[+tr.getAttribute("data-i")];
+      tr.insertAdjacentHTML("afterend", '<tr class="noterow"><td colspan="10">'+r.note+'</td></tr>');
+    });
   })();
 
 })();
