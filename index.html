@@ -144,8 +144,9 @@ td.bc{position:relative}
 tr.rawrow.has-note{cursor:pointer}
 tr.rawrow.has-note:hover td{background:var(--surface-2)}
 tr.rawrow.open td{background:var(--surface-2)}
-td.notemark{text-align:center; width:20px; padding-left:4px; padding-right:4px}
-td.notemark .dot{display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent)}
+td.notemark{text-align:center; padding-left:8px; padding-right:8px}
+td.notemark .detail-btn{display:inline-block; padding:4px 11px; border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent-ink); font-family:"Roboto Mono",monospace; font-size:10.5px; letter-spacing:.02em; white-space:nowrap}
+tr.rawrow.open td.notemark .detail-btn{background:var(--accent); color:#fff}
 tr.noterow td{text-align:left; white-space:normal; color:var(--ink-2); font-size:12.5px; line-height:1.6; background:var(--surface-2); border-bottom:1px solid var(--line)}
 tr.noterow:last-child td{border-bottom:none}
 .b{position:relative; display:inline-block; padding:3px 8px; z-index:1; border-radius:var(--r-pill)}
@@ -629,7 +630,7 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
         +'<td class="bc">'+cadDisplay+'</td>'
         +'<td>'+(r.step||"—")+'</td>'
         +'<td class="bc">'+gctDisplay+'</td>'
-        +'<td class="notemark">'+(hasNote?'<span class="dot"></span>':'')+'</td>'
+        +'<td class="notemark">'+(hasNote?'<span class="detail-btn">詳細</span>':'')+'</td>'
         +'</tr>';
     });
     document.getElementById("raw-table").innerHTML = rows.join("\n");
@@ -640,9 +641,13 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
       var open = tr.classList.contains("open");
       var prevNote = document.querySelector("#raw-table tr.noterow");
       if(prevNote) prevNote.remove();
-      document.querySelectorAll("#raw-table tr.open").forEach(function(x){x.classList.remove("open");});
+      document.querySelectorAll("#raw-table tr.open").forEach(function(x){
+        x.classList.remove("open");
+        var b=x.querySelector(".detail-btn"); if(b) b.textContent="詳細";
+      });
       if(open) return;
       tr.classList.add("open");
+      var btn = tr.querySelector(".detail-btn"); if(btn) btn.textContent="閉じる";
       var r = runsSorted[+tr.getAttribute("data-i")];
       tr.insertAdjacentHTML("afterend", '<tr class="noterow"><td colspan="10">'+r.note+'</td></tr>');
     });
