@@ -59,25 +59,17 @@ body{
 .col{max-width:none}
 
 .masthead{padding:40px 0 32px}
-.hero-kicker{margin:0 0 14px; font-family:"Roboto Mono",monospace; font-size:20px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3)}
+.hero-kicker{margin:0 0 4px; font-family:"Roboto Mono",monospace; font-size:20px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3)}
 .hero-kicker-em{color:var(--accent-ink); font-weight:700}
-.hero-kicker-dim{text-transform:none; letter-spacing:.02em; font-size:12px; color:var(--ink-3)}
+.hero-kicker-sub{margin:0 0 20px; font-family:"Roboto Mono",monospace; font-size:12px; letter-spacing:.03em; color:var(--ink-3)}
 .linkrow{display:flex; flex-wrap:wrap; gap:8px 12px; margin:0 0 20px}
 .linkrow a{font-family:"Roboto Mono",monospace; font-size:12px; letter-spacing:.04em; color:var(--accent-ink); background:var(--accent-soft); padding:6px 14px; border-radius:var(--r-pill); text-decoration:none}
 .linkrow a:hover{opacity:.82}
 .linkrow-label{display:flex; align-items:center; font-family:"Roboto Mono",monospace; font-size:11px; letter-spacing:.08em; color:var(--ink-3); padding:0 2px}
 .linkrow-label::before{content:"｜"; margin-right:10px; color:var(--line-2)}
-.eyebrow{
-  font-family:"Roboto Mono",ui-monospace,monospace; font-size:11.5px;
-  letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3);
-  display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:22px;
-}
-.eyebrow span{background:var(--surface); border-radius:var(--r-pill); padding:5px 14px}
-h1{
-  font-family:"Roboto",sans-serif;
-  font-weight:900; font-size:clamp(32px,5.4vw,50px); line-height:1.08;
-  letter-spacing:-.01em; margin:0 0 18px; text-wrap:balance;
-}
+.mtabs{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px}
+.mtab{font-family:"Roboto Mono",monospace; font-size:12.5px; letter-spacing:.03em; color:var(--ink-2); background:var(--surface); border:none; padding:7px 16px; border-radius:var(--r-pill); cursor:pointer}
+.mtab.active{background:var(--accent-soft); color:var(--accent-ink); font-weight:600}
 .countdown{display:flex; align-items:baseline; gap:10px 20px; flex-wrap:wrap; margin:0}
 .cd-main{font-family:"Roboto",sans-serif; font-weight:900; font-size:clamp(30px,6.4vw,48px); line-height:1.1; letter-spacing:-.01em; color:var(--accent); font-variant-numeric:tabular-nums; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
 .cd-main .u{font-size:.4em; margin-left:-8px; color:var(--ink-2); letter-spacing:0; font-weight:500}
@@ -190,10 +182,8 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
 <body>
 <div class="wrap">
 <header class="masthead">
-  <div class="hero-kicker">Road to <span class="hero-kicker-em">勝田</span><span class="hero-kicker-dim"> — 第74回 勝田全国マラソン ／ 2027.01.31（茨城・ひたちなか）</span></div>
-  <div class="eyebrow">
-    <span id="ev-period">記録 —</span><span>AMAZFIT ACTIVE MAX</span><span>THE FULL CREW ／ 勝田全国マラソン 2027.01.31</span>
-  </div>
+  <div class="hero-kicker">Road to <span class="hero-kicker-em">勝田</span></div>
+  <div class="hero-kicker-sub">第74回 勝田全国マラソン ／ 2027.01.31（茨城・ひたちなか）</div>
   <div class="linkrow">
     <a href="https://katsutamarathon.jp/" target="_blank" rel="noopener">大会公式サイト ↗</a>
     <span class="linkrow-label">THE FULL CREW</span>
@@ -213,7 +203,12 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     <div class="shead"><span class="snum">01</span><h2>今月の目標</h2></div>
     <p class="sub" id="goal-sub">—</p>
   </div>
+  <div class="mtabs" id="goal-tabs"></div>
   <div class="verdict" id="goal-cards"></div>
+  <div class="notes" id="goal-memo" style="display:none">
+    <span class="lbl">メモ</span>
+    <div class="txt" style="font-size:13.5px; color:var(--ink-3); line-height:1.7"></div>
+  </div>
 </section>
 
 <section>
@@ -245,7 +240,7 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
 <section>
   <div class="col">
     <div class="shead"><span class="snum">04</span><h2>フォームの推移</h2></div>
-    <p class="sub">ピッチ・接地時間の変化。緑はピッチを意識し始めた8/24以降</p>
+    <p class="sub">ピッチ・接地時間の変化</p>
   </div>
   <figure>
     <div class="figtitle">ピッチと接地時間</div>
@@ -260,6 +255,7 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     <div class="shead"><span class="snum">05</span><h2>元データ</h2></div>
     <p class="sub" id="raw-sub">—</p>
   </div>
+  <div class="mtabs" id="raw-tabs"></div>
   <div class="tablebox">
     <table>
       <thead><tr>
@@ -300,7 +296,13 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     {m:"7月", km:82.0, longest:5.52, n:10}
   ];
 
-  var GOALS = { monthKey:"09", label:"9月", runs:12, zone2min:320, longKm:20 }; // 月が変わったらここだけ書き換える
+  // 月別の目標。当月になったら新しいキーを足すだけでよい（過去分はそのまま残す）
+  var GOALS_BY_MONTH = {
+    "202607": { label:"7月", runs:{goal:8}, zone2:null, long:null, memo:"習慣化フェーズ。筋トレ×3〜4/週・HYROX×1/週も継続（ラン以外のためダッシュボード数値管理外）", static:true },
+    "202608": { label:"8月", runs:{goal:8}, zone2:{goalMin:240}, long:{goalKm:15}, memo:"", static:false },
+    "202609": { label:"9月", runs:{goal:12}, zone2:{goalMin:320}, long:{goalKm:20}, memo:"", static:false }
+  };
+  var CURRENT_MONTH_KEY = "202609"; // 月が変わったらここだけ書き換える
   var RACE_DATE = new Date(2027,0,31,10,30,0);
 
   // ---------- helpers ----------
@@ -317,14 +319,40 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
   var runsSorted = RUNS.slice().sort(function(a,b){ return a.d===b.d ? (a.t||"").localeCompare(b.t||"") : a.d.localeCompare(b.d); });
   var formRuns = runsSorted.filter(function(r){ return r.cadM!=null; }); // ピッチ計測ありの本
 
-  // ---------- ヘッダー：期間・本数 ----------
-  (function(){
-    var last = runsSorted[runsSorted.length-1].d;
-    var staticN = MONTHLY_STATIC.reduce(function(a,m){return a+m.n;},0); // 3〜7月（7月はRUNSの7/18-29分を含む集計値）
-    var augPlusN = runsSorted.filter(function(r){ return monthKey(r.d) >= "202608"; }).length;
-    var totalRuns = staticN + augPlusN;
-    document.getElementById("ev-period").textContent = "記録 2026.03 — " + last.slice(4,6)+"."+last.slice(6,8) + "／ラン" + totalRuns + "本";
-  })();
+  // ---------- 月集計の単一ソース（8月以降はここから、他の場所で二重計算しない） ----------
+  var monthAggCache = {};
+  function computeMonthAgg(key){
+    if(monthAggCache[key]) return monthAggCache[key];
+    var runs = runsSorted.filter(function(r){ return monthKey(r.d)===key; });
+    var out = {
+      key:key, runs:runs, n:runs.length,
+      km: sum(runs.map(function(r){return r.km;})),
+      longest: runs.length ? Math.max.apply(null, runs.map(function(r){return r.km;})) : 0,
+      z2sum: sum(runs.map(function(r){return r.z2;}))
+    };
+    monthAggCache[key] = out;
+    return out;
+  }
+
+  // ---------- 共通タブUI（01 今月の目標／05 元データで使い回す） ----------
+  function initTabs(barEl, items, defaultKey, onChange){
+    function paint(activeKey){
+      barEl.innerHTML = items.map(function(it){
+        return '<button type="button" class="mtab'+(it.key===activeKey?' active':'')+'" data-key="'+it.key+'">'+it.label+'</button>';
+      }).join("");
+    }
+    paint(defaultKey);
+    barEl.addEventListener("click", function(e){
+      var b = e.target.closest(".mtab"); if(!b) return;
+      var k = b.getAttribute("data-key");
+      if(k===barEl.dataset.active) return;
+      barEl.dataset.active = k;
+      paint(k);
+      onChange(k);
+    });
+    barEl.dataset.active = defaultKey;
+    onChange(defaultKey);
+  }
 
   // ---------- カウントダウン ----------
   (function(){
@@ -340,31 +368,36 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     tick(); setInterval(tick,1000);
   })();
 
-  // ---------- 月別集計（8月以降はRUNSから、それ以前はSTATIC） ----------
+  // ---------- 月別集計（8月以降はcomputeMonthAgg、それ以前はSTATIC） ----------
   function monthlyAll(){
-    var dyn = {};
-    formRuns.concat(runsSorted.filter(function(r){return r.cadM==null && r.d.slice(0,6)>="202608";})).forEach(function(r){
-      var mk = monthKey(r.d);
-      if(mk < "202608") return; // 7月以前はSTATICで扱う
-      if(!dyn[mk]) dyn[mk] = {km:0, longest:0, n:0, label:monthLabel(r.d)};
-      dyn[mk].km += r.km; dyn[mk].n += 1; dyn[mk].longest = Math.max(dyn[mk].longest, r.km);
-    });
+    var keys = {};
+    runsSorted.forEach(function(r){ var mk=monthKey(r.d); if(mk>="202608") keys[mk]=true; });
     var out = MONTHLY_STATIC.slice();
-    Object.keys(dyn).sort().forEach(function(k){ out.push({m:dyn[k].label, km:dyn[k].km, longest:dyn[k].longest, n:dyn[k].n}); });
+    Object.keys(keys).sort().forEach(function(k){
+      var agg = computeMonthAgg(k);
+      out.push({m: GOALS_BY_MONTH[k] ? GOALS_BY_MONTH[k].label : monthLabel(k+"01"), km:agg.km, longest:agg.longest, n:agg.n});
+    });
     return out;
   }
 
-  // ---------- 上部カード：今月・今週（月内週）・直近の状態 ----------
+  // ---------- 上部カード：今月・今週（月〜日始まり）・直近の状態 ----------
   (function(){
-    var thisMonthRuns = runsSorted.filter(function(r){ return r.d.slice(4,6)===GOALS.monthKey; });
-    var monthKm = sum(thisMonthRuns.map(function(r){return r.km;}));
+    var curLabel = GOALS_BY_MONTH[CURRENT_MONTH_KEY] ? GOALS_BY_MONTH[CURRENT_MONTH_KEY].label : monthLabel(CURRENT_MONTH_KEY+"01");
+    var monthAgg = computeMonthAgg(CURRENT_MONTH_KEY);
 
-    // 月内を1-7,8-14,15-21,22-28,29-末の週ブロックに分け、今日が属する週の実績のみ集計（月をまたがない）
-    var dayOfMonth = new Date().getDate();
-    var weekStart = Math.floor((dayOfMonth-1)/7)*7 + 1;
-    var weekEnd = weekStart + 6;
-    var weekRuns = thisMonthRuns.filter(function(r){ var d=+r.d.slice(6,8); return d>=weekStart && d<=weekEnd; });
+    // 実際の暦週（月曜始まり・日曜終わり）で今週を計算。月をまたぐ週もそのまま計算する
+    var today = new Date();
+    var dow = today.getDay(); // 0=日 … 6=土
+    var mondayOffset = dow===0 ? -6 : 1-dow;
+    var weekStartDate = new Date(today.getFullYear(), today.getMonth(), today.getDate()+mondayOffset);
+    var weekEndDate = new Date(weekStartDate.getFullYear(), weekStartDate.getMonth(), weekStartDate.getDate()+6);
+    function ymd(dt){ function p(v){return v<10?"0"+v:""+v;} return ""+dt.getFullYear()+p(dt.getMonth()+1)+p(dt.getDate()); }
+    var wStart = ymd(weekStartDate), wEnd = ymd(weekEndDate);
+    var weekRuns = runsSorted.filter(function(r){ return r.d>=wStart && r.d<=wEnd; });
     var weekKm = sum(weekRuns.map(function(r){return r.km;}));
+    var weekLabel = weekStartDate.getMonth()===weekEndDate.getMonth()
+      ? (weekStartDate.getMonth()+1)+"月"+weekStartDate.getDate()+"〜"+weekEndDate.getDate()+"日"
+      : (weekStartDate.getMonth()+1)+"/"+weekStartDate.getDate()+"〜"+(weekEndDate.getMonth()+1)+"/"+weekEndDate.getDate();
 
     var recentN = formRuns.slice(-5); // 直近5本（月をまたいでも自動で追従）
     var cadVals = recentN.map(function(r){return r.cadM;}).filter(function(v){return v!=null;});
@@ -377,8 +410,8 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     var z2Avg = z2Vals.length ? Math.round(z2Vals.reduce(function(a,b){return a+b;},0)/z2Vals.length) : null;
 
     var cards = [
-      {k:"今月の走行距離", v:monthKm.toFixed(1)+"km", n:thisMonthRuns.length+"本（"+GOALS.label+"）", cls:"good"},
-      {k:"今週の走行距離", v:weekKm.toFixed(1)+"km", n:weekRuns.length+"本（"+GOALS.label+" "+weekStart+"〜"+weekEnd+"日）", cls:"warn"},
+      {k:"今月の走行距離", v:monthAgg.km.toFixed(1)+"km", n:monthAgg.n+"本（"+curLabel+"）", cls:"good"},
+      {k:"今週の走行距離", v:weekKm.toFixed(1)+"km", n:weekRuns.length+"本（"+weekLabel+"）", cls:"warn"},
       {k:"直近Z2", v:(z2Avg!=null?z2Avg+"%":"—"), n:"直近5本の平均（練習会等を含む）", cls:""},
       {k:"直近ピッチ", v:range(cadVals), n:"直近5本の走行中平均", cls:""}
     ];
@@ -423,6 +456,13 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
       out+='<text x="'+p[0]+'" y="'+(p[1]-13)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="600" paint-order="stroke" stroke="'+C('--surface')+'" stroke-width="3.5" stroke-linejoin="round" fill="'+C('--steel')+'">'+d.longest.toFixed(1)+'</text>';
     });
     out+='<text x="'+L+'" y="'+(T-8)+'" font-family="IBM Plex Mono,monospace" font-size="10.5" letter-spacing="1" fill="'+C('--ink-3')+'">KM</text>';
+    // TFC（THE FULL CREW）参加の区切りマーカー
+    var tfcIdx=-1; months.forEach(function(m,i){ if(m.m==="7月") tfcIdx=i; });
+    if(tfcIdx>=0){
+      var tx=L+bw*tfcIdx+bw/2;
+      out+='<line x1="'+tx+'" y1="'+T+'" x2="'+tx+'" y2="'+(H-B)+'" stroke="'+C('--warn')+'" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.75"/>';
+      out+='<text x="'+tx+'" y="'+(T-8)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="'+C('--warn')+'">TFC参加</text>';
+    }
     svg.innerHTML=out;
   })();
 
@@ -445,9 +485,7 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
       out+='<line x1="'+L+'" y1="'+y(target)+'" x2="'+(W-R)+'" y2="'+y(target)+'" stroke="'+C('--warn')+'" stroke-width="1.5" stroke-dasharray="5 4"/>';
       out+='<polyline fill="none" stroke="'+C('--steel')+'" stroke-width="2" points="'+trend.map(function(r,i){return x(i)+","+y(r[key]);}).join(" ")+'"/>';
       trend.forEach(function(r,i){
-        var isNew = r.d>="20260824";
-        var col = isNew ? C('--accent') : C('--steel');
-        out+='<circle cx="'+x(i)+'" cy="'+y(r[key])+'" r="'+(isNew?6:4.5)+'" fill="'+col+'" stroke="'+C('--surface')+'" stroke-width="2"/>';
+        out+='<circle cx="'+x(i)+'" cy="'+y(r[key])+'" r="4.5" fill="'+C('--steel')+'" stroke="'+C('--surface')+'" stroke-width="2"/>';
       });
       var last=trend[n-1];
       out+='<text x="'+x(n-1)+'" y="'+(y(last[key])-14)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="700" paint-order="stroke" stroke="'+C('--surface')+'" stroke-width="4" stroke-linejoin="round" fill="'+C('--accent')+'">'+Math.round(last[key])+'</text>';
@@ -457,31 +495,41 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     panel(30,150,"cadM",140,185,[150,160,170,180],170,"ピッチ","spm");
     panel(260,150,"gct",250,355,[260,290,320,350],280,"接地時間","ms");
     trend.forEach(function(r,i){
-      var isNew = r.d>="20260824";
-      out+='<text x="'+x(i)+'" y="446" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+(isNew?C('--accent'):C('--ink-3'))+'" font-weight="'+(isNew?700:400)+'">'+fmtShort(r.d)+'</text>';
+      out+='<text x="'+x(i)+'" y="446" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+fmtShort(r.d)+'</text>';
     });
     svg.innerHTML=out;
   })();
 
-  // ---------- フォーム比較表：直近5本 vs それ以前のジョグ平均 ----------
+  // ---------- フォーム比較表：直近本数 vs それ以前のジョグ平均（横スクロール対策でデフォルトは直近3本） ----------
   (function(){
-    var after = formRuns.filter(function(r){ return r.d>="20260824"; }).slice(-6); // 直近6本のみ表示（無限に増えないように）
-    var cutoff = after.length ? after[0].d : "20260824";
-    var before = formRuns.filter(function(r){ return r.d<cutoff && r.km>=3 && r.km<8; });
-    function cell(r,key,fmt){ return "<td>"+(r[key]!=null?fmt(r[key]):"—")+"</td>"; }
-    var rowsHtml = "";
-    rowsHtml += "<tr><td>ペース</td><td>"+mmss(avg(before.map(function(r){return pace(r.sec,r.km);})))+"/km</td>"+after.map(function(r){return cell(r,"sec",function(v){return mmss(pace(v,r.km))+"/km";});}).join("")+"</tr>";
-    rowsHtml += "<tr><td>心拍</td><td>"+Math.round(avg(before.map(function(r){return r.hr;})))+"</td>"+after.map(function(r){return cell(r,"hr",function(v){return Math.round(v);});}).join("")+"</tr>";
-    rowsHtml += '<tr class="mark"><td><strong>ピッチ</strong></td><td>'+avg(before.map(function(r){return r.cadM;})).toFixed(1)+"</td>"+after.map(function(r){return cell(r,"cadM",function(v){return "<strong>"+Math.round(v)+"</strong>";});}).join("")+"</tr>";
-    rowsHtml += '<tr class="mark"><td><strong>接地時間</strong></td><td>'+Math.round(avg(before.map(function(r){return r.gct;})))+" ms</td>"+after.map(function(r){return cell(r,"gct",function(v){return Math.round(v)+"ms";});}).join("")+"</tr>";
-    rowsHtml += "<tr><td>歩幅</td><td>"+Math.round(avg(before.map(function(r){return r.step;})))+" cm</td>"+after.map(function(r){return cell(r,"step",function(v){return Math.round(v)+"cm";});}).join("")+"</tr>";
-    rowsHtml += '<tr class="mark"><td><strong>Zone 2率</strong></td><td>—</td>'+after.map(function(r){
-      if(r.z2==null) return "<td>—</td>";
-      var rate=Math.round(r.z2/r.sec*100);
-      return "<td><strong>"+rate+"%</strong></td>";
-    }).join("")+"</tr>";
-    document.getElementById("form-compare").innerHTML =
-      "<table><thead><tr><th>項目</th><th>8/22以前<br>平均（"+before.length+"本）</th>"+after.map(function(r){return "<th>"+fmtShort(r.d)+"</th>";}).join("")+"</tr></thead><tbody>"+rowsHtml+"</tbody></table>";
+    var afterAll = formRuns.filter(function(r){ return r.d>="20260824"; });
+    var expanded = false;
+    function render(){
+      var after = expanded ? afterAll.slice(-6) : afterAll.slice(-2);
+      var cutoff = after.length ? after[0].d : "20260824";
+      var before = formRuns.filter(function(r){ return r.d<cutoff && r.km>=3 && r.km<8; });
+      function cell(r,key,fmt){ return "<td>"+(r[key]!=null?fmt(r[key]):"—")+"</td>"; }
+      var rowsHtml = "";
+      rowsHtml += "<tr><td>ペース</td><td>"+mmss(avg(before.map(function(r){return pace(r.sec,r.km);})))+"/km</td>"+after.map(function(r){return cell(r,"sec",function(v){return mmss(pace(v,r.km))+"/km";});}).join("")+"</tr>";
+      rowsHtml += "<tr><td>心拍</td><td>"+Math.round(avg(before.map(function(r){return r.hr;})))+"</td>"+after.map(function(r){return cell(r,"hr",function(v){return Math.round(v);});}).join("")+"</tr>";
+      rowsHtml += '<tr><td><strong>ピッチ</strong></td><td>'+avg(before.map(function(r){return r.cadM;})).toFixed(1)+"</td>"+after.map(function(r){return cell(r,"cadM",function(v){return "<strong>"+Math.round(v)+"</strong>";});}).join("")+"</tr>";
+      rowsHtml += '<tr><td><strong>接地時間</strong></td><td>'+Math.round(avg(before.map(function(r){return r.gct;})))+" ms</td>"+after.map(function(r){return cell(r,"gct",function(v){return Math.round(v)+"ms";});}).join("")+"</tr>";
+      rowsHtml += "<tr><td>歩幅</td><td>"+Math.round(avg(before.map(function(r){return r.step;})))+" cm</td>"+after.map(function(r){return cell(r,"step",function(v){return Math.round(v)+"cm";});}).join("")+"</tr>";
+      rowsHtml += '<tr><td><strong>Zone 2率</strong></td><td>—</td>'+after.map(function(r){
+        if(r.z2==null) return "<td>—</td>";
+        var rate=Math.round(r.z2/r.sec*100);
+        return "<td><strong>"+rate+"%</strong></td>";
+      }).join("")+"</tr>";
+      var toggleHtml = afterAll.length>3
+        ? '<button type="button" class="mtab" id="form-compare-toggle" style="margin-top:12px">'+(expanded?"直近2本のみ表示":"直近6本を表示")+'</button>'
+        : "";
+      document.getElementById("form-compare").innerHTML =
+        "<table><thead><tr><th>項目</th><th>8/22以前<br>平均（"+before.length+"本）</th>"+after.map(function(r){return "<th>"+fmtShort(r.d)+"</th>";}).join("")+"</tr></thead><tbody>"+rowsHtml+"</tbody></table>"
+        + toggleHtml;
+      var btn = document.getElementById("form-compare-toggle");
+      if(btn) btn.addEventListener("click", function(){ expanded=!expanded; render(); });
+    }
+    render();
   })();
 
   // ---------- 03: Zone2率チャート ----------
@@ -513,75 +561,110 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     svg.innerHTML=out;
   })();
 
-  // ---------- 05: 今月の目標 ----------
+  // ---------- 01: 今月の目標（月タブ切り替え） ----------
   (function(){
-    var thisMonthRuns = runsSorted.filter(function(r){ return r.d.slice(4,6)===GOALS.monthKey; });
-    var nRuns = thisMonthRuns.length;
-    var z2sum = sum(thisMonthRuns.map(function(r){return r.z2;}));
-    var longRun = null; // 20km以上を1本で達成した最初のラン
-    var longMax = 0;
-    thisMonthRuns.forEach(function(r){
-      if(r.km>longMax) longMax=r.km;
-      if(r.km>=GOALS.longKm && !longRun) longRun=r;
-    });
-
-    document.getElementById("goal-sub").textContent = GOALS.label+"の目標と、"+(thisMonthRuns.length?thisMonthRuns[thisMonthRuns.length-1].d.slice(6,8)+"日時点の進捗":"進捗なし");
-
-    function card(k,val,goal,unit,note,pct){
-      pct = Math.min(100, Math.round(pct));
+    // 目標なし項目は「—」で描画し、0扱い・達成率計算には混ぜない
+    function metricCard(k, goal, val, unit, note){
+      if(goal==null){
+        return '<div class="vcard"><div class="k">'+k+'</div><div class="v">—</div><div class="n">目標なし</div></div>';
+      }
+      var pct = Math.round(val/goal*100);
+      var barPct = Math.max(0, Math.min(100, pct));
       return '<div class="vcard'+(pct>=100?' good':'')+'"><div class="k">'+k+'</div>'
         +'<div class="v">'+val+'<span style="font-size:.45em"> / '+goal+unit+'</span></div>'
-        +'<div class="pb"><i style="width:'+pct+'%"></i></div>'
-        +'<div class="n">達成率 '+pct+'%。'+note+'</div></div>';
+        +'<div class="pb"><i style="width:'+barPct+'%"></i></div>'
+        +'<div class="n">達成率 '+pct+'%。'+(note||"")+'</div></div>';
     }
     // ロング走は「1本で目標km以上を走ったか」を0/1本でカウント（累積%にしない）
-    function longCard(){
+    function longCard(goalKm, longRun, longMax){
+      if(goalKm==null){
+        return '<div class="vcard"><div class="k">ロング走</div><div class="v">—</div><div class="n">目標なし</div></div>';
+      }
       var achieved = !!longRun;
       var pct = achieved ? 100 : 0;
       var note = achieved
         ? "達成（"+fmtShort(longRun.d)+"）・"+longRun.km.toFixed(2)+"km"
         : (longMax ? "今月の最長は"+longMax.toFixed(2)+"km" : "今月はまだ実施なし");
       return '<div class="vcard'+(achieved?' good':'')+'"><div class="k">ロング走</div>'
-        +'<div class="v">'+(achieved?1:0)+'<span style="font-size:.45em"> / 1本（'+GOALS.longKm+'km以上）</span></div>'
+        +'<div class="v">'+(achieved?1:0)+'<span style="font-size:.45em"> / 1本（'+goalKm+'km以上）</span></div>'
         +'<div class="pb"><i style="width:'+pct+'%"></i></div>'
         +'<div class="n">'+note+'</div></div>';
     }
-    var html = card("ラン本数", nRuns, GOALS.runs, "本", "", nRuns/GOALS.runs*100)
-      + card("Zone 2", Math.floor(z2sum/60), GOALS.zone2min, "分", hms(z2sum)+"（"+thisMonthRuns.length+"本の合計）", z2sum/60/GOALS.zone2min*100)
-      + longCard();
-    document.getElementById("goal-cards").innerHTML = html;
+    function renderGoalMonth(key){
+      var g = GOALS_BY_MONTH[key];
+      var runsGoal = g.runs ? g.runs.goal : null;
+      var zone2Goal = g.zone2 ? g.zone2.goalMin : null;
+      var longGoal = g.long ? g.long.goalKm : null;
+      var nRuns, z2sum, longRun, longMax, subText;
+      if(g.static){
+        // RUNSに全件の詳細ログがない月（例：7月）はSTATICの実績値を単一ソースとして使う
+        var stat = MONTHLY_STATIC.filter(function(m){return m.m===g.label;})[0];
+        nRuns = stat ? stat.n : 0;
+        z2sum = null; longRun = null; longMax = 0;
+        subText = g.label+"の目標と実績（月次サマリーのみ、Zone2・ロングのログなし）";
+      } else {
+        var agg = computeMonthAgg(key);
+        nRuns = agg.n; z2sum = agg.z2sum; longMax = agg.longest;
+        longRun = null;
+        if(longGoal!=null){
+          agg.runs.forEach(function(r){ if(r.km>=longGoal && !longRun) longRun=r; });
+        }
+        subText = g.label+"の目標と、"+(agg.n?agg.runs[agg.n-1].d.slice(6,8)+"日時点の進捗":"進捗なし");
+      }
+      document.getElementById("goal-sub").textContent = subText;
+      var html = metricCard("ラン本数", runsGoal, nRuns, "本", "")
+        + metricCard("Zone 2", zone2Goal, z2sum!=null?Math.floor(z2sum/60):null, "分", z2sum!=null?(hms(z2sum)+"（"+nRuns+"本の合計）"):"")
+        + longCard(longGoal, longRun, longMax);
+      document.getElementById("goal-cards").innerHTML = html;
+      var memoEl = document.getElementById("goal-memo");
+      if(g.memo){
+        memoEl.style.display = "";
+        memoEl.querySelector(".txt").textContent = g.memo;
+      } else {
+        memoEl.style.display = "none";
+      }
+    }
+    var monthKeys = Object.keys(GOALS_BY_MONTH).sort();
+    var items = monthKeys.map(function(k){ return {key:k, label:GOALS_BY_MONTH[k].label}; });
+    var defaultKey = GOALS_BY_MONTH[CURRENT_MONTH_KEY] ? CURRENT_MONTH_KEY : monthKeys[monthKeys.length-1];
+    initTabs(document.getElementById("goal-tabs"), items, defaultKey, renderGoalMonth);
   })();
 
-  // ---------- 07: 元データ ----------
+  // ---------- 05: 元データ（月タブ切り替え、共通initTabsを使い回す） ----------
   (function(){
-    document.getElementById("raw-sub").textContent = "Amazfit Active Max の記録した全ラン"+runsSorted.length+"本／"+runsSorted[0].d.slice(0,4)+"."+runsSorted[0].d.slice(4,6)+"."+runsSorted[0].d.slice(6,8)+" — "+runsSorted[runsSorted.length-1].d.slice(0,4)+"."+runsSorted[runsSorted.length-1].d.slice(4,6)+"."+runsSorted[runsSorted.length-1].d.slice(6,8);
     function bar(v,lo,hi,cls){
       if(v==null) return "—";
       var w=Math.max(3,Math.min(100,(v-lo)/(hi-lo)*100));
       return '<span class="b '+cls+'" style="--w:'+w+'%">'+Math.round(v)+'</span>';
     }
-    var rows = runsSorted.map(function(r,i){
-      var cls = r.d>="20260901" ? "mark" : (r.cadM>=170?"":"");
-      var sep = r.d==="20260802" ? "sep" : "";
-      var cadVal = r.cadM!=null ? r.cadM : r.cad; // 走行区間が短すぎる日は表示値にフォールバック
-      var cadDisplay = cadVal!=null ? bar(cadVal,140,185,"") : "—";
-      var gctDisplay = r.gct!=null ? bar(r.gct,250,350,"w") : "—";
-      var z2rate = r.z2!=null ? Math.round(r.z2/r.sec*100)+"%" : "—";
-      var hasNote = !!r.note;
-      return '<tr class="rawrow '+(cls+" "+sep).trim()+(hasNote?" has-note":"")+'" data-i="'+i+'">'
-        +'<td>'+fmtShort(r.d)+'</td>'
-        +'<td>'+r.km.toFixed(2)+'</td>'
-        +'<td>'+hms(r.sec)+'</td>'
-        +'<td>'+mmss(pace(r.sec,r.km))+'</td>'
-        +'<td>'+(r.hr||"—")+'</td>'
-        +'<td class="bc">'+z2rate+'</td>'
-        +'<td class="bc">'+cadDisplay+'</td>'
-        +'<td>'+(r.step||"—")+'</td>'
-        +'<td class="bc">'+gctDisplay+'</td>'
-        +'<td class="notemark">'+(hasNote?'<span class="detail-btn">詳細</span>':'')+'</td>'
-        +'</tr>';
-    });
-    document.getElementById("raw-table").innerHTML = rows.join("\n");
+    function renderMonth(key){
+      var monthRuns = runsSorted.filter(function(r){ return monthKey(r.d)===key; });
+      var lbl = GOALS_BY_MONTH[key] ? GOALS_BY_MONTH[key].label : monthLabel(key+"01");
+      document.getElementById("raw-sub").textContent = lbl+"のログ "+monthRuns.length+"本";
+      var rows = monthRuns.map(function(r){
+        var i = runsSorted.indexOf(r);
+        var cls = r.d>="20260901" ? "mark" : "";
+        var sep = r.d==="20260802" ? "sep" : "";
+        var cadVal = r.cadM!=null ? r.cadM : r.cad; // 走行区間が短すぎる日は表示値にフォールバック
+        var cadDisplay = cadVal!=null ? bar(cadVal,140,185,"") : "—";
+        var gctDisplay = r.gct!=null ? bar(r.gct,250,350,"w") : "—";
+        var z2rate = r.z2!=null ? Math.round(r.z2/r.sec*100)+"%" : "—";
+        var hasNote = !!r.note;
+        return '<tr class="rawrow '+(cls+" "+sep).trim()+(hasNote?" has-note":"")+'" data-i="'+i+'">'
+          +'<td>'+fmtShort(r.d)+'</td>'
+          +'<td>'+r.km.toFixed(2)+'</td>'
+          +'<td>'+hms(r.sec)+'</td>'
+          +'<td>'+mmss(pace(r.sec,r.km))+'</td>'
+          +'<td>'+(r.hr||"—")+'</td>'
+          +'<td class="bc">'+z2rate+'</td>'
+          +'<td class="bc">'+cadDisplay+'</td>'
+          +'<td>'+(r.step||"—")+'</td>'
+          +'<td class="bc">'+gctDisplay+'</td>'
+          +'<td class="notemark">'+(hasNote?'<span class="detail-btn">詳細</span>':'')+'</td>'
+          +'</tr>';
+      });
+      document.getElementById("raw-table").innerHTML = rows.join("\n");
+    }
 
     document.getElementById("raw-table").addEventListener("click", function(e){
       var tr = e.target.closest("tr.has-note");
@@ -599,6 +682,13 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
       var r = runsSorted[+tr.getAttribute("data-i")];
       tr.insertAdjacentHTML("afterend", '<tr class="noterow"><td colspan="10">'+r.note+'</td></tr>');
     });
+
+    // 月タブ：データがある月だけを対象に、デフォルトは「データがある最新月」（当月固定にしない）
+    var monthsPresent = {};
+    runsSorted.forEach(function(r){ monthsPresent[monthKey(r.d)] = true; });
+    var rawMonthKeys = Object.keys(monthsPresent).sort();
+    var rawItems = rawMonthKeys.map(function(k){ return {key:k, label: GOALS_BY_MONTH[k] ? GOALS_BY_MONTH[k].label : monthLabel(k+"01")}; });
+    initTabs(document.getElementById("raw-tabs"), rawItems, rawMonthKeys[rawMonthKeys.length-1], renderMonth);
   })();
 
 })();
