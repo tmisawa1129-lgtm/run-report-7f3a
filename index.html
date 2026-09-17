@@ -66,7 +66,7 @@ body{
 .linkrow a{font-family:var(--font-sans); font-weight:600; font-size:13px; letter-spacing:.01em; color:var(--accent-ink); background:var(--accent-soft); padding:7px 15px; border-radius:var(--r-pill); text-decoration:none; white-space:nowrap; flex:0 0 auto}
 .linkrow a:hover{opacity:.82}
 .mtabs{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px}
-.mtab{font-family:"Roboto Mono",monospace; font-size:12.5px; letter-spacing:.03em; color:var(--ink-2); background:var(--surface); border:none; padding:7px 16px; border-radius:var(--r-pill); cursor:pointer}
+.mtab{font-family:var(--font-sans); font-weight:600; font-size:12.5px; letter-spacing:.03em; color:var(--ink-2); background:var(--surface); border:none; padding:7px 16px; border-radius:var(--r-pill); cursor:pointer}
 .mtab.active{background:var(--accent-soft); color:var(--accent-ink); font-weight:600}
 .countdown{display:flex; align-items:baseline; gap:10px 20px; flex-wrap:wrap; margin:0}
 .cd-main{font-family:var(--font-sans); font-weight:900; font-size:clamp(30px,6.4vw,48px); line-height:1.1; letter-spacing:-.01em; color:var(--accent); font-variant-numeric:tabular-nums; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
@@ -80,13 +80,9 @@ body{
 .verdict>:last-child:nth-child(odd){grid-column:1/-1}
 #goal-cards{grid-template-columns:1fr} /* 今月の目標は常に横長・縦積み表示 */
 #goal-cards .vcard .pb{max-width:360px}
-.vcard{background:var(--surface); border:none; border-radius:var(--r-lg); padding:14px 15px 15px}
-.verdict .vcard:nth-child(3n+1){background:var(--accent-soft); color:var(--accent-ink)}
-.verdict .vcard:nth-child(3n+2){background:var(--warn-soft)}
-.verdict .vcard:nth-child(3n+3){background:var(--surface-2)}
-#stat-cards.verdict .vcard{background:var(--surface-2); color:var(--ink)}
-#stat-cards.verdict .vcard.good{background:var(--accent-soft); color:var(--accent-ink)}
-#stat-cards.verdict .vcard.warn{background:var(--warn-soft); color:var(--warn)}
+.vcard{background:var(--surface-2); color:var(--ink); border:none; border-radius:var(--r-lg); padding:14px 15px 15px}
+.vcard.good{background:var(--accent-soft); color:var(--accent-ink)}
+.vcard.warn{background:var(--warn-soft); color:var(--warn)}
 .vcard .k{font-family:var(--font-sans); font-weight:600; font-size:11px; letter-spacing:.02em; text-transform:uppercase; color:inherit; opacity:.62}
 .vcard .v{font-family:var(--font-sans); font-weight:800; font-size:26px; line-height:1.1; letter-spacing:-.01em; margin:6px 0 4px; font-variant-numeric:tabular-nums; color:inherit}
 .vcard .n{font-size:12.5px; line-height:1.5; color:inherit; opacity:.75}
@@ -97,9 +93,9 @@ body{
 .vcard .pb i{display:block; height:100%; background:currentColor; border-radius:var(--r-pill); opacity:.85}
 .vcard .pb u{position:absolute; top:-3px; bottom:-3px; width:2px; background:currentColor; opacity:.5; left:var(--t)}
 
-section{padding:52px 0 0}
+section{padding:40px 0 0}
 .shead{display:flex; align-items:center; gap:12px; margin:0 0 6px}
-.snum{font-family:"Roboto Mono",monospace; font-weight:600; font-size:12px; color:var(--accent-ink); background:var(--accent-soft); letter-spacing:.04em; padding:4px 11px; border-radius:var(--r-pill)}
+.snum{font-family:var(--font-sans); font-weight:700; font-weight:600; font-size:12px; color:var(--accent-ink); background:var(--accent-soft); letter-spacing:.04em; padding:4px 11px; border-radius:var(--r-pill)}
 h2{font-family:var(--font-sans); font-weight:800; font-size:clamp(22px,3vw,27px); line-height:1.25; letter-spacing:-.01em; margin:0; text-wrap:balance}
 .sub{color:var(--ink-3); font-size:14px; margin:8px 0 22px; padding-left:0}
 p{margin:0 0 16px}
@@ -112,22 +108,22 @@ em{font-style:normal; background:var(--accent-soft); padding:2px 8px; border-rad
 .pts li::before{content:""; position:absolute; left:2px; top:9px; width:7px; height:7px; border-radius:50%; background:var(--accent)}
 .pts li:last-child{margin-bottom:0}
 
-.callout{background:var(--warn-soft); border:none; border-radius:var(--r-lg); padding:20px 22px; margin:0 0 22px}
-.callout .lbl{font-family:"Roboto Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--warn); display:block; margin-bottom:8px; font-weight:600}
+.callout{background:var(--warn-soft); border:none; border-radius:var(--r-lg); padding:16px 18px; margin:0 0 18px}
+.callout .lbl{font-family:var(--font-sans); font-weight:700; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--warn); display:block; margin-bottom:8px; font-weight:600}
 .callout p:last-child{margin-bottom:0}
 
-figure{margin:26px 0 24px; background:var(--surface); border:none; border-radius:var(--r-lg); padding:24px 22px 18px}
+figure{margin:20px 0 20px; background:var(--surface); border:none; border-radius:var(--r-lg); padding:18px 18px 14px}
 figcaption{font-size:13px; color:var(--ink-3); margin-top:14px; padding-top:12px; border-top:1px solid var(--line); line-height:1.6}
 .figtitle{font-family:var(--font-sans); font-weight:700; font-size:15px; letter-spacing:-.005em; margin:0 0 3px}
-.figsub{font-family:"Roboto Mono",monospace; font-size:10.5px; letter-spacing:.06em; color:var(--ink-3); text-transform:uppercase; margin:0 0 16px}
+.figsub{font-family:var(--font-sans); font-weight:600; font-size:10.5px; letter-spacing:.06em; color:var(--ink-3); text-transform:uppercase; margin:0 0 16px}
 .chartbox{overflow-x:auto}
 svg{display:block; max-width:100%; height:auto}
 
-.tablebox{overflow-x:auto; margin:22px 0; border:none; border-radius:var(--r-lg); background:var(--surface); padding:4px}
+.tablebox{overflow-x:auto; margin:16px 0; border:none; border-radius:var(--r-lg); background:var(--surface); padding:4px}
 table{border-collapse:collapse; width:100%; font-size:14px; min-width:480px}
-th,td{padding:11px 15px; text-align:right; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums}
-th{font-family:"Roboto Mono",monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); font-weight:500; white-space:nowrap}
-th:first-child,td:first-child{text-align:left; font-family:"Roboto Mono",monospace; font-size:12.5px; white-space:nowrap; border-radius:0}
+th,td{padding:9px 13px; text-align:right; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums}
+th{font-family:var(--font-sans); font-weight:600; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); font-weight:500; white-space:nowrap}
+th:first-child,td:first-child{text-align:left; font-family:var(--font-sans); font-weight:600; font-size:12.5px; white-space:nowrap; border-radius:0}
 tbody tr:last-child td{border-bottom:none}
 tbody tr.mark td{background:var(--accent-soft); color:var(--accent-ink)}
 tbody tr.sep td{border-top:2px solid var(--line-2)}
@@ -139,7 +135,7 @@ tr.rawrow.has-note{cursor:pointer}
 tr.rawrow.has-note:hover td{background:var(--surface-2)}
 tr.rawrow.open td{background:var(--surface-2)}
 td.notemark{text-align:center; padding-left:8px; padding-right:8px}
-td.notemark .detail-btn{display:inline-block; padding:4px 11px; border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent-ink); font-family:"Roboto Mono",monospace; font-size:10.5px; letter-spacing:.02em; white-space:nowrap}
+td.notemark .detail-btn{display:inline-block; padding:4px 11px; border-radius:var(--r-pill); background:var(--accent-soft); color:var(--accent-ink); font-family:var(--font-sans); font-weight:600; font-size:10.5px; letter-spacing:.02em; white-space:nowrap}
 tr.rawrow.open td.notemark .detail-btn{background:var(--accent); color:var(--paper)}
 tr.noterow td{text-align:left; white-space:normal; color:var(--ink-2); font-size:12.5px; line-height:1.6; background:var(--surface-2); border-bottom:1px solid var(--line)}
 tr.noterow:last-child td{border-bottom:none}
@@ -148,13 +144,13 @@ tr.noterow:last-child td{border-bottom:none}
 .b.w::before{background:var(--warn-bar); opacity:.4}
 sup{font-size:.62em; vertical-align:super; color:var(--warn); font-weight:700; margin-left:1px}
 
-.notes{border:none; border-radius:var(--r-lg); background:var(--surface-2); padding:18px 20px; margin-top:14px}
-.notes .lbl{font-family:"Roboto Mono",monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); display:block; margin-bottom:8px; font-weight:600}
+.notes{border:none; border-radius:var(--r-lg); background:var(--surface-2); padding:14px 16px; margin-top:12px}
+.notes .lbl{font-family:var(--font-sans); font-weight:700; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-3); display:block; margin-bottom:8px; font-weight:600}
 
 footer{margin-top:56px; padding:28px 0 48px}
 footer .wrap{background:var(--surface); border-radius:var(--r-lg); padding:24px 28px; margin-left:auto; margin-right:auto}
 footer p{font-size:13.5px; color:var(--ink-2); line-height:1.7}
-footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); padding:2px 7px; border-radius:6px; font-size:.92em}
+footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2px 7px; border-radius:6px; font-size:.92em}
 
 @media (max-width:620px){
   body{font-size:15.5px} .wrap{padding:0 16px 72px} .masthead{padding:36px 0 26px}
@@ -464,30 +460,30 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     var ticks=[0,Math.round(max/3/10)*10,Math.round(max*2/3/10)*10,max];
     ticks.forEach(function(g){
       out+='<line x1="'+L+'" y1="'+y(g)+'" x2="'+(W-R)+'" y2="'+y(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
-      out+='<text x="'+(L-12)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+g+'</text>';
+      out+='<text x="'+(L-12)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="11" fill="'+C('--ink-3')+'">'+g+'</text>';
     });
     months.forEach(function(d,i){
       var cx=L+bw*i+bw/2, w=bw*0.42;
       var isCur = i===months.length-1;
       out+='<rect x="'+(cx-w/2)+'" y="'+y(d.km)+'" width="'+w+'" height="'+(y(0)-y(d.km))+'" fill="'+(isCur?C('--accent'):C('--accent'))+'" fill-opacity="'+(isCur?1:0.85)+'" rx="1"/>';
-      out+='<text x="'+cx+'" y="'+(y(d.km)-10)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="600" fill="'+C('--ink')+'">'+d.km.toFixed(1)+'</text>';
-      out+='<text x="'+cx+'" y="'+(H-B+24)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="13" fill="'+C('--ink-2')+'">'+d.m+'</text>';
-      out+='<text x="'+cx+'" y="'+(H-B+42)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="'+C('--ink-3')+'">'+d.n+'本</text>';
+      out+='<text x="'+cx+'" y="'+(y(d.km)-10)+'" text-anchor="middle" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="13" font-weight="600" fill="'+C('--ink')+'">'+d.km.toFixed(1)+'</text>';
+      out+='<text x="'+cx+'" y="'+(H-B+24)+'" text-anchor="middle" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="13" fill="'+C('--ink-2')+'">'+d.m+'</text>';
+      out+='<text x="'+cx+'" y="'+(H-B+42)+'" text-anchor="middle" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="10.5" fill="'+C('--ink-3')+'">'+d.n+'本</text>';
     });
     var pts=months.map(function(d,i){ return [L+bw*i+bw/2, y(Math.min(d.longest,max))]; });
     out+='<polyline fill="none" stroke="'+C('--steel')+'" stroke-width="2" stroke-dasharray="5 4" points="'+pts.map(function(p){return p[0]+","+p[1];}).join(" ")+'"/>';
     months.forEach(function(d,i){
       var p=pts[i];
       out+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="4.5" fill="'+C('--surface')+'" stroke="'+C('--steel')+'" stroke-width="2"/>';
-      out+='<text x="'+p[0]+'" y="'+(p[1]-13)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" font-weight="600" paint-order="stroke" stroke="'+C('--surface')+'" stroke-width="3.5" stroke-linejoin="round" fill="'+C('--steel')+'">'+d.longest.toFixed(1)+'</text>';
+      out+='<text x="'+p[0]+'" y="'+(p[1]-13)+'" text-anchor="middle" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="11" font-weight="600" paint-order="stroke" stroke="'+C('--surface')+'" stroke-width="3.5" stroke-linejoin="round" fill="'+C('--steel')+'">'+d.longest.toFixed(1)+'</text>';
     });
-    out+='<text x="'+L+'" y="'+(T-8)+'" font-family="IBM Plex Mono,monospace" font-size="10.5" letter-spacing="1" fill="'+C('--ink-3')+'">KM</text>';
+    out+='<text x="'+L+'" y="'+(T-8)+'" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="10.5" letter-spacing="1" fill="'+C('--ink-3')+'">KM</text>';
     // TFC（THE FULL CREW）参加の区切りマーカー
     var tfcIdx=-1; months.forEach(function(m,i){ if(m.m==="7月") tfcIdx=i; });
     if(tfcIdx>=0){
       var tx=L+bw*tfcIdx+bw/2;
       out+='<line x1="'+tx+'" y1="'+T+'" x2="'+tx+'" y2="'+(H-B)+'" stroke="'+C('--warn')+'" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.75"/>';
-      out+='<text x="'+tx+'" y="'+(T-8)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10.5" fill="'+C('--warn')+'">TFC参加</text>';
+      out+='<text x="'+tx+'" y="'+(T-8)+'" text-anchor="middle" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="10.5" fill="'+C('--warn')+'">TFC参加</text>';
     }
     svg.innerHTML=out;
   })();
@@ -505,23 +501,23 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
       var y=function(v){ return top+h-((v-lo)/(hi-lo))*h; };
       ticks.forEach(function(g){
         out+='<line x1="'+L+'" y1="'+y(g)+'" x2="'+(W-R)+'" y2="'+y(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
-        out+='<text x="'+(L-10)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+g+'</text>';
+        out+='<text x="'+(L-10)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="11" fill="'+C('--ink-3')+'">'+g+'</text>';
       });
-      out+='<text x="'+(L+10)+'" y="'+(y(target)-8)+'" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--warn')+'">目標 '+target+'</text>';
+      out+='<text x="'+(L+10)+'" y="'+(y(target)-8)+'" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="11" fill="'+C('--warn')+'">目標 '+target+'</text>';
       out+='<line x1="'+L+'" y1="'+y(target)+'" x2="'+(W-R)+'" y2="'+y(target)+'" stroke="'+C('--warn')+'" stroke-width="1.5" stroke-dasharray="5 4"/>';
       out+='<polyline fill="none" stroke="'+C('--steel')+'" stroke-width="2" points="'+trend.map(function(r,i){return x(i)+","+y(r[key]);}).join(" ")+'"/>';
       trend.forEach(function(r,i){
         out+='<circle cx="'+x(i)+'" cy="'+y(r[key])+'" r="4.5" fill="'+C('--steel')+'" stroke="'+C('--surface')+'" stroke-width="2"/>';
       });
       var last=trend[n-1];
-      out+='<text x="'+x(n-1)+'" y="'+(y(last[key])-14)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="13" font-weight="700" paint-order="stroke" stroke="'+C('--surface')+'" stroke-width="4" stroke-linejoin="round" fill="'+C('--accent')+'">'+Math.round(last[key])+'</text>';
-      out+='<text x="'+L+'" y="'+(top-10)+'" font-family="Bricolage Grotesque,sans-serif" font-size="13" font-weight="700" fill="'+C('--ink')+'">'+label+'</text>';
-      out+='<text x="'+(W-R)+'" y="'+(top-10)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--ink-3')+'">'+unit+'</text>';
+      out+='<text x="'+x(n-1)+'" y="'+(y(last[key])-14)+'" text-anchor="end" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="13" font-weight="700" paint-order="stroke" stroke="'+C('--surface')+'" stroke-width="4" stroke-linejoin="round" fill="'+C('--accent')+'">'+Math.round(last[key])+'</text>';
+      out+='<text x="'+L+'" y="'+(top-10)+'" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="13" font-weight="700" fill="'+C('--ink')+'">'+label+'</text>';
+      out+='<text x="'+(W-R)+'" y="'+(top-10)+'" text-anchor="end" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="10" fill="'+C('--ink-3')+'">'+unit+'</text>';
     }
     panel(30,150,"cadM",140,185,[150,160,170,180],170,"ピッチ","spm");
     panel(260,150,"gct",250,355,[260,290,320,350],280,"接地時間","ms");
     trend.forEach(function(r,i){
-      out+='<text x="'+x(i)+'" y="446" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+fmtShort(r.d)+'</text>';
+      out+='<text x="'+x(i)+'" y="446" text-anchor="middle" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="11" fill="'+C('--ink-3')+'">'+fmtShort(r.d)+'</text>';
     });
     svg.innerHTML=out;
   })();
@@ -570,10 +566,10 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     var out="";
     [0,25,50,75,100].forEach(function(g){
       out+='<line x1="'+L+'" y1="'+y(g)+'" x2="'+(W-R)+'" y2="'+y(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
-      out+='<text x="'+(L-10)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="11" fill="'+C('--ink-3')+'">'+g+'%</text>';
+      out+='<text x="'+(L-10)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="11" fill="'+C('--ink-3')+'">'+g+'%</text>';
     });
     out+='<rect x="'+L+'" y="'+y(90)+'" width="'+iw+'" height="'+(y(80)-y(90))+'" fill="'+C('--accent-soft')+'" fill-opacity="0.6"/>';
-    out+='<text x="'+(L+8)+'" y="'+(y(85)+4)+'" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+C('--accent-ink')+'">目安 80–90%</text>';
+    out+='<text x="'+(L+8)+'" y="'+(y(85)+4)+'" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="10" fill="'+C('--accent-ink')+'">目安 80–90%</text>';
     var pts = z.map(function(r,i){ return [x(i), y(Math.round(r.z2/r.sec*100))]; });
     out+='<polyline fill="none" stroke="'+C('--steel')+'" stroke-width="1.5" points="'+pts.map(function(p){return p[0]+","+p[1];}).join(" ")+'"/>';
     z.forEach(function(r,i){
@@ -582,7 +578,7 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
       out+='<circle cx="'+pts[i][0]+'" cy="'+pts[i][1]+'" r="'+(isNew?6:4)+'" fill="'+(isNew?C('--accent'):C('--steel'))+'" stroke="'+C('--surface')+'" stroke-width="2"/>';
     });
     z.forEach(function(r,i){
-      out+='<text x="'+pts[i][0]+'" y="'+(H-B+22)+'" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="'+(r.d>="20260901"?C('--accent'):C('--ink-3'))+'" font-weight="'+(r.d>="20260901"?700:400)+'" transform="rotate(-55 '+pts[i][0]+' '+(H-B+22)+')">'+fmtShort(r.d)+'</text>';
+      out+='<text x="'+pts[i][0]+'" y="'+(H-B+22)+'" text-anchor="middle" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="10" fill="'+(r.d>="20260901"?C('--accent'):C('--ink-3'))+'" font-weight="'+(r.d>="20260901"?700:400)+'" transform="rotate(-55 '+pts[i][0]+' '+(H-B+22)+')">'+fmtShort(r.d)+'</text>';
     });
     svg.innerHTML=out;
   })();
