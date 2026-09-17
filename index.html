@@ -69,7 +69,9 @@ body{
 .mtab{font-family:var(--font-sans); font-weight:600; font-size:12.5px; letter-spacing:.03em; color:var(--ink-2); background:var(--surface); border:none; padding:7px 16px; border-radius:var(--r-pill); cursor:pointer}
 .mtab.active{background:var(--accent-soft); color:var(--accent-ink); font-weight:600}
 .countdown{display:flex; align-items:baseline; gap:10px 20px; flex-wrap:wrap; margin:0}
-.cd-main{font-family:var(--font-sans); font-weight:900; font-size:clamp(30px,6.4vw,48px); line-height:1.1; letter-spacing:-.01em; color:var(--accent); font-variant-numeric:tabular-nums; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
+.cd-kicker{font-family:var(--font-sans); font-size:13px; font-weight:600; letter-spacing:.02em; color:var(--ink-3); margin:0 0 4px}
+.cd-main{font-family:var(--font-sans); font-weight:900; font-size:clamp(30px,6.4vw,48px); line-height:1.1; letter-spacing:-.01em; color:var(--ink-2); font-variant-numeric:tabular-nums; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
+.cd-main #cd-days{font-size:1.15em; color:var(--accent)}
 .cd-main .u{font-size:.4em; margin-left:-8px; color:var(--ink-2); letter-spacing:0; font-weight:500}
 .cd-clock{font-family:var(--font-sans); font-weight:700; font-size:.9em; letter-spacing:-.01em; color:var(--ink-2); font-variant-numeric:tabular-nums; white-space:nowrap}
 .cd-sub{flex:1 1 100%; font-family:var(--font-sans); line-height:1.7}
@@ -186,6 +188,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     <a href="https://tfc-participantguides.netlify.app/" target="_blank" rel="noopener">参加者ガイド ↗</a>
     <a href="https://marathontraining-guides.netlify.app/" target="_blank" rel="noopener">トレーニング資料 ↗</a>
   </div>
+  <div class="cd-kicker">勝田まで</div>
   <div class="countdown">
     <div class="cd-main"><span id="cd-days">—</span><span class="u">日</span><span class="cd-clock" id="cd-clock">--:--:--</span></div>
     <div class="cd-sub">
