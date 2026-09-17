@@ -14,7 +14,7 @@
 <title>勝田マラソンへの現在地</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;800;900&family=Roboto+Mono:wght@400;500;600;700&display=swap">
 
 <style>
 :root{
@@ -26,7 +26,8 @@
   --warn:#7C5800; --warn-soft:#FFDEA6; --warn-bar:#E4B15B;
   --crit:#BA1A1A; --steel:#2D6072;
   --shadow:0 1px 2px rgba(20,30,10,.05), 0 8px 20px -14px rgba(20,30,10,.22);
-  --r-lg:24px; --r-md:16px; --r-sm:10px; --r-pill:999px;
+  --r-lg:14px; --r-md:10px; --r-sm:7px; --r-pill:999px;
+  --font-sans:"Inter","Noto Sans JP",-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -52,7 +53,7 @@
 *{box-sizing:border-box}
 body{
   margin:0; background:var(--paper); color:var(--ink);
-  font-family:"Roboto",system-ui,-apple-system,"Hiragino Kaku Gothic ProN",sans-serif;
+  font-family:var(--font-sans);
   font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased;
 }
 .wrap{max-width:860px; margin:0 auto; padding:0 24px 96px}
@@ -62,42 +63,44 @@ body{
 .hero-kicker{margin:0 0 18px; font-family:"Roboto Mono",monospace; font-size:20px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-3); white-space:nowrap}
 .hero-kicker-em{color:var(--accent-ink); font-weight:700}
 .linkrow{display:flex; flex-wrap:wrap; gap:8px 12px; margin:0 0 20px}
-.linkrow a{font-family:"Roboto Mono",monospace; font-size:12px; letter-spacing:.04em; color:var(--accent-ink); background:var(--accent-soft); padding:6px 14px; border-radius:var(--r-pill); text-decoration:none; white-space:nowrap; flex:0 0 auto}
+.linkrow a{font-family:var(--font-sans); font-weight:600; font-size:13px; letter-spacing:.01em; color:var(--accent-ink); background:var(--accent-soft); padding:7px 15px; border-radius:var(--r-pill); text-decoration:none; white-space:nowrap; flex:0 0 auto}
 .linkrow a:hover{opacity:.82}
 .mtabs{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px}
 .mtab{font-family:"Roboto Mono",monospace; font-size:12.5px; letter-spacing:.03em; color:var(--ink-2); background:var(--surface); border:none; padding:7px 16px; border-radius:var(--r-pill); cursor:pointer}
 .mtab.active{background:var(--accent-soft); color:var(--accent-ink); font-weight:600}
 .countdown{display:flex; align-items:baseline; gap:10px 20px; flex-wrap:wrap; margin:0}
-.cd-main{font-family:"Roboto",sans-serif; font-weight:900; font-size:clamp(30px,6.4vw,48px); line-height:1.1; letter-spacing:-.01em; color:var(--accent); font-variant-numeric:tabular-nums; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
+.cd-main{font-family:var(--font-sans); font-weight:900; font-size:clamp(30px,6.4vw,48px); line-height:1.1; letter-spacing:-.01em; color:var(--accent); font-variant-numeric:tabular-nums; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
 .cd-main .u{font-size:.4em; margin-left:-8px; color:var(--ink-2); letter-spacing:0; font-weight:500}
-.cd-clock{font-family:"Roboto Mono",monospace; font-size:.9em; font-weight:500; letter-spacing:-.01em; color:var(--ink-2); font-variant-numeric:tabular-nums; white-space:nowrap}
-.cd-clock .s{color:var(--accent)}
-.cd-sub{flex:1 1 100%; font-family:"Roboto Mono",monospace; line-height:1.7}
-.cd-race-name{font-size:14px; font-weight:700; letter-spacing:.02em; color:var(--ink-2); white-space:nowrap; overflow:hidden; max-width:100%}
-.cd-race-time,.cd-race-left{font-size:12.5px; letter-spacing:.04em; color:var(--ink-3); white-space:nowrap}
+.cd-clock{font-family:var(--font-sans); font-weight:700; font-size:.9em; letter-spacing:-.01em; color:var(--ink-2); font-variant-numeric:tabular-nums; white-space:nowrap}
+.cd-sub{flex:1 1 100%; font-family:var(--font-sans); line-height:1.7}
+.cd-race-name{font-size:14px; font-weight:700; letter-spacing:.01em; color:var(--ink-2); white-space:nowrap; overflow:hidden; max-width:100%}
+.cd-race-time,.cd-race-left{font-size:12.5px; letter-spacing:.01em; color:var(--ink-3); white-space:nowrap}
 
-.verdict{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); margin:28px 0 0}
+.verdict{display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); margin:28px 0 0}
 .verdict>:last-child:nth-child(odd){grid-column:1/-1}
 #goal-cards{grid-template-columns:1fr} /* 今月の目標は常に横長・縦積み表示 */
 #goal-cards .vcard .pb{max-width:360px}
-.vcard{background:var(--surface); border:none; border-radius:var(--r-lg); padding:20px 20px 22px}
+.vcard{background:var(--surface); border:none; border-radius:var(--r-lg); padding:14px 15px 15px}
 .verdict .vcard:nth-child(3n+1){background:var(--accent-soft); color:var(--accent-ink)}
 .verdict .vcard:nth-child(3n+2){background:var(--warn-soft)}
 .verdict .vcard:nth-child(3n+3){background:var(--surface-2)}
-.vcard .k{font-family:"Roboto Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:inherit; opacity:.68}
-.vcard .v{font-family:"Roboto",sans-serif; font-weight:900; font-size:28px; line-height:1.15; letter-spacing:-.01em; margin:8px 0 5px; font-variant-numeric:tabular-nums; color:inherit}
-.vcard .n{font-size:13.5px; line-height:1.55; color:inherit; opacity:.82}
+#stat-cards.verdict .vcard{background:var(--surface-2); color:var(--ink)}
+#stat-cards.verdict .vcard.good{background:var(--accent-soft); color:var(--accent-ink)}
+#stat-cards.verdict .vcard.warn{background:var(--warn-soft); color:var(--warn)}
+.vcard .k{font-family:var(--font-sans); font-weight:600; font-size:11px; letter-spacing:.02em; text-transform:uppercase; color:inherit; opacity:.62}
+.vcard .v{font-family:var(--font-sans); font-weight:800; font-size:26px; line-height:1.1; letter-spacing:-.01em; margin:6px 0 4px; font-variant-numeric:tabular-nums; color:inherit}
+.vcard .n{font-size:12.5px; line-height:1.5; color:inherit; opacity:.75}
 .vcard.good .v{color:var(--accent)}
 .vcard.warn .v{color:var(--warn)}
 .vcard.crit .v{color:var(--crit)}
-.vcard .pb{height:8px; background:rgba(0,0,0,.08); border-radius:var(--r-pill); margin:9px 0 2px; overflow:hidden; position:relative}
+.vcard .pb{height:6px; background:rgba(0,0,0,.08); border-radius:var(--r-pill); margin:8px 0 2px; overflow:hidden; position:relative}
 .vcard .pb i{display:block; height:100%; background:currentColor; border-radius:var(--r-pill); opacity:.85}
 .vcard .pb u{position:absolute; top:-3px; bottom:-3px; width:2px; background:currentColor; opacity:.5; left:var(--t)}
 
 section{padding:52px 0 0}
 .shead{display:flex; align-items:center; gap:12px; margin:0 0 6px}
 .snum{font-family:"Roboto Mono",monospace; font-weight:600; font-size:12px; color:var(--accent-ink); background:var(--accent-soft); letter-spacing:.04em; padding:4px 11px; border-radius:var(--r-pill)}
-h2{font-family:"Roboto",sans-serif; font-weight:700; font-size:clamp(22px,3vw,27px); line-height:1.25; letter-spacing:-.005em; margin:0; text-wrap:balance}
+h2{font-family:var(--font-sans); font-weight:800; font-size:clamp(22px,3vw,27px); line-height:1.25; letter-spacing:-.01em; margin:0; text-wrap:balance}
 .sub{color:var(--ink-3); font-size:14px; margin:8px 0 22px; padding-left:0}
 p{margin:0 0 16px}
 .col p+p{margin-top:-2px}
@@ -115,7 +118,7 @@ em{font-style:normal; background:var(--accent-soft); padding:2px 8px; border-rad
 
 figure{margin:26px 0 24px; background:var(--surface); border:none; border-radius:var(--r-lg); padding:24px 22px 18px}
 figcaption{font-size:13px; color:var(--ink-3); margin-top:14px; padding-top:12px; border-top:1px solid var(--line); line-height:1.6}
-.figtitle{font-family:"Roboto",sans-serif; font-weight:700; font-size:15px; letter-spacing:-.005em; margin:0 0 3px}
+.figtitle{font-family:var(--font-sans); font-weight:700; font-size:15px; letter-spacing:-.005em; margin:0 0 3px}
 .figsub{font-family:"Roboto Mono",monospace; font-size:10.5px; letter-spacing:.06em; color:var(--ink-3); text-transform:uppercase; margin:0 0 16px}
 .chartbox{overflow-x:auto}
 svg{display:block; max-width:100%; height:auto}
@@ -299,12 +302,12 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
 
   // 月別の目標。当月になったら新しいキーを足すだけでよい（過去分はそのまま残す）
   var GOALS_BY_MONTH = {
-    "202607": { label:"7月", runs:{goal:8}, zone2:null, long:null, memo:"", static:true, cardType:"custom", customCards:[
+    "202607": { label:"7月", runs:{goal:8}, zone2:null, long:null, kmGoal:null, memo:"", static:true, cardType:"custom", customCards:[
       {k:"筋トレ", text:"×3〜4/週（継続）", achieved:true},
       {k:"HYROX", text:"×1/週（継続）", achieved:true}
     ]},
-    "202608": { label:"8月", runs:{goal:8}, zone2:{goalMin:240}, long:{goalKm:15}, memo:"", static:false },
-    "202609": { label:"9月", runs:{goal:12}, zone2:{goalMin:320}, long:{goalKm:20}, memo:"", static:false }
+    "202608": { label:"8月", runs:{goal:8}, zone2:{goalMin:240}, long:{goalKm:15}, kmGoal:null, memo:"", static:false },
+    "202609": { label:"9月", runs:{goal:12}, zone2:{goalMin:320}, long:{goalKm:20}, kmGoal:null, memo:"", static:false }
   };
   var CURRENT_MONTH_KEY = "202609"; // 月が変わったらここだけ書き換える
   var RACE_DATE = new Date(2027,0,31,10,30,0);
@@ -423,10 +426,19 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
     }
     var z2Avg = z2Vals.length ? Math.round(z2Vals.reduce(function(a,b){return a+b;},0)/z2Vals.length) : null;
 
+    // 週距離ライン＝当月の距離目標÷4.3週。距離目標が未設定の月は判定なし（ニュートラル）
+    var curGoals = GOALS_BY_MONTH[CURRENT_MONTH_KEY];
+    var monthKmGoal = curGoals ? curGoals.kmGoal : null;
+    var weekLine = monthKmGoal!=null ? monthKmGoal/4.3 : null;
+    var weekCls = weekLine!=null ? (weekKm>=weekLine ? "good" : "warn") : "";
+    var weekNote = weekRuns.length+"本（"+weekLabel+"）" + (weekLine!=null ? "・ライン"+weekLine.toFixed(1)+"km" : "");
+
+    var z2Cls = z2Avg!=null ? (z2Avg>=80 ? "good" : "warn") : "";
+
     var cards = [
       {k:"今月の走行距離", v:monthAgg.km.toFixed(1)+"km", n:monthAgg.n+"本（"+curLabel+"）", cls:"good"},
-      {k:"今週の走行距離", v:weekKm.toFixed(1)+"km", n:weekRuns.length+"本（"+weekLabel+"）", cls:"warn"},
-      {k:"直近Z2", v:(z2Avg!=null?z2Avg+"%":"—"), n:"直近5本の平均（練習会等を含む）", cls:""},
+      {k:"今週の走行距離", v:weekKm.toFixed(1)+"km", n:weekNote, cls:weekCls},
+      {k:"直近Z2", v:(z2Avg!=null?z2Avg+"%":"—"), n:"直近5本の平均（練習会等を含む）", cls:z2Cls},
       {k:"直近ピッチ", v:range(cadVals), n:"直近5本の走行中平均", cls:""}
     ];
     document.getElementById("stat-cards").innerHTML = cards.map(function(c){
