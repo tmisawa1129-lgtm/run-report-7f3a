@@ -445,7 +445,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
   // ---------- 01: 月間距離グラフ ----------
   (function(){
     var months = monthlyAll();
-    document.getElementById("vol-figsub").textContent = "2026年3月 — " + months[months.length-1].m + "／ランのみ";
+    document.getElementById("vol-figsub").textContent = "2026年3月 — " + months[months.length-1].m;
     var last = months[months.length-1];
     document.getElementById("vol-caption").textContent = months.map(function(m){return m.m+" "+m.km.toFixed(1)+"km";}).slice(-3).join(" ／ ") + "。最長は" + (function(){
       var mx=0,lbl=""; months.forEach(function(m){ if(m.longest>mx){mx=m.longest; lbl=m.m;} });
