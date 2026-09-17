@@ -72,7 +72,9 @@ body{
 .cd-main .u{font-size:.4em; margin-left:-8px; color:var(--ink-2); letter-spacing:0; font-weight:500}
 .cd-clock{font-family:"Roboto Mono",monospace; font-size:.9em; font-weight:500; letter-spacing:-.01em; color:var(--ink-2); font-variant-numeric:tabular-nums; white-space:nowrap}
 .cd-clock .s{color:var(--accent)}
-.cd-sub{font-family:"Roboto Mono",monospace; font-size:12.5px; letter-spacing:.04em; color:var(--ink-3); line-height:1.7}
+.cd-sub{flex:1 1 100%; font-family:"Roboto Mono",monospace; line-height:1.7}
+.cd-race-name{font-size:14px; font-weight:700; letter-spacing:.02em; color:var(--ink-2); white-space:nowrap; overflow:hidden; max-width:100%}
+.cd-race-time,.cd-race-left{font-size:12.5px; letter-spacing:.04em; color:var(--ink-3); white-space:nowrap}
 
 .verdict{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); margin:28px 0 0}
 .verdict>:last-child:nth-child(odd){grid-column:1/-1}
@@ -187,7 +189,11 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
   </div>
   <div class="countdown">
     <div class="cd-main"><span id="cd-days">—</span><span class="u">日</span><span class="cd-clock" id="cd-clock">--:--:--</span></div>
-    <div class="cd-sub">第74回 勝田全国マラソン ／ 2027年1月31日（日）10:30 スタート（茨城・ひたちなか）<br><span id="cd-weeks"></span></div>
+    <div class="cd-sub">
+      <div class="cd-race-name" id="cd-race-name">第74回 勝田全国マラソン@ひたちなか</div>
+      <div class="cd-race-time">2027年1月31日（日）10:30〜</div>
+      <div class="cd-race-left" id="cd-weeks"></div>
+    </div>
   </div>
 
   <div class="verdict" id="stat-cards"></div>
@@ -355,15 +361,25 @@ footer code{font-family:"Roboto Mono",monospace; background:var(--surface-2); pa
   // ---------- カウントダウン ----------
   (function(){
     var elD=document.getElementById("cd-days"), elC=document.getElementById("cd-clock"), elW=document.getElementById("cd-weeks");
+    var elName=document.getElementById("cd-race-name");
     function p(v){ return v<10 ? "0"+v : ""+v; }
     function tick(){
       var ms=RACE_DATE-new Date(); if(ms<0) ms=0;
       var d=Math.floor(ms/86400000), h=Math.floor(ms%86400000/3600000), m=Math.floor(ms%3600000/60000), s=Math.floor(ms%60000/1000);
       elD.textContent=d;
       elC.innerHTML=p(h)+":"+p(m)+':<span class="s">'+p(s)+"</span>";
-      elW.textContent="まで残り "+Math.floor(d/7)+"週"+(d%7?(d%7)+"日":"");
+      elW.textContent="残り "+Math.floor(d/7)+"週"+(d%7?(d%7)+"日":"");
     }
     tick(); setInterval(tick,1000);
+
+    // 1行目が幅に収まらない場合のみ「@ひたちなか」を落とす（会場は2行目に逃がさない）
+    function fitRaceName(){
+      var full="第74回 勝田全国マラソン@ひたちなか", short="第74回 勝田全国マラソン";
+      elName.textContent = full;
+      if(elName.scrollWidth > elName.clientWidth + 1){ elName.textContent = short; }
+    }
+    fitRaceName();
+    window.addEventListener("resize", fitRaceName);
   })();
 
   // ---------- 月別集計（8月以降はcomputeMonthAgg、それ以前はSTATIC） ----------
