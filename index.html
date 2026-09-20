@@ -124,6 +124,8 @@ table{border-collapse:collapse; width:100%; font-size:14px; min-width:480px}
 th,td{padding:9px 13px; text-align:right; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums}
 th{font-family:var(--font-sans); font-weight:600; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); font-weight:500; white-space:nowrap}
 th:first-child,td:first-child{text-align:left; font-family:var(--font-sans); font-weight:600; font-size:12.5px; white-space:nowrap; border-radius:0}
+table.menu-table td{text-align:left; white-space:normal; vertical-align:top}
+table.menu-table .sub{display:block; font-size:11px; font-weight:400; color:var(--ink-3); margin-top:2px}
 tbody tr:last-child td{border-bottom:none}
 tbody tr.mark td{background:var(--accent-soft); color:var(--accent-ink)}
 tbody tr.sep td{border-top:2px solid var(--line-2)}
@@ -226,33 +228,26 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">03</span><h2>Zone 2 の実績</h2></div>
-    <p class="sub">資料の目安：練習の80〜90%はZone 2（心拍110〜127・最大心拍184設定）</p>
+    <div class="shead"><span class="snum">03</span><h2>今週の練習メニュー</h2></div>
+    <p class="sub" id="menu-sub">—</p>
   </div>
-  <figure>
-    <div class="figtitle">1本ごとのZone 2率</div>
-    <div class="figsub" id="zone-figsub">—</div>
-    <div class="chartbox"><svg id="chart-zone" viewBox="0 0 1040 400" role="img" aria-label="Zone2率の推移"></svg></div>
-    <figcaption>資料の目安は80〜90%。緑の線がその範囲。</figcaption>
-  </figure>
+  <div class="tablebox">
+    <table class="menu-table">
+      <thead><tr>
+        <th>レベル</th><th>ロング走<br>（週1）</th><th>ゆっくりラン</th><th>補強</th>
+      </tr></thead>
+      <tbody id="menu-table"></tbody>
+    </table>
+  </div>
+  <div class="notes" id="menu-points" style="display:none">
+    <span class="lbl">今週のポイント</span>
+    <ul class="pts" id="menu-points-list"></ul>
+  </div>
 </section>
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">04</span><h2>フォームの推移</h2></div>
-    <p class="sub">ピッチ・接地時間の変化</p>
-  </div>
-  <figure>
-    <div class="figtitle">ピッチと接地時間</div>
-    <div class="figsub" id="trend-figsub">—</div>
-    <div class="chartbox"><svg id="chart-trend" viewBox="0 0 1040 460" role="img" aria-label="ピッチと接地時間の推移"></svg></div>
-  </figure>
-  <div class="tablebox" id="form-compare"></div>
-</section>
-
-<section>
-  <div class="col">
-    <div class="shead"><span class="snum">05</span><h2>元データ</h2></div>
+    <div class="shead"><span class="snum">04</span><h2>元データ</h2></div>
     <p class="sub" id="raw-sub">—</p>
   </div>
   <div class="mtabs" id="raw-tabs"></div>
@@ -308,6 +303,26 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
   var CURRENT_MONTH_KEY = "202609"; // 月が変わったらここだけ書き換える
   var RACE_DATE = new Date(2027,0,31,10,30,0);
 
+  // 週ごとの練習メニュー。配列の最後（＝最新週）だけを表示する。毎週分を末尾に追記していく
+  var WEEKLY_MENU = [
+    {
+      week: 1,
+      range: "9/21（月）〜9/27（日）",
+      theme: "ゆっくり長く",
+      levels: [
+        {name:"ライト", note:"30分続けて走るのがきつい", long:"60分", longNote:"走り5分＋歩き1分の繰り返し", easy:"20分×1回", easyNote:"歩きを混ぜてOK", strength:"週2回（各10分）"},
+        {name:"スタンダード", note:"60分走れる", long:"70分", longNote:"会話できるペースで", easy:"30分×2回", easyNote:"ラン同士は続けない", strength:"週2回（各10分）"},
+        {name:"チャレンジ", note:"90分以上走れる", long:"100分", longNote:"最後まで会話できる範囲で", easy:"40分×2回", easyNote:"1本は最後5分だけやや速く", strength:"週2回（各10分）"}
+      ],
+      points: [
+        "ペースの目安は「走りながら会話ができる」くらい",
+        "ロング走の翌日は必ずオフ",
+        "補強はランの後に。ロング走の前日は入れない",
+        "時間はあくまで目安。きつい日は短くしてOK"
+      ]
+    }
+  ];
+
   // ---------- helpers ----------
   function parseD(d){ return new Date(+d.slice(0,4), +d.slice(4,6)-1, +d.slice(6,8)); }
   function mmss(s){ if(s==null) return "—"; var t=Math.round(s), m=Math.floor(t/60), r=t%60; return m+"'"+(r<10?"0":"")+r+'"'; }
@@ -337,7 +352,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     return out;
   }
 
-  // ---------- 共通タブUI（01 今月の目標／05 元データで使い回す） ----------
+  // ---------- 共通タブUI（01 今月の目標／04 元データで使い回す） ----------
   function initTabs(barEl, items, defaultKey, onChange){
     function paint(activeKey){
       barEl.innerHTML = items.map(function(it){
@@ -478,109 +493,36 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       out+='<text x="'+p[0]+'" y="'+(p[1]-13)+'" text-anchor="middle" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="11" font-weight="600" paint-order="stroke" stroke="'+C('--surface')+'" stroke-width="3.5" stroke-linejoin="round" fill="'+C('--steel')+'">'+d.longest.toFixed(1)+'</text>';
     });
     out+='<text x="'+L+'" y="'+(T-8)+'" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="10.5" letter-spacing="1" fill="'+C('--ink-3')+'">KM</text>';
-    // TFC（THE FULL CREW）参加の区切りマーカー
-    var tfcIdx=-1; months.forEach(function(m,i){ if(m.m==="7月") tfcIdx=i; });
-    if(tfcIdx>=0){
-      var tx=L+bw*tfcIdx+bw/2;
+    // 本格的に練習を開始した区切りマーカー
+    var startIdx=-1; months.forEach(function(m,i){ if(m.m==="7月") startIdx=i; });
+    if(startIdx>=0){
+      var tx=L+bw*startIdx+bw/2;
       out+='<line x1="'+tx+'" y1="'+T+'" x2="'+tx+'" y2="'+(H-B)+'" stroke="'+C('--warn')+'" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.75"/>';
-      out+='<text x="'+tx+'" y="'+(T-8)+'" text-anchor="middle" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="10.5" fill="'+C('--warn')+'">TFC参加</text>';
+      out+='<text x="'+tx+'" y="'+(T-8)+'" text-anchor="middle" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="10.5" fill="'+C('--warn')+'">本格開始</text>';
     }
     svg.innerHTML=out;
   })();
 
-  // ---------- 02: フォーム推移 ----------
+  // ---------- 03: 今週の練習メニュー ----------
   (function(){
-    var trend = formRuns.filter(function(r){ return r.km>=1.2; }); // ドリル・ウォームアップ除外目安
-    document.getElementById("trend-figsub").textContent = "2026年7月〜／ピッチ計測のある" + trend.length + "本";
-    var svg=document.getElementById("chart-trend");
-    var W=1040,L=64,R=24;
-    var iw=W-L-R, n=trend.length;
-    var x=function(i){ return L + iw*(i/(n-1)); };
-    var out="";
-    function panel(top,h,key,lo,hi,ticks,target,label,unit){
-      var y=function(v){ return top+h-((v-lo)/(hi-lo))*h; };
-      ticks.forEach(function(g){
-        out+='<line x1="'+L+'" y1="'+y(g)+'" x2="'+(W-R)+'" y2="'+y(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
-        out+='<text x="'+(L-10)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="11" fill="'+C('--ink-3')+'">'+g+'</text>';
-      });
-      out+='<text x="'+(L+10)+'" y="'+(y(target)-8)+'" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="11" fill="'+C('--warn')+'">目標 '+target+'</text>';
-      out+='<line x1="'+L+'" y1="'+y(target)+'" x2="'+(W-R)+'" y2="'+y(target)+'" stroke="'+C('--warn')+'" stroke-width="1.5" stroke-dasharray="5 4"/>';
-      out+='<polyline fill="none" stroke="'+C('--steel')+'" stroke-width="2" points="'+trend.map(function(r,i){return x(i)+","+y(r[key]);}).join(" ")+'"/>';
-      trend.forEach(function(r,i){
-        out+='<circle cx="'+x(i)+'" cy="'+y(r[key])+'" r="4.5" fill="'+C('--steel')+'" stroke="'+C('--surface')+'" stroke-width="2"/>';
-      });
-      var last=trend[n-1];
-      out+='<text x="'+x(n-1)+'" y="'+(y(last[key])-14)+'" text-anchor="end" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="13" font-weight="700" paint-order="stroke" stroke="'+C('--surface')+'" stroke-width="4" stroke-linejoin="round" fill="'+C('--accent')+'">'+Math.round(last[key])+'</text>';
-      out+='<text x="'+L+'" y="'+(top-10)+'" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="13" font-weight="700" fill="'+C('--ink')+'">'+label+'</text>';
-      out+='<text x="'+(W-R)+'" y="'+(top-10)+'" text-anchor="end" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="10" fill="'+C('--ink-3')+'">'+unit+'</text>';
+    if(!WEEKLY_MENU.length) return;
+    var w = WEEKLY_MENU[WEEKLY_MENU.length-1];
+    document.getElementById("menu-sub").textContent = "第"+w.week+"週　"+w.range+"／テーマ：「"+w.theme+"」";
+    function cell(main, sub){
+      return '<td>'+main+(sub?'<span class="sub">'+sub+'</span>':'')+'</td>';
     }
-    panel(30,150,"cadM",140,185,[150,160,170,180],170,"ピッチ","spm");
-    panel(260,150,"gct",250,355,[260,290,320,350],280,"接地時間","ms");
-    trend.forEach(function(r,i){
-      out+='<text x="'+x(i)+'" y="446" text-anchor="middle" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="11" fill="'+C('--ink-3')+'">'+fmtShort(r.d)+'</text>';
+    var rows = w.levels.map(function(lv){
+      return '<tr><td><strong>'+lv.name+'</strong><span class="sub">'+lv.note+'</span></td>'
+        + cell(lv.long, lv.longNote)
+        + cell(lv.easy, lv.easyNote)
+        + cell(lv.strength, "")
+        + '</tr>';
     });
-    svg.innerHTML=out;
-  })();
-
-  // ---------- フォーム比較表：直近本数 vs それ以前のジョグ平均（横スクロール対策でデフォルトは直近3本） ----------
-  (function(){
-    var afterAll = formRuns.filter(function(r){ return r.d>="20260824"; });
-    var expanded = false;
-    function render(){
-      var after = expanded ? afterAll.slice(-6) : afterAll.slice(-2);
-      var cutoff = after.length ? after[0].d : "20260824";
-      var before = formRuns.filter(function(r){ return r.d<cutoff && r.km>=3 && r.km<8; });
-      function cell(r,key,fmt){ return "<td>"+(r[key]!=null?fmt(r[key]):"—")+"</td>"; }
-      var rowsHtml = "";
-      rowsHtml += "<tr><td>ペース</td><td>"+mmss(avg(before.map(function(r){return pace(r.sec,r.km);})))+"/km</td>"+after.map(function(r){return cell(r,"sec",function(v){return mmss(pace(v,r.km))+"/km";});}).join("")+"</tr>";
-      rowsHtml += "<tr><td>心拍</td><td>"+Math.round(avg(before.map(function(r){return r.hr;})))+"</td>"+after.map(function(r){return cell(r,"hr",function(v){return Math.round(v);});}).join("")+"</tr>";
-      rowsHtml += '<tr><td><strong>ピッチ</strong></td><td>'+avg(before.map(function(r){return r.cadM;})).toFixed(1)+"</td>"+after.map(function(r){return cell(r,"cadM",function(v){return "<strong>"+Math.round(v)+"</strong>";});}).join("")+"</tr>";
-      rowsHtml += '<tr><td><strong>接地時間</strong></td><td>'+Math.round(avg(before.map(function(r){return r.gct;})))+" ms</td>"+after.map(function(r){return cell(r,"gct",function(v){return Math.round(v)+"ms";});}).join("")+"</tr>";
-      rowsHtml += "<tr><td>歩幅</td><td>"+Math.round(avg(before.map(function(r){return r.step;})))+" cm</td>"+after.map(function(r){return cell(r,"step",function(v){return Math.round(v)+"cm";});}).join("")+"</tr>";
-      rowsHtml += '<tr><td><strong>Zone 2率</strong></td><td>—</td>'+after.map(function(r){
-        if(r.z2==null) return "<td>—</td>";
-        var rate=Math.round(r.z2/r.sec*100);
-        return "<td><strong>"+rate+"%</strong></td>";
-      }).join("")+"</tr>";
-      var toggleHtml = afterAll.length>3
-        ? '<button type="button" class="mtab" id="form-compare-toggle" style="margin-top:12px">'+(expanded?"直近2本のみ表示":"直近6本を表示")+'</button>'
-        : "";
-      document.getElementById("form-compare").innerHTML =
-        "<table><thead><tr><th>項目</th><th>8/22以前<br>平均（"+before.length+"本）</th>"+after.map(function(r){return "<th>"+fmtShort(r.d)+"</th>";}).join("")+"</tr></thead><tbody>"+rowsHtml+"</tbody></table>"
-        + toggleHtml;
-      var btn = document.getElementById("form-compare-toggle");
-      if(btn) btn.addEventListener("click", function(){ expanded=!expanded; render(); });
+    document.getElementById("menu-table").innerHTML = rows.join("");
+    if(w.points && w.points.length){
+      document.getElementById("menu-points-list").innerHTML = w.points.map(function(p){ return '<li>'+p+'</li>'; }).join("");
+      document.getElementById("menu-points").style.display = "";
     }
-    render();
-  })();
-
-  // ---------- 03: Zone2率チャート ----------
-  (function(){
-    var z = formRuns.filter(function(r){ return r.z2!=null && r.km>=1.2; });
-    document.getElementById("zone-figsub").textContent = "2026年7月〜／Zone2データのある" + z.length + "本";
-    var svg=document.getElementById("chart-zone");
-    var W=1040,L=54,R=24,T=30,B=48;
-    var H=400, ih=H-T-B, iw=W-L-R;
-    var x=function(i){ return L + iw*(i/(z.length-1)); };
-    var y=function(v){ return T+ih-(v/100)*ih; };
-    var out="";
-    [0,25,50,75,100].forEach(function(g){
-      out+='<line x1="'+L+'" y1="'+y(g)+'" x2="'+(W-R)+'" y2="'+y(g)+'" stroke="'+C('--line')+'" stroke-width="1"/>';
-      out+='<text x="'+(L-10)+'" y="'+(y(g)+4)+'" text-anchor="end" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="11" fill="'+C('--ink-3')+'">'+g+'%</text>';
-    });
-    out+='<rect x="'+L+'" y="'+y(90)+'" width="'+iw+'" height="'+(y(80)-y(90))+'" fill="'+C('--accent-soft')+'" fill-opacity="0.6"/>';
-    out+='<text x="'+(L+8)+'" y="'+(y(85)+4)+'" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="10" fill="'+C('--accent-ink')+'">目安 80–90%</text>';
-    var pts = z.map(function(r,i){ return [x(i), y(Math.round(r.z2/r.sec*100))]; });
-    out+='<polyline fill="none" stroke="'+C('--steel')+'" stroke-width="1.5" points="'+pts.map(function(p){return p[0]+","+p[1];}).join(" ")+'"/>';
-    z.forEach(function(r,i){
-      var rate = Math.round(r.z2/r.sec*100);
-      var isNew = r.d>="20260901";
-      out+='<circle cx="'+pts[i][0]+'" cy="'+pts[i][1]+'" r="'+(isNew?6:4)+'" fill="'+(isNew?C('--accent'):C('--steel'))+'" stroke="'+C('--surface')+'" stroke-width="2"/>';
-    });
-    z.forEach(function(r,i){
-      out+='<text x="'+pts[i][0]+'" y="'+(H-B+22)+'" text-anchor="middle" font-family="Inter, \'Noto Sans JP\', sans-serif" font-size="10" fill="'+(r.d>="20260901"?C('--accent'):C('--ink-3'))+'" font-weight="'+(r.d>="20260901"?700:400)+'" transform="rotate(-55 '+pts[i][0]+' '+(H-B+22)+')">'+fmtShort(r.d)+'</text>';
-    });
-    svg.innerHTML=out;
   })();
 
   // ---------- 01: 今月の目標（月タブ切り替え） ----------
@@ -667,7 +609,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     initTabs(document.getElementById("goal-tabs"), items, defaultKey, renderGoalMonth);
   })();
 
-  // ---------- 05: 元データ（月タブ切り替え、共通initTabsを使い回す） ----------
+  // ---------- 04: 元データ（月タブ切り替え、共通initTabsを使い回す） ----------
   (function(){
     function bar(v,lo,hi,cls){
       if(v==null) return "—";
