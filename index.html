@@ -65,6 +65,9 @@ body{
 .linkrow a:hover{opacity:.82}
 .mtabs{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px}
 .mtab{font-family:var(--font-sans); font-weight:600; font-size:12.5px; letter-spacing:.03em; color:var(--ink-2); background:var(--surface); border:none; padding:7px 16px; border-radius:var(--r-pill); cursor:pointer}
+.menu-level-filter{display:flex; flex-wrap:wrap; gap:16px; margin:0 0 18px}
+.menu-level-filter label{display:flex; align-items:center; gap:7px; font-family:var(--font-sans); font-weight:600; font-size:12.5px; color:var(--ink-2); cursor:pointer}
+.menu-level-filter input[type=checkbox]{width:16px; height:16px; accent-color:var(--accent); cursor:pointer}
 .mtab.active{background:var(--accent-soft); color:var(--accent-ink); font-weight:600}
 .countdown{display:flex; align-items:baseline; gap:10px 20px; flex-wrap:wrap; margin:0}
 .cd-kicker{font-family:var(--font-sans); font-size:13px; font-weight:600; letter-spacing:.02em; color:var(--ink-3); margin:0 0 4px}
@@ -220,7 +223,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     <p class="sub" id="menu-sub">—</p>
   </div>
   <div class="mtabs" id="menu-tabs"></div>
-  <div class="mtabs" id="menu-level-tabs"></div>
+  <div class="menu-level-filter" id="menu-level-filter"></div>
   <div class="tablebox">
     <table class="menu-table">
       <thead><tr>
@@ -524,20 +527,27 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     function cell(main, sub){
       return '<td>'+main+(sub?'<span class="sub">'+sub+'</span>':'')+'</td>';
     }
-    var LEVEL_STORAGE_KEY = "katsuta_menu_level";
-    function getSavedLevel(){
-      try { return localStorage.getItem(LEVEL_STORAGE_KEY) || "all"; } catch(e){ return "all"; }
+    var LEVEL_STORAGE_KEY = "katsuta_menu_levels";
+    var ALL_LEVELS = ["ライト","スタンダード","チャレンジ"];
+    function getSavedLevels(){
+      try {
+        var raw = localStorage.getItem(LEVEL_STORAGE_KEY);
+        if(!raw) return ALL_LEVELS.slice();
+        var arr = JSON.parse(raw);
+        if(!Array.isArray(arr) || !arr.length) return ALL_LEVELS.slice();
+        return arr.filter(function(x){ return ALL_LEVELS.indexOf(x)!==-1; });
+      } catch(e){ return ALL_LEVELS.slice(); }
     }
-    function saveLevel(k){
-      try { localStorage.setItem(LEVEL_STORAGE_KEY, k); } catch(e){}
+    function saveLevels(arr){
+      try { localStorage.setItem(LEVEL_STORAGE_KEY, JSON.stringify(arr)); } catch(e){}
     }
     var currentWeek = null;
-    var currentLevel = getSavedLevel();
+    var checkedLevels = getSavedLevels();
 
     function renderTable(){
       var w = currentWeek;
       if(!w) return;
-      var levels = currentLevel==="all" ? w.levels : w.levels.filter(function(lv){ return lv.name===currentLevel; });
+      var levels = w.levels.filter(function(lv){ return checkedLevels.indexOf(lv.name)!==-1; });
       if(!levels.length) levels = w.levels;
       var rows = levels.map(function(lv){
         return '<tr><td><strong>'+lv.name+'</strong><span class="sub">'+lv.note+'</span></td>'
@@ -581,10 +591,20 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     var items = WEEKLY_MENU.map(function(w){ return {key:String(w.week), label:w.startLabel}; });
     initTabs(document.getElementById("menu-tabs"), items, String(WEEKLY_MENU[WEEKLY_MENU.length-1].week), renderWeek);
 
-    var levelItems = [{key:"all",label:"すべて"},{key:"ライト",label:"ライト"},{key:"スタンダード",label:"スタンダード"},{key:"チャレンジ",label:"チャレンジ"}];
-    initTabs(document.getElementById("menu-level-tabs"), levelItems, currentLevel, function(k){
-      currentLevel = k;
-      saveLevel(k);
+    var filterEl = document.getElementById("menu-level-filter");
+    filterEl.innerHTML = ALL_LEVELS.map(function(name){
+      var checked = checkedLevels.indexOf(name)!==-1 ? " checked" : "";
+      return '<label><input type="checkbox" value="'+name+'"'+checked+'>'+name+'</label>';
+    }).join("");
+    filterEl.addEventListener("change", function(e){
+      var cb = e.target.closest('input[type=checkbox]'); if(!cb) return;
+      var name = cb.value;
+      if(cb.checked){
+        if(checkedLevels.indexOf(name)===-1) checkedLevels.push(name);
+      } else {
+        checkedLevels = checkedLevels.filter(function(x){ return x!==name; });
+      }
+      saveLevels(checkedLevels);
       renderTable();
     });
   })();
