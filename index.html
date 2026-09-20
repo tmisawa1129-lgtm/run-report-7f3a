@@ -216,20 +216,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">02</span><h2>月間距離</h2></div>
-    <p class="sub">走った量そのものの推移</p>
-  </div>
-  <figure>
-    <div class="figtitle">月間距離と最長距離</div>
-    <div class="figsub" id="vol-figsub">—</div>
-    <div class="chartbox"><svg id="chart-vol" viewBox="0 0 1040 380" role="img" aria-label="月間距離の棒グラフ"></svg></div>
-    <figcaption id="vol-caption">—</figcaption>
-  </figure>
-</section>
-
-<section>
-  <div class="col">
-    <div class="shead"><span class="snum">03</span><h2>今週の練習メニュー</h2></div>
+    <div class="shead"><span class="snum">02</span><h2>今週の練習メニュー</h2></div>
     <p class="sub" id="menu-sub">—</p>
   </div>
   <div class="mtabs" id="menu-tabs"></div>
@@ -249,6 +236,19 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     <span class="lbl">今週のポイント</span>
     <ul class="pts" id="menu-points-list"></ul>
   </div>
+</section>
+
+<section>
+  <div class="col">
+    <div class="shead"><span class="snum">03</span><h2>月間距離</h2></div>
+    <p class="sub">走った量そのものの推移</p>
+  </div>
+  <figure>
+    <div class="figtitle">月間距離と最長距離</div>
+    <div class="figsub" id="vol-figsub">—</div>
+    <div class="chartbox"><svg id="chart-vol" viewBox="0 0 1040 380" role="img" aria-label="月間距離の棒グラフ"></svg></div>
+    <figcaption id="vol-caption">—</figcaption>
+  </figure>
 </section>
 
 <section>
@@ -313,6 +313,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
   var WEEKLY_MENU = [
     {
       week: 1,
+      startLabel: "9/21〜",
       range: "9/21（月）〜9/27（日）",
       theme: "ゆっくり長く",
       levels: [
@@ -557,7 +558,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         pointsEl.style.display = "none";
       }
     }
-    var items = WEEKLY_MENU.map(function(w){ return {key:String(w.week), label:"第"+w.week+"週"}; });
+    var items = WEEKLY_MENU.map(function(w){ return {key:String(w.week), label:w.startLabel}; });
     initTabs(document.getElementById("menu-tabs"), items, String(WEEKLY_MENU[WEEKLY_MENU.length-1].week), renderWeek);
   })();
 
