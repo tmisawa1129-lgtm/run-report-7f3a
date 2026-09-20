@@ -126,6 +126,7 @@ th{font-family:var(--font-sans); font-weight:600; font-size:10px; letter-spacing
 th:first-child,td:first-child{text-align:left; font-family:var(--font-sans); font-weight:600; font-size:12.5px; white-space:nowrap; border-radius:0}
 table.menu-table td{text-align:left; white-space:normal; vertical-align:top}
 table.menu-table .sub{display:block; font-size:11px; font-weight:400; color:var(--ink-3); margin-top:2px}
+.pts .desc{display:block; font-size:12px; color:var(--ink-3); margin-top:2px}
 tbody tr:last-child td{border-bottom:none}
 tbody tr.mark td{background:var(--accent-soft); color:var(--accent-ink)}
 tbody tr.sep td{border-top:2px solid var(--line-2)}
@@ -231,6 +232,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     <div class="shead"><span class="snum">03</span><h2>今週の練習メニュー</h2></div>
     <p class="sub" id="menu-sub">—</p>
   </div>
+  <div class="mtabs" id="menu-tabs"></div>
   <div class="tablebox">
     <table class="menu-table">
       <thead><tr>
@@ -238,6 +240,10 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       </tr></thead>
       <tbody id="menu-table"></tbody>
     </table>
+  </div>
+  <div class="notes" id="menu-strength" style="display:none">
+    <span class="lbl">今週の補強メニュー</span>
+    <ul class="pts" id="menu-strength-list"></ul>
   </div>
   <div class="notes" id="menu-points" style="display:none">
     <span class="lbl">今週のポイント</span>
@@ -319,7 +325,14 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         "ロング走の翌日は必ずオフ",
         "補強はランの後に。ロング走の前日は入れない",
         "時間はあくまで目安。きつい日は短くしてOK"
-      ]
+      ],
+      strengthTheme: "お尻まわり・10分",
+      strengthDetail: [
+        {name:"ヒップリフト", reps:"10回×2セット", desc:"あお向けで膝を立て、お尻を持ち上げて3秒キープ。お尻に力が入る位置を探す"},
+        {name:"クラムシェル", reps:"左右10回×2セット", desc:"横向きに寝て膝を軽く曲げ、かかとをつけたまま上の膝だけをゆっくり開く"},
+        {name:"片脚立ち", reps:"左右30秒×2セット", desc:"骨盤を水平に保ったまま片脚で立つ。ふらつく側が弱い側"}
+      ],
+      strengthNote: "お尻が使えると、着地で膝が内に入りにくくなり、脚のトラブルを防げる。ランの後か、走らない日に。"
     }
   ];
 
@@ -503,26 +516,49 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     svg.innerHTML=out;
   })();
 
-  // ---------- 03: 今週の練習メニュー ----------
+  // ---------- 03: 今週の練習メニュー（週タブ切り替え） ----------
   (function(){
     if(!WEEKLY_MENU.length) return;
-    var w = WEEKLY_MENU[WEEKLY_MENU.length-1];
-    document.getElementById("menu-sub").textContent = "第"+w.week+"週　"+w.range+"／テーマ：「"+w.theme+"」";
     function cell(main, sub){
       return '<td>'+main+(sub?'<span class="sub">'+sub+'</span>':'')+'</td>';
     }
-    var rows = w.levels.map(function(lv){
-      return '<tr><td><strong>'+lv.name+'</strong><span class="sub">'+lv.note+'</span></td>'
-        + cell(lv.long, lv.longNote)
-        + cell(lv.easy, lv.easyNote)
-        + cell(lv.strength, "")
-        + '</tr>';
-    });
-    document.getElementById("menu-table").innerHTML = rows.join("");
-    if(w.points && w.points.length){
-      document.getElementById("menu-points-list").innerHTML = w.points.map(function(p){ return '<li>'+p+'</li>'; }).join("");
-      document.getElementById("menu-points").style.display = "";
+    function renderWeek(key){
+      var w = WEEKLY_MENU.filter(function(x){ return String(x.week)===key; })[0];
+      if(!w) return;
+      document.getElementById("menu-sub").textContent = w.range+"／テーマ：「"+w.theme+"」";
+      var rows = w.levels.map(function(lv){
+        return '<tr><td><strong>'+lv.name+'</strong><span class="sub">'+lv.note+'</span></td>'
+          + cell(lv.long, lv.longNote)
+          + cell(lv.easy, lv.easyNote)
+          + cell(lv.strength, "")
+          + '</tr>';
+      });
+      document.getElementById("menu-table").innerHTML = rows.join("");
+
+      var strengthEl = document.getElementById("menu-strength");
+      if(w.strengthDetail && w.strengthDetail.length){
+        var sLbl = strengthEl.querySelector(".lbl");
+        sLbl.textContent = "今週の補強メニュー" + (w.strengthTheme ? "（"+w.strengthTheme+"）" : "");
+        var items = w.strengthDetail.map(function(s){
+          return '<li><strong>'+s.name+'</strong>　'+s.reps+(s.desc?'<span class="desc">'+s.desc+'</span>':'')+'</li>';
+        }).join("");
+        if(w.strengthNote) items += '<li>'+w.strengthNote+'</li>';
+        document.getElementById("menu-strength-list").innerHTML = items;
+        strengthEl.style.display = "";
+      } else {
+        strengthEl.style.display = "none";
+      }
+
+      var pointsEl = document.getElementById("menu-points");
+      if(w.points && w.points.length){
+        document.getElementById("menu-points-list").innerHTML = w.points.map(function(p){ return '<li>'+p+'</li>'; }).join("");
+        pointsEl.style.display = "";
+      } else {
+        pointsEl.style.display = "none";
+      }
     }
+    var items = WEEKLY_MENU.map(function(w){ return {key:String(w.week), label:"第"+w.week+"週"}; });
+    initTabs(document.getElementById("menu-tabs"), items, String(WEEKLY_MENU[WEEKLY_MENU.length-1].week), renderWeek);
   })();
 
   // ---------- 01: 今月の目標（月タブ切り替え） ----------
