@@ -232,14 +232,6 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       <tbody id="menu-table"></tbody>
     </table>
   </div>
-  <div class="notes" id="menu-strength" style="display:none">
-    <span class="lbl">今週の補強メニュー</span>
-    <ul class="pts" id="menu-strength-list"></ul>
-  </div>
-  <div class="notes" id="menu-points" style="display:none">
-    <span class="lbl">今週のポイント</span>
-    <ul class="pts" id="menu-points-list"></ul>
-  </div>
   <div class="notes" id="menu-img-wrap" style="display:none">
     <span class="lbl">配布された宿題資料</span>
     <img id="menu-img" src="" alt="今週の宿題資料" style="width:100%; border-radius:var(--r-md); display:block; margin-top:10px">
@@ -570,28 +562,6 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       currentWeek = w;
       document.getElementById("menu-sub").textContent = w.range+"／テーマ：「"+w.theme+"」";
       renderTable();
-
-      var strengthEl = document.getElementById("menu-strength");
-      if(w.strengthDetail && w.strengthDetail.length){
-        var sLbl = strengthEl.querySelector(".lbl");
-        sLbl.textContent = "今週の補強メニュー" + (w.strengthTheme ? "（"+w.strengthTheme+"）" : "");
-        var items = w.strengthDetail.map(function(s){
-          return '<li><strong>'+s.name+'</strong>　'+s.reps+(s.desc?'<span class="desc">'+s.desc+'</span>':'')+'</li>';
-        }).join("");
-        if(w.strengthNote) items += '<li>'+w.strengthNote+'</li>';
-        document.getElementById("menu-strength-list").innerHTML = items;
-        strengthEl.style.display = "";
-      } else {
-        strengthEl.style.display = "none";
-      }
-
-      var pointsEl = document.getElementById("menu-points");
-      if(w.points && w.points.length){
-        document.getElementById("menu-points-list").innerHTML = w.points.map(function(p){ return '<li>'+p+'</li>'; }).join("");
-        pointsEl.style.display = "";
-      } else {
-        pointsEl.style.display = "none";
-      }
 
       var imgWrap = document.getElementById("menu-img-wrap");
       if(w.img){
