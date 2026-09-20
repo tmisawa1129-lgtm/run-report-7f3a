@@ -127,6 +127,8 @@ table{border-collapse:collapse; width:100%; font-size:14px; min-width:480px}
 th,td{padding:9px 13px; text-align:right; border-bottom:1px solid var(--line); font-variant-numeric:tabular-nums}
 th{font-family:var(--font-sans); font-weight:600; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); font-weight:500; white-space:nowrap}
 th:first-child,td:first-child{text-align:left; font-family:var(--font-sans); font-weight:600; font-size:12.5px; white-space:nowrap; border-radius:0}
+table.menu-table th,table.menu-table td{text-align:left; white-space:normal; vertical-align:top}
+table.menu-table .sub{display:block; font-size:11px; font-weight:400; color:var(--ink-3); margin-top:2px}
 .pts .desc{display:block; font-size:12px; color:var(--ink-3); margin-top:2px}
 tbody tr:last-child td{border-bottom:none}
 tbody tr.mark td{background:var(--accent-soft); color:var(--accent-ink)}
@@ -222,8 +224,21 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
   </div>
   <div class="mtabs" id="menu-tabs"></div>
   <div class="menu-level-filter" id="menu-level-filter"></div>
-  <div class="notes" id="menu-summary">
-    <ul class="pts" id="menu-summary-list"></ul>
+  <div class="tablebox">
+    <table class="menu-table">
+      <thead><tr>
+        <th>レベル</th><th>ロング走<br>（週1）</th><th>ゆっくりラン</th><th>補強</th>
+      </tr></thead>
+      <tbody id="menu-table"></tbody>
+    </table>
+  </div>
+  <div class="notes" id="menu-strength" style="display:none">
+    <span class="lbl">今週の補強メニュー</span>
+    <ul class="pts" id="menu-strength-list"></ul>
+  </div>
+  <div class="notes" id="menu-points" style="display:none">
+    <span class="lbl">今週のポイント</span>
+    <ul class="pts" id="menu-points-list"></ul>
   </div>
   <div class="notes" id="menu-img-wrap" style="display:none">
     <span class="lbl">配布された宿題資料</span>
@@ -514,6 +529,9 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
   // ---------- 03: 今週の練習メニュー（週タブ切り替え） ----------
   (function(){
     if(!WEEKLY_MENU.length) return;
+    function cell(main, sub){
+      return '<td>'+main+(sub?'<span class="sub">'+sub+'</span>':'')+'</td>';
+    }
     var LEVEL_STORAGE_KEY = "katsuta_menu_levels";
     var ALL_LEVELS = ["ライト","スタンダード","チャレンジ"];
     function getSavedLevels(){
@@ -531,15 +549,19 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     var currentWeek = null;
     var checkedLevels = getSavedLevels();
 
-    function renderSummary(){
+    function renderTable(){
       var w = currentWeek;
       if(!w) return;
       var levels = w.levels.filter(function(lv){ return checkedLevels.indexOf(lv.name)!==-1; });
       if(!levels.length) levels = w.levels;
-      var items = levels.map(function(lv){
-        return '<li><strong>'+lv.name+'</strong>　ロング走'+lv.long+'／ゆっくりラン'+lv.easy+'／補強'+lv.strength+'</li>';
+      var rows = levels.map(function(lv){
+        return '<tr><td><strong>'+lv.name+'</strong><span class="sub">'+lv.note+'</span></td>'
+          + cell(lv.long, lv.longNote)
+          + cell(lv.easy, lv.easyNote)
+          + cell(lv.strength, "")
+          + '</tr>';
       });
-      document.getElementById("menu-summary-list").innerHTML = items.join("");
+      document.getElementById("menu-table").innerHTML = rows.join("");
     }
 
     function renderWeek(key){
@@ -547,7 +569,29 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       if(!w) return;
       currentWeek = w;
       document.getElementById("menu-sub").textContent = w.range+"／テーマ：「"+w.theme+"」";
-      renderSummary();
+      renderTable();
+
+      var strengthEl = document.getElementById("menu-strength");
+      if(w.strengthDetail && w.strengthDetail.length){
+        var sLbl = strengthEl.querySelector(".lbl");
+        sLbl.textContent = "今週の補強メニュー" + (w.strengthTheme ? "（"+w.strengthTheme+"）" : "");
+        var items = w.strengthDetail.map(function(s){
+          return '<li><strong>'+s.name+'</strong>　'+s.reps+(s.desc?'<span class="desc">'+s.desc+'</span>':'')+'</li>';
+        }).join("");
+        if(w.strengthNote) items += '<li>'+w.strengthNote+'</li>';
+        document.getElementById("menu-strength-list").innerHTML = items;
+        strengthEl.style.display = "";
+      } else {
+        strengthEl.style.display = "none";
+      }
+
+      var pointsEl = document.getElementById("menu-points");
+      if(w.points && w.points.length){
+        document.getElementById("menu-points-list").innerHTML = w.points.map(function(p){ return '<li>'+p+'</li>'; }).join("");
+        pointsEl.style.display = "";
+      } else {
+        pointsEl.style.display = "none";
+      }
 
       var imgWrap = document.getElementById("menu-img-wrap");
       if(w.img){
@@ -574,7 +618,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         checkedLevels = checkedLevels.filter(function(x){ return x!==name; });
       }
       saveLevels(checkedLevels);
-      renderSummary();
+      renderTable();
     });
   })();
 
