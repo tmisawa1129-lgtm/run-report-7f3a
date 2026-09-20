@@ -240,6 +240,10 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     <span class="lbl">今週のポイント</span>
     <ul class="pts" id="menu-points-list"></ul>
   </div>
+  <div class="notes" id="menu-img-wrap" style="display:none">
+    <span class="lbl">配布された宿題資料</span>
+    <img id="menu-img" src="" alt="今週の宿題資料" style="width:100%; border-radius:var(--r-md); display:block; margin-top:10px">
+  </div>
 </section>
 
 <section>
@@ -318,6 +322,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     {
       week: 1,
       startLabel: "9/21〜",
+      img: "images/menu/week1.jpg",
       range: "9/21（月）〜9/27（日）",
       theme: "ゆっくり長く",
       levels: [
@@ -586,6 +591,14 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         pointsEl.style.display = "";
       } else {
         pointsEl.style.display = "none";
+      }
+
+      var imgWrap = document.getElementById("menu-img-wrap");
+      if(w.img){
+        document.getElementById("menu-img").src = w.img;
+        imgWrap.style.display = "";
+      } else {
+        imgWrap.style.display = "none";
       }
     }
     var items = WEEKLY_MENU.map(function(w){ return {key:String(w.week), label:w.startLabel}; });
