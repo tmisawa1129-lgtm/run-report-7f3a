@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260921-20 -->
+<!-- build: 20260921-21 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -26,7 +26,7 @@
   --line:#E3DED4; --line-2:#C8C1B5;
   --accent:#8E4023; --accent-ink:#6E3219; --accent-soft:#F2E7DF; --accent-bar:#CDB6A4;
   --warn:#6F5A2E; --warn-soft:#EFE7D6; --warn-bar:#C2AC7C;
-  --crit:#8F3730; --steel:#2C4A63; --hero:#1B2227;
+  --crit:#8F3730; --steel:#2C4A63; --hero:#1B2227; --tab-on-bg:#1B2227; --tab-on-ink:#F5F2EB;
   --shadow:0 1px 1px rgba(50,40,30,.04), 0 10px 24px -18px rgba(50,40,30,.18);
   --r-lg:14px; --r-md:10px; --r-sm:7px; --r-pill:999px;
   --font-sans:"Inter","Noto Sans JP",-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
@@ -38,7 +38,7 @@
     --line:#2C343B; --line-2:#44505A;
     --accent:#E8895C; --accent-ink:#FFD3B8; --accent-soft:#4A2417; --accent-bar:#C9703F;
     --warn:#E6BE74; --warn-soft:#4A3608; --warn-bar:#B08B3E;
-    --crit:#FFB4AB; --steel:#8FB8D9; --hero:#222A31;
+    --crit:#FFB4AB; --steel:#8FB8D9; --hero:#222A31; --tab-on-bg:#C7CDD4; --tab-on-ink:#12161A;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 28px -16px rgba(0,0,0,.7);
   }
 }
@@ -48,7 +48,7 @@
   --line:#2C343B; --line-2:#44505A;
   --accent:#E8895C; --accent-ink:#FFD3B8; --accent-soft:#4A2417; --accent-bar:#C9703F;
   --warn:#E6BE74; --warn-soft:#4A3608; --warn-bar:#B08B3E;
-  --crit:#FFB4AB; --steel:#8FB8D9; --hero:#222A31;
+  --crit:#FFB4AB; --steel:#8FB8D9; --hero:#222A31; --tab-on-bg:#C7CDD4; --tab-on-ink:#12161A;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 28px -16px rgba(0,0,0,.7);
 }
 
@@ -69,8 +69,8 @@ body{
 .mtab{font-family:var(--font-sans); font-weight:600; font-size:12.5px; letter-spacing:.03em; color:var(--ink-2); background:var(--surface); border:none; padding:7px 16px; border-radius:var(--r-pill); cursor:pointer}
 .menu-level-filter{display:flex; flex-wrap:wrap; gap:16px; margin:0 0 18px}
 .menu-level-filter label{display:flex; align-items:center; gap:7px; font-family:var(--font-sans); font-weight:600; font-size:12.5px; color:var(--ink-2); cursor:pointer}
-.menu-level-filter input[type=checkbox]{width:16px; height:16px; accent-color:var(--accent); cursor:pointer}
-.mtab.active{background:var(--accent-soft); color:var(--accent-ink); font-weight:600}
+.menu-level-filter input[type=checkbox]{width:16px; height:16px; accent-color:var(--tab-on-bg); cursor:pointer}
+.mtab.active{background:var(--tab-on-bg); color:var(--tab-on-ink); font-weight:600}
 .hero{background:var(--hero); border-radius:var(--r-lg); padding:22px 20px 20px; margin:0 0 16px}
 .hero .cd-kicker{color:rgba(255,255,255,.62)}
 .hero .cd-main, .hero .cd-clock{color:#F5F2EB}
