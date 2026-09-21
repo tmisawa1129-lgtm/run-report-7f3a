@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260921-19 -->
+<!-- build: 20260921-20 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -494,7 +494,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     var cards = [
       {k:"今月の走行距離", v:monthAgg.km.toFixed(1)+"km", n:monthAgg.n+"本（"+curLabel+"）", cls:"good"},
       {k:"今週の走行距離", v:weekKm.toFixed(1)+"km", n:weekNote, cls:weekCls},
-      {k:"直近Z2", v:(z2Avg!=null?z2Avg+"%":"—"), n:"直近5本の平均（練習会等を含む）", cls:z2Cls},
+      {k:"直近Z2", v:(z2Avg!=null?z2Avg+"%":"—"), n:"直近5本の平均", cls:z2Cls},
       {k:"直近ピッチ", v:range(cadVals), n:"直近5本の走行中平均", cls:""}
     ];
     document.getElementById("stat-cards").innerHTML = cards.map(function(c){
