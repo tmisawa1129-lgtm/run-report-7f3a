@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260921-3 -->
+<!-- build: 20260921-4 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -233,6 +233,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       <tbody id="menu-table"></tbody>
     </table>
   </div>
+  <div id="menu-progress"></div>
   <div id="menu-guide" style="display:none">
     <div class="mtabs" id="guide-page-tabs" style="margin:0 0 12px">
       <button type="button" class="mtab active" data-gpage="1">1ページ目</button>
@@ -318,11 +319,18 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
   var CURRENT_MONTH_KEY = "202609"; // 月が変わったらここだけ書き換える
   var RACE_DATE = new Date(2027,0,31,10,30,0);
 
+  // 自分が選んだレベル。達成状況の判定に使う
+  var MY_LEVEL = "スタンダード";
+  // 補強をやった日（YYYYMMDD）。走行ログに残らないのでここに手で足していく
+  var STRENGTH_DAYS = [];
+
   // 週ごとの練習メニュー。配列の最後（＝最新週）だけを表示する。毎週分を末尾に追記していく
   var WEEKLY_MENU = [
     {
       week: 1,
       startLabel: "9/21〜",
+      start: "20260921",
+      end: "20260927",
       img: "images/menu/week1.jpg",
       range: "9/21（月）〜9/27（日）",
       theme: "ゆっくり長く",
@@ -565,6 +573,51 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       document.getElementById("menu-table").innerHTML = rows.join("");
     }
 
+    // 「70分」「30分×2回」「週2回（各10分）」のような表記から数字を取り出す
+    function pickMin(s){ var m = String(s||"").match(/(\d+)\s*分/); return m ? Number(m[1]) : null; }
+    function pickCount(s){ var m = String(s||"").match(/[×x]\s*(\d+)/) || String(s||"").match(/週\s*(\d+)\s*回/); return m ? Number(m[1]) : 1; }
+
+    function renderProgress(w){
+      var box = document.getElementById("menu-progress");
+      if(!w || !w.start || !w.end){ box.innerHTML = ""; return; }
+      var lv = w.levels.filter(function(x){ return x.name === MY_LEVEL; })[0];
+      if(!lv){ box.innerHTML = ""; return; }
+
+      // その週に走った分を集める
+      var runs = RUNS.filter(function(r){ return r.d >= w.start && r.d <= w.end; })
+                     .sort(function(a,b){ return b.sec - a.sec; });
+      var longSec = runs.length ? runs[0].sec : 0;
+      var easyCount = Math.max(runs.length - 1, 0);
+      var strengthCount = STRENGTH_DAYS.filter(function(d){ return d >= w.start && d <= w.end; }).length;
+
+      var longGoal = pickMin(lv.long) || 0;
+      var easyGoal = pickCount(lv.easy);
+      var strengthGoal = pickCount(lv.strength);
+      var longMin = Math.round(longSec / 60);
+
+      function mark(ok){ return ok ? '<span style="color:var(--ok, #2f6b4f); font-weight:700">達成</span>' : '<span style="color:var(--ink-3)">これから</span>'; }
+      function row(name, goal, actual, ok){
+        return '<tr><td><strong>'+name+'</strong></td><td>'+goal+'</td><td>'+actual+'</td><td>'+mark(ok)+'</td></tr>';
+      }
+
+      box.innerHTML =
+          '<div class="tablebox" style="margin-bottom:12px">'
+        +   '<table class="menu-table">'
+        +     '<thead><tr><th>今週の宿題（'+MY_LEVEL+'）</th><th>目標</th><th>実績</th><th></th></tr></thead>'
+        +     '<tbody>'
+        +       row("ロング走", lv.long, longMin+"分", longSec > 0 && longMin >= longGoal * 0.9)
+        +       row("ゆっくりラン", lv.easy, easyCount+"本", easyCount >= easyGoal)
+        +       row("補強", lv.strength, strengthCount+"回", strengthCount >= strengthGoal)
+        +     '</tbody>'
+        +   '</table>'
+        + '</div>'
+        + '<div class="notes" style="margin-bottom:18px">'
+        +   '<div class="txt" style="font-size:12.5px; color:var(--ink-3); line-height:1.7">'
+        +     'ロング走はその週でいちばん長い1本、ゆっくりランは残りの本数で数えています（目標時間の9割で達成）。補強は走行ログに残らないため手入力です。'
+        +   '</div>'
+        + '</div>';
+    }
+
     function renderWeek(key){
       // 「ガイド」タブ：週のメニューではなく、宿題ガイド（配布資料）の要点を出す
       var guideEl = document.getElementById("menu-guide");
@@ -572,6 +625,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       guideEl.style.display = isGuide ? "" : "none";
       document.getElementById("menu-tablebox").style.display = isGuide ? "none" : "";
       document.getElementById("menu-level-filter").style.display = isGuide ? "none" : "";
+      document.getElementById("menu-progress").style.display = isGuide ? "none" : "";
       if(isGuide){
         document.getElementById("menu-img-wrap").style.display = "none";
         document.getElementById("menu-sub").textContent = "宿題ガイド／レベルの選び方と守るルール";
@@ -581,6 +635,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       if(!w) return;
       currentWeek = w;
       document.getElementById("menu-sub").textContent = w.range+"／テーマ：「"+w.theme+"」";
+      renderProgress(w);
       renderTable();
 
       var imgWrap = document.getElementById("menu-img-wrap");
