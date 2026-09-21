@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260921-17 -->
+<!-- build: 20260921-18 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -26,7 +26,7 @@
   --line:#E3DED4; --line-2:#C8C1B5;
   --accent:#8E4023; --accent-ink:#6E3219; --accent-soft:#F2E7DF; --accent-bar:#CDB6A4;
   --warn:#6F5A2E; --warn-soft:#EFE7D6; --warn-bar:#C2AC7C;
-  --crit:#8F3730; --steel:#2C4A63;
+  --crit:#8F3730; --steel:#2C4A63; --hero:#1B2227;
   --shadow:0 1px 1px rgba(50,40,30,.04), 0 10px 24px -18px rgba(50,40,30,.18);
   --r-lg:14px; --r-md:10px; --r-sm:7px; --r-pill:999px;
   --font-sans:"Inter","Noto Sans JP",-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
@@ -38,7 +38,7 @@
     --line:#2C343B; --line-2:#44505A;
     --accent:#E8895C; --accent-ink:#FFD3B8; --accent-soft:#4A2417; --accent-bar:#C9703F;
     --warn:#E6BE74; --warn-soft:#4A3608; --warn-bar:#B08B3E;
-    --crit:#FFB4AB; --steel:#8FB8D9;
+    --crit:#FFB4AB; --steel:#8FB8D9; --hero:#222A31;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 28px -16px rgba(0,0,0,.7);
   }
 }
@@ -48,7 +48,7 @@
   --line:#2C343B; --line-2:#44505A;
   --accent:#E8895C; --accent-ink:#FFD3B8; --accent-soft:#4A2417; --accent-bar:#C9703F;
   --warn:#E6BE74; --warn-soft:#4A3608; --warn-bar:#B08B3E;
-  --crit:#FFB4AB; --steel:#8FB8D9;
+  --crit:#FFB4AB; --steel:#8FB8D9; --hero:#222A31;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 28px -16px rgba(0,0,0,.7);
 }
 
@@ -71,6 +71,13 @@ body{
 .menu-level-filter label{display:flex; align-items:center; gap:7px; font-family:var(--font-sans); font-weight:600; font-size:12.5px; color:var(--ink-2); cursor:pointer}
 .menu-level-filter input[type=checkbox]{width:16px; height:16px; accent-color:var(--accent); cursor:pointer}
 .mtab.active{background:var(--accent-soft); color:var(--accent-ink); font-weight:600}
+.hero{background:var(--hero); border-radius:var(--r-lg); padding:22px 20px 20px; margin:0 0 16px}
+.hero .cd-kicker{color:rgba(255,255,255,.62)}
+.hero .cd-main, .hero .cd-clock{color:#F5F2EB}
+.hero .cd-main #cd-days{color:#FFFFFF}
+.hero .cd-main .u{color:rgba(255,255,255,.7)}
+.hero .cd-race-name{color:#F5F2EB}
+.hero .cd-race-time, .hero .cd-race-left{color:rgba(255,255,255,.62)}
 .countdown{display:flex; align-items:baseline; gap:10px 20px; flex-wrap:wrap; margin:0}
 .cd-kicker{font-family:var(--font-sans); font-size:13px; font-weight:600; letter-spacing:.02em; color:var(--ink-3); margin:0 0 4px}
 .cd-main{font-family:var(--font-sans); font-weight:900; font-size:clamp(30px,6.4vw,48px); line-height:1.1; letter-spacing:-.01em; color:var(--ink-2); font-variant-numeric:tabular-nums; display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
@@ -179,6 +186,9 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     --shadow:none;
   }
   .cd-clock{display:none}
+  .hero{background:none; padding:0}
+  .hero .cd-kicker, .hero .cd-race-time, .hero .cd-race-left{color:var(--ink-3)}
+  .hero .cd-main, .hero .cd-main #cd-days, .hero .cd-race-name{color:var(--ink)}
   a{color:var(--accent-ink); text-decoration:none}
 }
 </style>
@@ -188,19 +198,21 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
 <body>
 <div class="wrap">
 <header class="masthead">
+  <div class="hero">
+    <div class="cd-kicker">勝田まで</div>
+    <div class="countdown">
+      <div class="cd-main"><span id="cd-days">—</span><span class="u">日</span><span class="cd-clock" id="cd-clock">--:--:--</span></div>
+      <div class="cd-sub">
+        <div class="cd-race-name" id="cd-race-name">第74回 勝田全国マラソン@ひたちなか</div>
+        <div class="cd-race-time">2027年1月31日（日）10:30〜</div>
+        <div class="cd-race-left" id="cd-weeks"></div>
+      </div>
+    </div>
+  </div>
   <div class="linkrow">
     <a href="https://katsutamarathon.jp/" target="_blank" rel="noopener">大会公式サイト ↗</a>
     <a href="https://tfc-participantguides.netlify.app/" target="_blank" rel="noopener">参加者ガイド ↗</a>
     <a href="https://marathontraining-guides.netlify.app/" target="_blank" rel="noopener">トレーニング資料 ↗</a>
-  </div>
-  <div class="cd-kicker">勝田まで</div>
-  <div class="countdown">
-    <div class="cd-main"><span id="cd-days">—</span><span class="u">日</span><span class="cd-clock" id="cd-clock">--:--:--</span></div>
-    <div class="cd-sub">
-      <div class="cd-race-name" id="cd-race-name">第74回 勝田全国マラソン@ひたちなか</div>
-      <div class="cd-race-time">2027年1月31日（日）10:30〜</div>
-      <div class="cd-race-left" id="cd-weeks"></div>
-    </div>
   </div>
 
   <div class="verdict" id="stat-cards"></div>
