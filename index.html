@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260921-24 -->
+<!-- build: 20260921-25 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -290,7 +290,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
 
 <section>
   <div class="col">
-    <div class="shead"><span class="snum">03</span><h2>月間距離</h2></div>
+    <div class="shead"><span class="snum">03</span><h2>走った距離</h2></div>
     <p class="sub">走った量そのものの推移</p>
   </div>
   <figure>
@@ -770,7 +770,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         var stat = MONTHLY_STATIC.filter(function(m){return m.m===g.label;})[0];
         nRuns = stat ? stat.n : 0;
         z2sum = null; longRun = null; longMax = 0;
-        subText = g.label+"の目標と実績（月次サマリーのみ、Zone2・ロングのログなし）";
+        subText = g.label+" 目標 / 実績（月末時点）";
       } else {
         var agg = computeMonthAgg(key);
         nRuns = agg.n; z2sum = agg.z2sum; longMax = agg.longest;
@@ -778,7 +778,9 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         if(longGoal!=null){
           agg.runs.forEach(function(r){ if(r.km>=longGoal && !longRun) longRun=r; });
         }
-        subText = g.label+"の目標と、"+(agg.n?agg.runs[agg.n-1].d.slice(6,8)+"日時点の進捗":"進捗なし");
+        // 過去の月は「月末時点」、今月は最後に走った日の時点
+        var asOf = !agg.n ? "実績なし" : (key < CURRENT_MONTH_KEY ? "月末時点" : Number(agg.runs[agg.n-1].d.slice(6,8))+"日時点");
+        subText = g.label+" 目標 / 実績（"+asOf+"）";
       }
       document.getElementById("goal-sub").textContent = subText;
       var html;
