@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260921-8 -->
+<!-- build: 20260921-10 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -21,34 +21,34 @@
 :root{
   /* ---- Material 3ライクなトークン。変数名は既存のまま、値だけM3に寄せる ---- */
   /* 先生の配布資料に合わせたクリーム＋テラコッタ＋深緑 */
-  --paper:#F7F2E8; --surface:#EFE7D8; --surface-2:#E6DCC9;
-  --ink:#1E1B16; --ink-2:#4A443B; --ink-3:#6E6657;
-  --line:#DCD2BF; --line-2:#BFB3A0;
-  --accent:#B4502A; --accent-ink:#7A3318; --accent-soft:#F3DCCF; --accent-bar:#D08055;
-  --warn:#9A6B15; --warn-soft:#F6E3BC; --warn-bar:#D7A94E;
-  --crit:#A8332C; --steel:#2F5D4A;
+  --paper:#F1EDE3; --surface:#FFFFFF; --surface-2:#FBF8F3;
+  --ink:#1B2227; --ink-2:#414C55; --ink-3:#5C666F;
+  --line:#E4DED2; --line-2:#C5BCAC;
+  --accent:#A8431D; --accent-ink:#7A3318; --accent-soft:#F6E2D7; --accent-bar:#C96B3F;
+  --warn:#8F6512; --warn-soft:#F6E3BC; --warn-bar:#D7A94E;
+  --crit:#A8332C; --steel:#23486B;
   --shadow:0 1px 2px rgba(60,40,20,.05), 0 8px 20px -14px rgba(60,40,20,.22);
   --r-lg:14px; --r-md:10px; --r-sm:7px; --r-pill:999px;
   --font-sans:"Inter","Noto Sans JP",-apple-system,"Hiragino Sans","Hiragino Kaku Gothic ProN",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --paper:#14110D; --surface:#1E1A15; --surface-2:#262019;
-    --ink:#EDE5D8; --ink-2:#CFC6B6; --ink-3:#9A9182;
-    --line:#3A332A; --line-2:#554C40;
-    --accent:#E88B5F; --accent-ink:#FFD3B8; --accent-soft:#4A2417; --accent-bar:#C9703F;
+    --paper:#12161A; --surface:#1A2026; --surface-2:#232B32;
+    --ink:#ECE6DC; --ink-2:#C7CDD4; --ink-3:#95A0AA;
+    --line:#2C343B; --line-2:#44505A;
+    --accent:#E8895C; --accent-ink:#FFD3B8; --accent-soft:#4A2417; --accent-bar:#C9703F;
     --warn:#E6BE74; --warn-soft:#4A3608; --warn-bar:#B08B3E;
-    --crit:#FFB4AB; --steel:#8CC9AE;
+    --crit:#FFB4AB; --steel:#8FB8D9;
     --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 28px -16px rgba(0,0,0,.7);
   }
 }
 :root[data-theme="dark"]{
-  --paper:#14110D; --surface:#1E1A15; --surface-2:#262019;
-  --ink:#EDE5D8; --ink-2:#CFC6B6; --ink-3:#9A9182;
-  --line:#3A332A; --line-2:#554C40;
-  --accent:#E88B5F; --accent-ink:#FFD3B8; --accent-soft:#4A2417; --accent-bar:#C9703F;
+  --paper:#12161A; --surface:#1A2026; --surface-2:#232B32;
+  --ink:#ECE6DC; --ink-2:#C7CDD4; --ink-3:#95A0AA;
+  --line:#2C343B; --line-2:#44505A;
+  --accent:#E8895C; --accent-ink:#FFD3B8; --accent-soft:#4A2417; --accent-bar:#C9703F;
   --warn:#E6BE74; --warn-soft:#4A3608; --warn-bar:#B08B3E;
-  --crit:#FFB4AB; --steel:#8CC9AE;
+  --crit:#FFB4AB; --steel:#8FB8D9;
   --shadow:0 1px 2px rgba(0,0,0,.4), 0 12px 28px -16px rgba(0,0,0,.7);
 }
 
@@ -171,11 +171,11 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
 
 @media print{
   :root:root:root{
-    --paper:#FFFFFF; --surface:#F6F0E5; --surface-2:#EDE4D5;
-    --ink:#1E1B16; --ink-2:#4A443B; --ink-3:#6B6355;
-    --line:#E0D6C4; --line-2:#C6BAA6;
+    --paper:#FFFFFF; --surface:#FBF8F2; --surface-2:#F1ECE2;
+    --ink:#1B2227; --ink-2:#414C55; --ink-3:#5E6872;
+    --line:#E4DED2; --line-2:#C9C0B0;
     --accent:#9C4423; --accent-ink:#6B2C14; --accent-soft:#F7E6DA;
-    --warn:#7E5710; --warn-soft:#F9EBCD; --crit:#8C2A2A; --steel:#2A5342;
+    --warn:#7E5710; --warn-soft:#F9EBCD; --crit:#8C2A2A; --steel:#1E3E5C;
     --shadow:none;
   }
   .cd-clock{display:none}
