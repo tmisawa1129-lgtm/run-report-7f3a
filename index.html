@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260921-23 -->
+<!-- build: 20260921-24 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -137,7 +137,34 @@ th,td{padding:9px 13px; text-align:right; border-bottom:1px solid var(--line); f
 th{font-family:var(--font-sans); font-weight:600; font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-3); font-weight:500; white-space:nowrap}
 th:first-child,td:first-child{text-align:left; font-family:var(--font-sans); font-weight:600; font-size:12.5px; white-space:nowrap; border-radius:0}
 table.menu-table th,table.menu-table td{text-align:left; white-space:normal; vertical-align:top}
-table.menu-table .sub{display:block; font-size:11px; font-weight:400; color:var(--ink-3); margin-top:2px}
+table.menu-table .sub{display:block; font-size:11px; font-weight:400; color:var(--ink-3); margin:2px 0 0}
+.hw-box{background:var(--surface); border-radius:var(--r-lg); padding:16px 18px 6px; margin:0 0 12px}
+.hw-title{font-family:var(--font-sans); font-weight:700; font-size:13px; color:var(--ink-2); margin:0 0 6px}
+.hw-row{padding:10px 0 12px; border-top:1px solid var(--line)}
+.hw-title + .hw-row{border-top:none}
+.hw-head{display:flex; align-items:baseline; gap:10px}
+.hw-name{font-family:var(--font-sans); font-weight:700; font-size:14px; color:var(--ink); flex:1 1 auto}
+.hw-num{font-size:13px; color:var(--ink-3); font-variant-numeric:tabular-nums; white-space:nowrap}
+.hw-num b{font-size:17px; color:var(--ink); font-weight:700}
+.hw-tag{font-family:var(--font-sans); font-size:11px; font-weight:700; padding:3px 9px; border-radius:var(--r-pill); background:var(--surface-2); color:var(--ink-3); white-space:nowrap; border:1px solid var(--line)}
+.hw-tag.ok{background:var(--tab-on-bg); color:var(--tab-on-ink); border-color:var(--tab-on-bg)}
+.hw-bar{height:6px; border-radius:99px; background:var(--surface-2); margin:8px 0 6px; overflow:hidden; box-shadow:inset 0 0 0 1px var(--line)}
+.hw-bar i{display:block; height:100%; background:var(--tab-on-bg); border-radius:99px}
+.hw-goal{font-size:11.5px; color:var(--ink-3)}
+@media (max-width:620px){
+  /* レベル別メニュー：1レベル＝1枚のカードにして、項目名と値を横並びに */
+  table.menu-table{min-width:0}
+  table.menu-table thead{display:none}
+  table.menu-table, table.menu-table tbody, table.menu-table tr{display:block; width:100%}
+  table.menu-table tr{padding:12px 14px; border-bottom:1px solid var(--line)}
+  table.menu-table tr:last-child{border-bottom:none}
+  table.menu-table td{display:flex; justify-content:space-between; gap:14px; padding:6px 0; border:none; white-space:normal}
+  table.menu-table td.lvname{display:block; padding:0 0 6px; font-size:15px}
+  table.menu-table td.lvname .sub{display:inline; margin-left:8px}
+  table.menu-table td[data-label]::before{content:attr(data-label); font-family:var(--font-sans); font-size:12px; font-weight:600; color:var(--ink-3); flex:0 0 auto; padding-top:1px}
+  table.menu-table td .val{text-align:right; font-weight:600}
+  table.menu-table td .val .sub{font-weight:400}
+}
 .pts .desc{display:block; font-size:12px; color:var(--ink-3); margin-top:2px}
 tbody tr:last-child td{border-bottom:none}
 tbody tr.mark td{background:var(--accent-soft); color:var(--accent-ink)}
@@ -552,8 +579,8 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
   // ---------- 03: 今週の練習メニュー（週タブ切り替え） ----------
   (function(){
     if(!WEEKLY_MENU.length) return;
-    function cell(main, sub){
-      return '<td>'+main+(sub?'<span class="sub">'+sub+'</span>':'')+'</td>';
+    function cell(main, sub, label){
+      return '<td data-label="'+(label||'')+'"><span class="val">'+main+(sub?'<span class="sub">'+sub+'</span>':'')+'</span></td>';
     }
     var LEVEL_STORAGE_KEY = "katsuta_menu_levels";
     var ALL_LEVELS = ["ライト","スタンダード","チャレンジ"];
@@ -578,10 +605,10 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       var levels = w.levels.filter(function(lv){ return checkedLevels.indexOf(lv.name)!==-1; });
       if(!levels.length) levels = w.levels;
       var rows = levels.map(function(lv){
-        return '<tr><td><strong>'+lv.name+'</strong><span class="sub">'+lv.note+'</span></td>'
-          + cell(lv.long, lv.longNote)
-          + cell(lv.easy, lv.easyNote)
-          + cell(lv.strength, "")
+        return '<tr><td class="lvname"><strong>'+lv.name+'</strong><span class="sub">'+lv.note+'</span></td>'
+          + cell(lv.long, lv.longNote, "ロング走（週1）")
+          + cell(lv.easy, lv.easyNote, "ゆっくりラン")
+          + cell(lv.strength, "", "補強")
           + '</tr>';
       });
       document.getElementById("menu-table").innerHTML = rows.join("");
@@ -609,21 +636,26 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       var strengthGoal = pickCount(lv.strength);
       var longMin = Math.round(longSec / 60);
 
-      function mark(ok){ return ok ? '<span style="color:var(--ok, #2f6b4f); font-weight:700">達成</span>' : '<span style="color:var(--ink-3)">これから</span>'; }
-      function row(name, goal, actual, ok){
-        return '<tr><td><strong>'+name+'</strong></td><td>'+goal+'</td><td>'+actual+'</td><td>'+mark(ok)+'</td></tr>';
+      function row(name, actual, goal, unit, goalText){
+        var ok = goal > 0 && actual >= goal;
+        var pct = goal > 0 ? Math.min(100, Math.round(actual / goal * 100)) : 0;
+        return '<div class="hw-row">'
+          +   '<div class="hw-head">'
+          +     '<span class="hw-name">'+name+'</span>'
+          +     '<span class="hw-num"><b>'+actual+'</b> / '+goal+unit+'</span>'
+          +     '<span class="hw-tag'+(ok?' ok':'')+'">'+(ok?'達成':'これから')+'</span>'
+          +   '</div>'
+          +   '<div class="hw-bar"><i style="width:'+pct+'%"></i></div>'
+          +   '<div class="hw-goal">目標：'+goalText+'</div>'
+          + '</div>';
       }
 
       box.innerHTML =
-          '<div class="tablebox" style="margin-bottom:12px">'
-        +   '<table class="menu-table">'
-        +     '<thead><tr><th>今週の宿題</th><th>目標</th><th>実績</th><th></th></tr></thead>'
-        +     '<tbody>'
-        +       row("ロング走", lv.long, longMin+"分", longSec > 0 && longMin >= longGoal)
-        +       row("ゆっくりラン", lv.easy, easyCount+"本", easyCount >= easyGoal)
-        +       row("補強", lv.strength, strengthCount+"回", strengthCount >= strengthGoal)
-        +     '</tbody>'
-        +   '</table>'
+          '<div class="hw-box">'
+        +   '<div class="hw-title">今週の宿題</div>'
+        +   row("ロング走", longMin, longGoal, "分", lv.long)
+        +   row("ゆっくりラン", easyCount, easyGoal, "本", lv.easy)
+        +   row("補強", strengthCount, strengthGoal, "回", lv.strength)
         + '</div>'
         + '<div class="notes" style="margin-bottom:18px">'
         +   '<div class="txt" style="font-size:12.5px; color:var(--ink-3); line-height:1.7">'
