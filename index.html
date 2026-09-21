@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260921-27 -->
+<!-- build: 20260921-28 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -70,7 +70,7 @@ body{
 .menu-level-filter{display:flex; flex-wrap:wrap; gap:6px; margin:-6px 0 14px}
 .menu-level-filter .mtab{font-size:12px; padding:6px 13px; background:var(--surface); border:1px solid var(--line)}
 .menu-level-filter .mtab.active{border-color:var(--tab-on-bg)}
-.menu-level-filter .lv-mine{font-size:10.5px; font-weight:500; opacity:.75; margin-left:1px}
+.menu-level-filter .lv-mine{font-size:11px; color:#C9A45C; margin-left:4px}
 .menu-level-filter label{display:flex; align-items:center; gap:7px; font-family:var(--font-sans); font-weight:600; font-size:12.5px; color:var(--ink-2); cursor:pointer}
 .menu-level-filter input[type=checkbox]{width:16px; height:16px; accent-color:var(--tab-on-bg); cursor:pointer}
 .mtab.active{background:var(--tab-on-bg); color:var(--tab-on-ink); font-weight:600}
@@ -709,7 +709,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     function drawLevelButtons(){
       filterEl.innerHTML = ALL_LEVELS.map(function(name){
         // 自分が取り組んでいるレベルには印を付ける（別のレベルを見ているときも分かるように）
-        var mine = (name === MY_LEVEL) ? '<span class="lv-mine">（自分）</span>' : '';
+        var mine = (name === MY_LEVEL) ? '<span class="lv-mine" title="取り組み中のレベル">★</span>' : '';
         return '<button type="button" class="mtab'+(name===selectedLevel?' active':'')+'" data-level="'+name+'">'+name+mine+'</button>';
       }).join("");
     }
