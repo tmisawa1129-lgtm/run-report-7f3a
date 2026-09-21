@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260921-4 -->
+<!-- build: 20260921-5 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -605,7 +605,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         +   '<table class="menu-table">'
         +     '<thead><tr><th>今週の宿題（'+MY_LEVEL+'）</th><th>目標</th><th>実績</th><th></th></tr></thead>'
         +     '<tbody>'
-        +       row("ロング走", lv.long, longMin+"分", longSec > 0 && longMin >= longGoal * 0.9)
+        +       row("ロング走", lv.long, longMin+"分", longSec > 0 && longMin >= longGoal)
         +       row("ゆっくりラン", lv.easy, easyCount+"本", easyCount >= easyGoal)
         +       row("補強", lv.strength, strengthCount+"回", strengthCount >= strengthGoal)
         +     '</tbody>'
@@ -613,7 +613,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         + '</div>'
         + '<div class="notes" style="margin-bottom:18px">'
         +   '<div class="txt" style="font-size:12.5px; color:var(--ink-3); line-height:1.7">'
-        +     'ロング走はその週でいちばん長い1本、ゆっくりランは残りの本数で数えています（目標時間の9割で達成）。補強は走行ログに残らないため手入力です。'
+        +     'ロング走はその週でいちばん長い1本、ゆっくりランは残りの本数で数えています（ロング走は目標時間以上で達成）。補強は走行ログに残らないため手入力です。'
         +   '</div>'
         + '</div>';
     }
