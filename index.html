@@ -224,13 +224,49 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
   </div>
   <div class="mtabs" id="menu-tabs"></div>
   <div class="menu-level-filter" id="menu-level-filter"></div>
-  <div class="tablebox">
+  <div class="tablebox" id="menu-tablebox">
     <table class="menu-table">
       <thead><tr>
         <th>レベル</th><th>ロング走<br>（週1）</th><th>ゆっくりラン</th><th>補強</th>
       </tr></thead>
       <tbody id="menu-table"></tbody>
     </table>
+  </div>
+  <div id="menu-guide" style="display:none">
+    <div class="tablebox">
+      <table class="menu-table">
+        <thead><tr><th>時期</th><th>ライト</th><th>スタンダード</th><th>チャレンジ</th></tr></thead>
+        <tbody>
+          <tr><td><strong>9〜10月</strong><span class="sub">土台づくり</span></td><td>30分続けて走るのがきつい</td><td>60分走れる</td><td>90分以上走れる</td></tr>
+          <tr><td><strong>11〜12月</strong><span class="sub">距離を伸ばす</span></td><td>60分がきつい</td><td>90分走れる</td><td>2時間以上走れる</td></tr>
+          <tr><td><strong>1月</strong><span class="sub">仕上げ</span></td><td>完走が目標</td><td>5時間前後が目標</td><td>4時間台が目標</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notes">
+      <span class="lbl">レベルの決め方（セルフチェック）</span>
+      <div class="txt" style="font-size:13.5px; color:var(--ink-3); line-height:1.7">
+        基準は「歩かずに、会話できるペースで走り続けられる時間」。<br>
+        ① 最後まで歩かずに走れた　② 走りながら会話ができた　③ 翌日に脚の痛みや強い張りが残らなかった<br>
+        この3つが全部YESの時間が自分の基準。息は平気でも翌日に脚に残るなら、下のレベルを選ぶ。<br>
+        チャレンジを選ぶときだけ、始める前に齋藤さんへ申告する（下げるのはいつでも自由）。
+      </div>
+    </div>
+    <div class="notes">
+      <span class="lbl">毎週の宿題と1か月の流れ</span>
+      <div class="txt" style="font-size:13.5px; color:var(--ink-3); line-height:1.7">
+        毎週日曜の夜にLINEで翌週分が届く。内容はロング走（週1）・ゆっくりラン（週1〜2）・補強（週2・各10分）で、走るのは週3〜4日が目安。<br>
+        4週で1セット。3週かけて増やし（例：70分→80分→90分）、4週目は60分に落として回復する。回復週はさぼりではない。
+      </div>
+    </div>
+    <div class="notes">
+      <span class="lbl">守るルール</span>
+      <div class="txt" style="font-size:13.5px; color:var(--ink-3); line-height:1.7">
+        ロング走は週末に入れ、翌日は必ずオフ。補強はランの後に入れ、ロング走の前日は避ける。曜日は生活に合わせて自由。<br>
+        自主練より宿題を優先。足すなら短く・ゆっくり。速い練習やロング走より長い距離はやらない。週1日以上は完全休養。<br>
+        痛みが強い・翌日も続くときは中止して相談。体調が悪い日は休むかゆっくりランに切り替え。できなかった分は翌週に取り返さない。
+      </div>
+    </div>
   </div>
   <div class="notes" id="menu-img-wrap" style="display:none">
     <span class="lbl">配布された宿題資料</span>
@@ -557,6 +593,17 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     }
 
     function renderWeek(key){
+      // 「ガイド」タブ：週のメニューではなく、宿題ガイド（配布資料）の要点を出す
+      var guideEl = document.getElementById("menu-guide");
+      var isGuide = (key === "guide");
+      guideEl.style.display = isGuide ? "" : "none";
+      document.getElementById("menu-tablebox").style.display = isGuide ? "none" : "";
+      document.getElementById("menu-level-filter").style.display = isGuide ? "none" : "";
+      if(isGuide){
+        document.getElementById("menu-img-wrap").style.display = "none";
+        document.getElementById("menu-sub").textContent = "宿題ガイド（2026/9/18配布）／レベルの選び方と守るルール";
+        return;
+      }
       var w = WEEKLY_MENU.filter(function(x){ return String(x.week)===key; })[0];
       if(!w) return;
       currentWeek = w;
@@ -572,6 +619,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       }
     }
     var items = WEEKLY_MENU.map(function(w){ return {key:String(w.week), label:w.startLabel}; });
+    items.push({key:"guide", label:"ガイド"});
     initTabs(document.getElementById("menu-tabs"), items, String(WEEKLY_MENU[WEEKLY_MENU.length-1].week), renderWeek);
 
     var filterEl = document.getElementById("menu-level-filter");
