@@ -260,10 +260,13 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       </div>
     </div>
     <div class="notes">
-      <span class="lbl">配布された宿題ガイド（全3ページ）</span>
-      <img src="images/guide/guide1.jpg" alt="宿題ガイド 1ページ目" loading="lazy" style="width:100%; border-radius:var(--r-md); display:block; margin-top:10px">
-      <img src="images/guide/guide2.jpg" alt="宿題ガイド 2ページ目" loading="lazy" style="width:100%; border-radius:var(--r-md); display:block; margin-top:10px">
-      <img src="images/guide/guide3.jpg" alt="宿題ガイド 3ページ目" loading="lazy" style="width:100%; border-radius:var(--r-md); display:block; margin-top:10px">
+      <span class="lbl">配布された宿題ガイド（原本）</span>
+      <div class="mtabs" id="guide-page-tabs" style="margin:10px 0 12px">
+        <button type="button" class="mtab active" data-gpage="1">1ページ目</button>
+        <button type="button" class="mtab" data-gpage="2">2ページ目</button>
+        <button type="button" class="mtab" data-gpage="3">3ページ目</button>
+      </div>
+      <img id="guide-page-img" src="images/guide/guide1.jpg" alt="宿題ガイド" loading="lazy" style="width:100%; border-radius:var(--r-md); display:block">
     </div>
     <div class="notes">
       <span class="lbl">守るルール</span>
@@ -624,6 +627,14 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         imgWrap.style.display = "none";
       }
     }
+    // 配布資料は1ページずつ切り替えて見せる（縦に3枚並べるとスクロールが長いため）
+    var pageTabs = document.getElementById("guide-page-tabs");
+    pageTabs.addEventListener("click", function(e){
+      var btn = e.target.closest("[data-gpage]"); if(!btn) return;
+      pageTabs.querySelectorAll(".mtab").forEach(function(b){ b.classList.toggle("active", b===btn); });
+      document.getElementById("guide-page-img").src = "images/guide/guide"+btn.dataset.gpage+".jpg";
+    });
+
     var items = WEEKLY_MENU.map(function(w){ return {key:String(w.week), label:w.startLabel}; });
     items.push({key:"guide", label:"ガイド"});
     initTabs(document.getElementById("menu-tabs"), items, String(WEEKLY_MENU[WEEKLY_MENU.length-1].week), renderWeek);
