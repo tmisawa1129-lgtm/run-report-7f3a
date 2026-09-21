@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260921-12 -->
+<!-- build: 20260921-14 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -24,7 +24,7 @@
   --paper:#F6F3EC; --surface:#FFFFFF; --surface-2:#FCFAF6;
   --ink:#1B2227; --ink-2:#414C55; --ink-3:#5C666F;
   --line:#E4DED2; --line-2:#C5BCAC;
-  --accent:#A8431D; --accent-ink:#7A3318; --accent-soft:#F6E2D7; --accent-bar:#C96B3F;
+  --accent:#A8431D; --accent-ink:#7A3318; --accent-soft:#F7E6DC; --accent-bar:#E0AE8E;
   --warn:#8F6512; --warn-soft:#F6E3BC; --warn-bar:#D7A94E;
   --crit:#A8332C; --steel:#23486B;
   --shadow:0 1px 2px rgba(60,40,20,.05), 0 8px 20px -14px rgba(60,40,20,.22);
@@ -63,7 +63,7 @@ body{
 
 .masthead{padding:32px 0 32px}
 .linkrow{display:flex; flex-wrap:wrap; gap:5px 6px; margin:0 0 20px}
-.linkrow a{font-family:var(--font-sans); font-weight:600; font-size:10.5px; letter-spacing:0; color:var(--accent-ink); background:var(--accent-soft); padding:5px 8px; border-radius:var(--r-pill); text-decoration:none; white-space:nowrap; flex:0 0 auto}
+.linkrow a{font-family:var(--font-sans); font-weight:600; font-size:10.5px; letter-spacing:0; color:var(--accent-ink); background:var(--surface); border:1px solid var(--line); padding:5px 8px; border-radius:var(--r-pill); text-decoration:none; white-space:nowrap; flex:0 0 auto}
 .linkrow a:hover{opacity:.82}
 .mtabs{display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px}
 .mtab{font-family:var(--font-sans); font-weight:600; font-size:12.5px; letter-spacing:.03em; color:var(--ink-2); background:var(--surface); border:none; padding:7px 16px; border-radius:var(--r-pill); cursor:pointer}
@@ -86,7 +86,7 @@ body{
 #goal-cards{grid-template-columns:1fr} /* 今月の目標は常に横長・縦積み表示 */
 #goal-cards .vcard .pb{max-width:360px}
 .vcard{background:var(--surface-2); color:var(--ink); border:none; border-radius:var(--r-lg); padding:14px 15px 15px}
-.vcard.good{background:var(--accent-soft); color:var(--accent-ink)}
+.vcard.good{background:var(--surface); color:var(--ink-2)}
 .vcard.warn{background:var(--warn-soft); color:var(--warn)}
 .vcard .k{font-family:var(--font-sans); font-weight:600; font-size:11px; letter-spacing:.02em; text-transform:uppercase; color:inherit; opacity:.62}
 .vcard .v{font-family:var(--font-sans); font-weight:800; font-size:26px; line-height:1.1; letter-spacing:-.01em; margin:6px 0 4px; font-variant-numeric:tabular-nums; color:inherit}
@@ -174,7 +174,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     --paper:#FFFFFF; --surface:#FBF8F2; --surface-2:#F1ECE2;
     --ink:#1B2227; --ink-2:#414C55; --ink-3:#5E6872;
     --line:#E4DED2; --line-2:#C9C0B0;
-    --accent:#9C4423; --accent-ink:#6B2C14; --accent-soft:#F7E6DA;
+    --accent:#9C4423; --accent-ink:#6B2C14; --accent-soft:#FBF2EC;
     --warn:#7E5710; --warn-soft:#F9EBCD; --crit:#8C2A2A; --steel:#1E3E5C;
     --shadow:none;
   }
