@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260922-2 -->
+<!-- build: 20260922-3 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -626,10 +626,12 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       if(!lv){ box.innerHTML = ""; return; }
 
       // その週に走った分を集める
-      var runs = RUNS.filter(function(r){ return r.d >= w.start && r.d <= w.end; })
-                     .sort(function(a,b){ return b.sec - a.sec; });
-      var longSec = runs.length ? runs[0].sec : 0;
-      var easyCount = Math.max(runs.length - 1, 0);
+      // 宿題として走った記録だけを数える（RUNS の hw に "long"=ロング走 / "easy"=ゆっくりラン の印を付ける）
+      // 印のない記録（練習会・ポイント練習・自主練など）は数えない
+      var runs = RUNS.filter(function(r){ return r.d >= w.start && r.d <= w.end; });
+      var longRuns = runs.filter(function(r){ return r.hw === "long"; }).sort(function(a,b){ return b.sec - a.sec; });
+      var longSec = longRuns.length ? longRuns[0].sec : 0;
+      var easyCount = runs.filter(function(r){ return r.hw === "easy"; }).length;
       var strengthCount = STRENGTH_DAYS.filter(function(d){ return d >= w.start && d <= w.end; }).length;
 
       var longGoal = pickMin(lv.long) || 0;
@@ -660,7 +662,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         + '</div>'
         + '<div class="notes" style="margin-bottom:18px">'
         +   '<div class="txt" style="font-size:12.5px; color:var(--ink-3); line-height:1.7">'
-        +     'ロング走はその週でいちばん長い1本、ゆっくりランは残りの本数で数えています。補強は走行ログに残らないため手入力です。'
+        +     '宿題として走った記録（ロング走・ゆっくりラン）だけを数えています。練習会や自主練は含みません。補強は走行ログに残らないため手入力です。'
         +   '</div>'
         + '</div>';
     }
