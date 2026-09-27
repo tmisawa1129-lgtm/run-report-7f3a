@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260927-1 -->
+<!-- build: 20260927-2 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -504,6 +504,13 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     }
     var z2Avg = z2Vals.length ? Math.round(z2Vals.reduce(function(a,b){return a+b;},0)/z2Vals.length) : null;
 
+    // 直近30日でいちばん長く走った距離と、そこから出す今週のロング走の上限
+    // （先生のコラム「距離の増やし方」より：直近30日の最長 × 1.1 を上限にする）
+    var d30 = new Date(); d30.setHours(0,0,0,0); d30.setDate(d30.getDate()-29);
+    var key30 = ""+d30.getFullYear()+String(d30.getMonth()+1).padStart(2,"0")+String(d30.getDate()).padStart(2,"0");
+    var long30 = RUNS.filter(function(r){ return r.d >= key30; })
+                     .reduce(function(a,r){ return Math.max(a, r.km||0); }, 0);
+
     // 週距離ライン＝当月の距離目標÷4.3週。距離目標が未設定の月は判定なし（ニュートラル）
     var curGoals = GOALS_BY_MONTH[CURRENT_MONTH_KEY];
     var monthKmGoal = curGoals ? curGoals.kmGoal : null;
@@ -511,12 +518,11 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     var weekCls = weekLine!=null ? (weekKm>=weekLine ? "good" : "warn") : "";
     var weekNote = weekRuns.length+"本（"+weekLabel+"）" + (weekLine!=null ? "・ライン"+weekLine.toFixed(1)+"km" : "");
 
-    var z2Cls = z2Avg!=null ? (z2Avg>=80 ? "good" : "warn") : "";
 
     var cards = [
       {k:"今月の走行距離", v:monthAgg.km.toFixed(1)+"km", n:monthAgg.n+"本（"+curLabel+"）", cls:"good"},
       {k:"今週の走行距離", v:weekKm.toFixed(1)+"km", n:weekNote, cls:weekCls},
-      {k:"直近Z2", v:(z2Avg!=null?z2Avg+"%":"—"), n:"直近5本の平均", cls:z2Cls},
+      {k:"直近30日の最長", v:(long30 ? long30.toFixed(2)+"km" : "—"), n:(long30 ? "今週のロング走の上限 "+(long30*1.1).toFixed(1)+"km" : "記録なし"), cls:""},
       {k:"直近ピッチ", v:range(cadVals), n:"直近5本の走行中平均", cls:""}
     ];
     document.getElementById("stat-cards").innerHTML = cards.map(function(c){
