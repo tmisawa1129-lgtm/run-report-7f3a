@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260927-2 -->
+<!-- build: 20260927-3 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -502,6 +502,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       var lo=Math.min.apply(null,arr), hi=Math.max.apply(null,arr);
       return lo===hi ? ""+lo : lo+"–"+hi;
     }
+    var cadAvg = cadVals.length ? Math.round(cadVals.reduce(function(a,b){return a+b;},0)/cadVals.length) : null;
     var z2Avg = z2Vals.length ? Math.round(z2Vals.reduce(function(a,b){return a+b;},0)/z2Vals.length) : null;
 
     // 直近30日でいちばん長く走った距離と、そこから出す今週のロング走の上限
@@ -523,7 +524,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       {k:"今月の走行距離", v:monthAgg.km.toFixed(1)+"km", n:monthAgg.n+"本（"+curLabel+"）", cls:"good"},
       {k:"今週の走行距離", v:weekKm.toFixed(1)+"km", n:weekNote, cls:weekCls},
       {k:"直近30日の最長", v:(long30 ? long30.toFixed(2)+"km" : "—"), n:(long30 ? "今週のロング走の上限 "+(long30*1.1).toFixed(1)+"km" : "記録なし"), cls:""},
-      {k:"直近ピッチ", v:range(cadVals), n:"直近5本の走行中平均", cls:""}
+      {k:"直近ピッチ", v:(cadAvg!=null ? ""+cadAvg : "—"), n:(cadVals.length>1 ? "直近5本の平均（幅 "+range(cadVals).replace("–","〜")+"）" : "直近5本の平均"), cls:""}
     ];
     document.getElementById("stat-cards").innerHTML = cards.map(function(c){
       return '<div class="vcard '+c.cls+'"><div class="k">'+c.k+'</div><div class="v">'+c.v+'</div><div class="n">'+c.n+'</div></div>';
