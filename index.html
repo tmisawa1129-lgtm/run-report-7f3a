@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260928-1 -->
+<!-- build: 20260928-2 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -724,7 +724,8 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       document.getElementById("guide-page-img").src = "images/guide/guide"+btn.dataset.gpage+".jpg";
     });
 
-    var items = WEEKLY_MENU.map(function(w){ return {key:String(w.week), label:w.startLabel}; });
+    // 新しい週を左に（ガイドは右端のまま）
+    var items = WEEKLY_MENU.map(function(w){ return {key:String(w.week), label:w.startLabel}; }).reverse();
     items.push({key:"guide", label:"ガイド"});
     initTabs(document.getElementById("menu-tabs"), items, String(WEEKLY_MENU[WEEKLY_MENU.length-1].week), renderWeek);
 
