@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260928-2 -->
+<!-- build: 20260928-3 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -829,7 +829,8 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       }
     }
     var monthKeys = Object.keys(GOALS_BY_MONTH).sort();
-    var items = monthKeys.map(function(k){ return {key:k, label:GOALS_BY_MONTH[k].label}; });
+    // 新しい月を左に
+    var items = monthKeys.map(function(k){ return {key:k, label:GOALS_BY_MONTH[k].label}; }).reverse();
     var defaultKey = GOALS_BY_MONTH[CURRENT_MONTH_KEY] ? CURRENT_MONTH_KEY : monthKeys[monthKeys.length-1];
     initTabs(document.getElementById("goal-tabs"), items, defaultKey, renderGoalMonth);
   })();
@@ -890,7 +891,8 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     var monthsPresent = {};
     runsSorted.forEach(function(r){ monthsPresent[monthKey(r.d)] = true; });
     var rawMonthKeys = Object.keys(monthsPresent).sort();
-    var rawItems = rawMonthKeys.map(function(k){ return {key:k, label: GOALS_BY_MONTH[k] ? GOALS_BY_MONTH[k].label : monthLabel(k+"01")}; });
+    // 新しい月を左に
+    var rawItems = rawMonthKeys.map(function(k){ return {key:k, label: GOALS_BY_MONTH[k] ? GOALS_BY_MONTH[k].label : monthLabel(k+"01")}; }).reverse();
     initTabs(document.getElementById("raw-tabs"), rawItems, rawMonthKeys[rawMonthKeys.length-1], renderMonth);
   })();
 
