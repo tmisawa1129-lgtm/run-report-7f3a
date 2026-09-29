@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20260928-3 -->
+<!-- build: 20260929-2 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -151,6 +151,8 @@ table.menu-table .sub{display:block; font-size:11px; font-weight:400; color:var(
 .hw-bar{height:6px; border-radius:99px; background:var(--surface-2); margin:8px 0 6px; overflow:hidden; box-shadow:inset 0 0 0 1px var(--line)}
 .hw-bar i{display:block; height:100%; background:var(--tab-on-bg); border-radius:99px}
 .hw-goal{font-size:11.5px; color:var(--ink-3)}
+.hw-loading{font-size:12.5px; color:var(--ink-3); padding:8px 0 14px}
+.hw-src{font-size:11px; color:var(--ink-3); margin:10px 0 4px}
 @media (max-width:620px){
   /* レベル別メニュー：1レベル＝1枚のカードにして、項目名と値を横並びに */
   table.menu-table{min-width:0}
@@ -275,7 +277,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       <button type="button" class="mtab" data-gpage="2">2ページ目</button>
       <button type="button" class="mtab" data-gpage="3">3ページ目</button>
     </div>
-    <img id="guide-page-img" src="images/guide/guide1.jpg" alt="宿題ガイド" style="width:100%; border-radius:var(--r-md); display:block; margin-bottom:26px">
+    <img id="guide-page-img" src="https://tfc-run-record.pages.dev/images/homework/guide1.jpg" alt="宿題ガイド" style="width:100%; border-radius:var(--r-md); display:block; margin-bottom:26px">
   </div>
   <div class="notes" id="menu-img-wrap" style="display:none">
     <span class="lbl">配布された宿題資料</span>
@@ -354,10 +356,17 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
   var CURRENT_MONTH_KEY = "202609"; // 月が変わったらここだけ書き換える
   var RACE_DATE = new Date(2027,0,31,10,30,0);
 
-  // 自分が選んだレベル。達成状況の判定に使う
+  // 自分が選んだレベル。記録ツールでレベルを選んでいないときの既定として使う
   var MY_LEVEL = "スタンダード";
-  // 補強をやった日（YYYYMMDD）。走行ログに残らないのでここに手で足していく
-  var STRENGTH_DAYS = ["20260923", "20260924"];
+
+  // 宿題の達成状況は、記録ツール（TFCチーム記録ツール）のデータだけを見る。
+  // 二重入力でズレないように、このサイトには宿題の印や補強の記録を持たない。
+  var TFC = {
+    site: "https://tfc-run-record.pages.dev/",
+    api:  "https://jbqrgsctbxuhclupzxqo.supabase.co/rest/v1/",
+    key:  "sb_publishable_ZeWiEErJromXkmt0WQgZbw_UYcayrB0",
+    memberId: "c6b96a03-9810-44c5-b77d-beb801d7c3c2"
+  };
 
   // 週ごとの練習メニュー。配列の最後（＝最新週）だけを表示する。毎週分を末尾に追記していく
   var WEEKLY_MENU = [
@@ -366,7 +375,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       startLabel: "9/21〜",
       start: "20260921",
       end: "20260927",
-      img: "images/menu/week1.jpg",
+      img: "https://tfc-run-record.pages.dev/images/homework/week1.jpg",
       range: "9/21（月）〜9/27（日）",
       theme: "ゆっくり長く",
       levels: [
@@ -393,7 +402,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       startLabel: "9/28〜",
       start: "20260928",
       end: "20261004",
-      img: "images/menu/week2.jpg",
+      img: "https://tfc-run-record.pages.dev/images/homework/week2.jpg",
       range: "9/28（月）〜10/4（日）",
       theme: "同じリズムで",
       levels: [
@@ -641,6 +650,28 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       document.getElementById("menu-table").innerHTML = rows.join("");
     }
 
+    // 記録ツールから今週分を取ってくる（記録・補強・レベル）
+    function ymd(k){ return k.slice(0,4)+"-"+k.slice(4,6)+"-"+k.slice(6,8); }
+    function hmsToSec(s){
+      var a = String(s||"").trim().split(":").map(Number);
+      if(!a.length || a.some(isNaN)) return 0;
+      return a.length === 3 ? a[0]*3600 + a[1]*60 + a[2] : a.length === 2 ? a[0]*60 + a[1] : 0;
+    }
+    function tfcFetch(path){
+      return fetch(TFC.api + path, { headers: { apikey: TFC.key, Authorization: "Bearer " + TFC.key } })
+        .then(function(r){ return r.ok ? r.json() : Promise.reject(new Error("HTTP " + r.status)); });
+    }
+    function loadTfcWeek(w){
+      var from = ymd(w.start), to = ymd(w.end), id = TFC.memberId;
+      return Promise.all([
+        tfcFetch("records?select=date,menu,duration_text&member_id=eq."+id+"&deleted_at=is.null&date=gte."+from+"&date=lte."+to),
+        tfcFetch("strength_logs?select=date&member_id=eq."+id+"&deleted_at=is.null&date=gte."+from+"&date=lte."+to),
+        tfcFetch("members?select=level&id=eq."+id)
+      ]).then(function(res){
+        return { records: res[0] || [], strength: res[1] || [], level: (res[2] && res[2][0] && res[2][0].level) || null };
+      });
+    }
+
     // 「70分」「30分×2回」「週2回（各10分）」のような表記から数字を取り出す
     function pickMin(s){ var m = String(s||"").match(/(\d+)\s*分/); return m ? Number(m[1]) : null; }
     function pickCount(s){ var m = String(s||"").match(/[×x]\s*(\d+)/) || String(s||"").match(/週\s*(\d+)\s*回/); return m ? Number(m[1]) : 1; }
@@ -650,15 +681,22 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       if(!w || !w.start || !w.end){ box.innerHTML = ""; return; }
       var lv = w.levels.filter(function(x){ return x.name === selectedLevel; })[0];
       if(!lv){ box.innerHTML = ""; return; }
+      box.innerHTML = '<div class="hw-box"><div class="hw-title">今週の宿題</div>'
+        + '<p class="hw-loading">記録ツールから読み込み中…</p></div>';
+      loadTfcWeek(w).then(function(d){ drawProgress(w, lv, d); }).catch(function(){
+        box.innerHTML = '<div class="hw-box"><div class="hw-title">今週の宿題</div>'
+          + '<p class="hw-loading">記録ツールのデータを読み込めませんでした。'
+          + '<a href="'+TFC.site+'" target="_blank" rel="noopener">記録ツールを開く ↗</a></p></div>';
+      });
+    }
 
-      // その週に走った分を集める
-      // 宿題として走った記録だけを数える（RUNS の hw に "long"=ロング走 / "easy"=ゆっくりラン の印を付ける）
-      // 印のない記録（練習会・ポイント練習・自主練など）は数えない
-      var runs = RUNS.filter(function(r){ return r.d >= w.start && r.d <= w.end; });
-      var longRuns = runs.filter(function(r){ return r.hw === "long"; }).sort(function(a,b){ return b.sec - a.sec; });
-      var longSec = longRuns.length ? longRuns[0].sec : 0;
-      var easyCount = runs.filter(function(r){ return r.hw === "easy"; }).length;
-      var strengthCount = STRENGTH_DAYS.filter(function(d){ return d >= w.start && d <= w.end; }).length;
+    function drawProgress(w, lv, d){
+      var box = document.getElementById("menu-progress");
+      // 記録ツールで「ロング走」「ゆっくりラン」「補強」として記録したものだけを数える
+      var longSec = d.records.filter(function(r){ return r.menu === "long"; })
+        .reduce(function(a, r){ return Math.max(a, hmsToSec(r.duration_text)); }, 0);
+      var easyCount = d.records.filter(function(r){ return r.menu === "easy"; }).length;
+      var strengthCount = d.strength.length;
 
       var longGoal = pickMin(lv.long) || 0;
       var easyGoal = pickCount(lv.easy);
@@ -685,6 +723,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         +   row("ロング走", longMin, longGoal, "分", lv.long)
         +   row("ゆっくりラン", easyCount, easyGoal, "本", lv.easy)
         +   row("補強", strengthCount, strengthGoal, "回", lv.strength)
+        +   '<p class="hw-src">記録ツールに入力した内容から集計しています</p>'
         + '</div>';
     }
 
@@ -721,7 +760,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     pageTabs.addEventListener("click", function(e){
       var btn = e.target.closest("[data-gpage]"); if(!btn) return;
       pageTabs.querySelectorAll(".mtab").forEach(function(b){ b.classList.toggle("active", b===btn); });
-      document.getElementById("guide-page-img").src = "images/guide/guide"+btn.dataset.gpage+".jpg";
+      document.getElementById("guide-page-img").src = TFC.site + "images/homework/guide"+btn.dataset.gpage+".jpg";
     });
 
     // 新しい週を左に（ガイドは右端のまま）
