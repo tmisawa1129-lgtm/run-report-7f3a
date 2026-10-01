@@ -815,7 +815,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
       var unitParts = [];
       if(goal.goalKm!=null) unitParts.push(goal.goalKm+"km");
       if(goal.goalMin!=null) unitParts.push(goal.goalMin+"分");
-      var unitLabel = unitParts.join(" or ")+"以上";
+      var unitLabel = unitParts.join(" or ")+"程度";
       var note;
       if(achieved){
         note = "達成（"+fmtShort(longRun.d)+"）・"+longRun.km.toFixed(2)+"km／"+Math.floor(longRun.sec/60)+"分";
