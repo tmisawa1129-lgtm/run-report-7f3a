@@ -352,7 +352,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     ]},
     "202608": { label:"8月", runs:{goal:8}, zone2:{goalMin:240}, long:{goalKm:15}, kmGoal:null, memo:"", static:false },
     "202609": { label:"9月", runs:{goal:12}, zone2:{goalMin:320}, long:{goalKm:20}, kmGoal:null, memo:"", static:false },
-    "202610": { label:"10月", runs:{goal:16}, zone2:{goalMin:400}, long:{goalMin:150}, kmGoal:null, memo:"", static:false }
+    "202610": { label:"10月", runs:{goal:16}, zone2:{goalMin:400}, long:{goalKm:25, goalMin:150}, kmGoal:null, memo:"", static:false }
   };
   var CURRENT_MONTH_KEY = "202610"; // 月が変わったらここだけ書き換える
   var RACE_DATE = new Date(2027,0,31,10,30,0);
@@ -804,24 +804,25 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         +'<div class="pb"><i style="width:'+barPct+'%"></i></div>'
         +'<div class="n">達成率 '+pct+'%。'+(note||"")+'</div></div>';
     }
-    // ロング走は「1本で目標（km or 分）以上を走ったか」を0/1本でカウント（累積%にしない）
+    // ロング走は「1本で目標（km and/or 分）以上を走ったか」を0/1本でカウント（累積%にしない）
+    // goalKm・goalMinの両方を指定した場合は「どちらか一方を満たせば達成」のOR判定
     function longCard(goal, longRun, longMax, longMaxSec){
       if(!goal){
         return '<div class="vcard"><div class="k">ロング走</div><div class="v">—</div><div class="n">目標なし</div></div>';
       }
       var achieved = !!longRun;
       var pct = achieved ? 100 : 0;
-      var unitLabel, note;
-      if(goal.goalMin!=null){
-        unitLabel = goal.goalMin+"分以上";
-        note = achieved
-          ? "達成（"+fmtShort(longRun.d)+"）・"+Math.floor(longRun.sec/60)+"分"
-          : (longMaxSec ? "今月の最長は"+Math.floor(longMaxSec/60)+"分" : "今月はまだ実施なし");
+      var unitParts = [];
+      if(goal.goalKm!=null) unitParts.push(goal.goalKm+"km");
+      if(goal.goalMin!=null) unitParts.push(goal.goalMin+"分");
+      var unitLabel = unitParts.join(" or ")+"以上";
+      var note;
+      if(achieved){
+        note = "達成（"+fmtShort(longRun.d)+"）・"+longRun.km.toFixed(2)+"km／"+Math.floor(longRun.sec/60)+"分";
+      } else if(longMax){
+        note = "今月の最長は"+longMax.toFixed(2)+"km／"+Math.floor(longMaxSec/60)+"分";
       } else {
-        unitLabel = goal.goalKm+"km以上";
-        note = achieved
-          ? "達成（"+fmtShort(longRun.d)+"）・"+longRun.km.toFixed(2)+"km"
-          : (longMax ? "今月の最長は"+longMax.toFixed(2)+"km" : "今月はまだ実施なし");
+        note = "今月はまだ実施なし";
       }
       return '<div class="vcard'+(achieved?' good':'')+'"><div class="k">ロング走</div>'
         +'<div class="v">'+(achieved?1:0)+'<span style="font-size:.45em"> / 1本（'+unitLabel+'）</span></div>'
@@ -853,7 +854,7 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         longRun = null;
         if(longGoalObj){
           agg.runs.forEach(function(r){
-            var ok = longGoalObj.goalMin!=null ? (r.sec/60 >= longGoalObj.goalMin) : (r.km >= longGoalObj.goalKm);
+            var ok = (longGoalObj.goalKm!=null && r.km >= longGoalObj.goalKm) || (longGoalObj.goalMin!=null && r.sec/60 >= longGoalObj.goalMin);
             if(ok && !longRun) longRun=r;
           });
         }
