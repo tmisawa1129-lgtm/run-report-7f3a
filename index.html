@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20261011-1 -->
+<!-- build: 20261011-2 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -272,12 +272,9 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
   </div>
   <div id="menu-progress"></div>
   <div id="menu-guide" style="display:none">
-    <div class="mtabs" id="guide-page-tabs" style="margin:0 0 12px">
-      <button type="button" class="mtab active" data-gpage="1">1ページ目</button>
-      <button type="button" class="mtab" data-gpage="2">2ページ目</button>
-      <button type="button" class="mtab" data-gpage="3">3ページ目</button>
-    </div>
-    <img id="guide-page-img" src="https://tfc-run-record.pages.dev/images/homework/guide1.jpg" alt="宿題ガイド" style="width:100%; border-radius:var(--r-md); display:block; margin-bottom:26px">
+    <img src="https://tfc-run-record.pages.dev/images/homework/guide1.jpg" alt="宿題ガイド 1ページ目" style="width:100%; border-radius:var(--r-md); display:block; margin-bottom:12px">
+    <img src="https://tfc-run-record.pages.dev/images/homework/guide2.jpg" alt="宿題ガイド 2ページ目" style="width:100%; border-radius:var(--r-md); display:block; margin-bottom:12px">
+    <img src="https://tfc-run-record.pages.dev/images/homework/guide3.jpg" alt="宿題ガイド 3ページ目" style="width:100%; border-radius:var(--r-md); display:block; margin-bottom:26px">
   </div>
   <div class="notes" id="menu-img-wrap" style="display:none">
     <span class="lbl">配布された宿題資料</span>
@@ -814,14 +811,6 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         imgWrap.style.display = "none";
       }
     }
-    // 配布資料は1ページずつ切り替えて見せる（縦に3枚並べるとスクロールが長いため）
-    var pageTabs = document.getElementById("guide-page-tabs");
-    pageTabs.addEventListener("click", function(e){
-      var btn = e.target.closest("[data-gpage]"); if(!btn) return;
-      pageTabs.querySelectorAll(".mtab").forEach(function(b){ b.classList.toggle("active", b===btn); });
-      document.getElementById("guide-page-img").src = TFC.site + "images/homework/guide"+btn.dataset.gpage+".jpg";
-    });
-
     // 新しい週を左に（ガイドは右端のまま）
     var items = WEEKLY_MENU.map(function(w){ return {key:String(w.week), label:w.startLabel}; }).reverse();
     items.push({key:"guide", label:"ガイド"});
