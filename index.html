@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- build: 20261018-1 -->
+<!-- build: 20261025-1 -->
 <html lang="ja">
 <head>
 <meta charset="utf-8">
@@ -508,6 +508,35 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
         {name:"片脚立ち", reps:"左右30秒×2セット", desc:"骨盤を水平に保ったまま片脚で立つ。目を閉じるとさらに効く"}
       ],
       strengthNote: "お尻まわりをもう一度。ランの後か、走らない日に。"
+    },
+    {
+      week: 6,
+      startLabel: "10/26〜",
+      start: "20261026",
+      end: "20261101",
+      img: "https://tfc-run-record.pages.dev/images/homework/week6.jpg",
+      range: "10/26（月）〜11/1（日）",
+      theme: "練習会で2時間半走",
+      levels: [
+        {name:"ライト", note:"30分続けて走るのがきつい", long:"2時間半（歩きOK）", longNote:"11/1の練習会。走り6分＋歩き1分の繰り返しで", easy:"20分×2回", easyNote:"任意：1本の最後に流し100m×4", strength:"週2回（各10分）"},
+        {name:"スタンダード", note:"60分走れる", long:"2時間半走", longNote:"11/1の練習会。きつくなったら歩いてOK", easy:"30分×2回", easyNote:"任意：1本の最後に流し100m×4", strength:"週2回（各10分）"},
+        {name:"チャレンジ", note:"90分以上走れる／要申告", long:"2時間半走", longNote:"11/1の練習会。余裕があれば30kmに届く人も", easy:"40分×2回", easyNote:"1本目は任意で流し100m×4、2本目は最後10分だけ気持ち速く", strength:"週2回（各10分）"}
+      ],
+      points: [
+        "11/1（日）の練習会が、そのまま今週のロング走。目標は「動き続けること」で、距離もタイムも狙わない",
+        "本番と同じシューズ・ウェアで。補給（ジェルや水分）を30〜40分ごとにとる練習もする",
+        "参加できない人は、同じ週の都合のいい日に1人で同じ時間を。難しければ先週と同じ時間でもOK",
+        "練習会の前日（10/31）は休み。翌日（11/2）も休み",
+        "流しは今週も任意。練習会の週なので無理に入れなくてOK",
+        "朝晩が冷えてきたので、走り出しは1枚多めにゆっくり温めてから"
+      ],
+      strengthTheme: "お腹まわり・10分",
+      strengthDetail: [
+        {name:"プランク", reps:"30秒×2セット", desc:"ひじとつま先で体を一直線に。お尻が上がったり落ちたりしないように"},
+        {name:"デッドバグ", reps:"左右10回×2セット", desc:"あお向けで反対側の手と脚をゆっくり伸ばす。腰は床につけたまま"},
+        {name:"サイドプランク", reps:"左右25秒×2セット", desc:"横向きでひじと膝（きつければ膝つき）で支える。腰が落ちないように"}
+      ],
+      strengthNote: "お腹まわりが効いていると、2時間半の後半でも姿勢が崩れない。練習会の前日は入れない。"
     }
   ];
 
@@ -758,7 +787,19 @@ footer code{font-family:var(--font-sans); background:var(--surface-2); padding:2
     }
 
     // 「70分」「30分×2回」「週2回（各10分）」のような表記から数字を取り出す
-    function pickMin(s){ var m = String(s||"").match(/(\d+)\s*分/); return m ? Number(m[1]) : null; }
+    // 「90分」「2時間半走」「2時間30分」のどれでも分に直す
+    function pickMin(s){
+      var str = String(s||"");
+      var h = str.match(/(\d+)\s*時間\s*(半|(\d+)\s*分)?/);
+      if(h){
+        var min = Number(h[1]) * 60;
+        if(h[2] === "半") min += 30;
+        else if(h[3]) min += Number(h[3]);
+        return min;
+      }
+      var m = str.match(/(\d+)\s*分/);
+      return m ? Number(m[1]) : null;
+    }
     function pickCount(s){ var m = String(s||"").match(/[×x]\s*(\d+)/) || String(s||"").match(/週\s*(\d+)\s*回/); return m ? Number(m[1]) : 1; }
 
     function renderProgress(w){
